@@ -1,0 +1,3 @@
+content	nostalgy	jar:chrome/nostalgy.jar!/content/
+locale	nostalgy	en-US	jar:chrome/nostalgy.jar!/locale/en-US/
+overlay	chrome://messenger/content/messenger.xul	chrome://nostalgy/content/thunderbirdOverlay.xul

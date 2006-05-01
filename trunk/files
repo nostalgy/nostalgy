@@ -1,0 +1,7 @@
+content/thunderbirdOverlay.xul
+content/overlay.js
+locale/en-US/nostalgy.dtd
+locale/en-US/nostalgy.properties
+defaults/preferences/nostalgy.js
+install.rdf
+chrome.manifest

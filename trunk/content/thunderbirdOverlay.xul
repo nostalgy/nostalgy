@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE overlay SYSTEM "chrome://nostalgy/locale/nostalgy.dtd">
+<overlay id="nostalgy-overlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script src="overlay.js"/>
+
+ <keyset id="mailKeys">
+  <key key="G" oncommand="NostalgyCmd('&nostalgy.go-memo;', ShowFolder);"/>
+  <key key="S" oncommand="NostalgyCmd('&nostalgy.move-memo;', MoveToFolder);"/>
+  <key key="C" oncommand="NostalgyCmd('&nostalgy.copy-memo;', CopyToFolder);"/>
+  <key key="X" oncommand="NostalgyMark();"/>
+ </keyset>
+
+
+ <textbox id="nostalgy-suggest" style="width: 300px;"/>
+      
+ <statusbar id="status-bar">
+  <label id="statusbar-nostalgy-label" 
+         position="1"
+         value="&nostalgy.memo;"/>
+  <textbox id="statusbar-nostalgy" type="autocomplete" tabScrolling="true"
+           position="2"
+	   maxlength="160" flex="3"
+	   maxrows="15" crop="end"
+           onkeypress="NostalgyKeyPress(event);" style="width: 300px;"/>
+ </statusbar>
+</overlay>

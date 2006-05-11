@@ -1,5 +1,5 @@
-content/thunderbirdOverlay.xul
 content/overlay.js
+content/thunderbirdOverlay.xul
 locale/en-US/nostalgy.dtd
 locale/en-US/nostalgy.properties
 defaults/preferences/nostalgy.js

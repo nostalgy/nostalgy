@@ -18,10 +18,14 @@
   <label id="statusbar-nostalgy-label" 
          position="1"
          value="&nostalgy.memo;"/>
+
   <textbox id="statusbar-nostalgy" type="autocomplete" tabScrolling="true"
+	   ontextcommand="NostalgyRunCommand();"
+	   ontextrevert="NostalgyHide();"
            position="2"
 	   maxlength="160" flex="3"
 	   maxrows="15" crop="end"
-           onkeypress="NostalgyKeyPress(event);" style="width: 300px;"/>
+           style="width: 300px;"/>
  </statusbar>
+
 </overlay>

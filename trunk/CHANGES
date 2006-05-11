@@ -1,0 +1,7 @@
+Since 0.1.2
+  - better displayed names for folder (no more %20 for local folders)
+  - better treatment of Escape
+
+0.1.2
+  - fix the double return bug
+

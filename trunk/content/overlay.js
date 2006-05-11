@@ -1,8 +1,10 @@
 function folder_name(folder) {
-  var uri = folder.URI;
-  var server_uri = folder.rootFolder.URI;
-  var server_name = folder.rootFolder.prettyName;
-  return (server_name + uri.substring(server_uri.length, uri.length));
+  var uri = folder.prettyName;
+  while (!folder.isServer) {
+    folder = folder.parent;
+    uri = folder.prettyName + "/" + uri;
+  }
+  return (uri);
 }
 
 /** Autocompletion of folders **/
@@ -35,10 +37,8 @@ myautocomplete.prototype.onStartLookup = function(text, results, listener) {
  listener.onAutoComplete(this.xresults, 1);
 }
 
-myautocomplete.prototype.onStopLookup = function() {}
-myautocomplete.prototype.onAutoComplete = 
-  function(text, results, listener){ NostalgyRunCommand(); }
-
+myautocomplete.prototype.onStopLookup = function() { }
+myautocomplete.prototype.onAutoComplete = function(text, results, listener){ }
 
 myautocomplete.prototype.QueryInterface = function(iid) {
  if (iid.equals(Components.interfaces.nsIAutoCompleteSession)) return this;
@@ -96,24 +96,6 @@ function NostalgyRunCommand() {
    alert("No folder found");
   }
   NostalgyHide();
-}
-
-function NostalgyKeyPress(event) {
- if (event.keyCode == 13) {
-  NostalgyRunCommand();
-  event.preventDefault();
-  return;
- }
- if (event.keyCode == 9) 
- {
-   NostalgyHide();
-   event.preventDefault();
- }
- if (event.keyCode == 27) 
- {
-   NostalgyHide();
-   event.preventDefault();
- }
 }
 
 /**  Folder traversal **/

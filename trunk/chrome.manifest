@@ -1,5 +1,4 @@
 content	nostalgy	content/
 locale	nostalgy	en-US	locale/en-US/
-skin	nostalgy	classic/1.0	skin/
 overlay	chrome://messenger/content/messenger.xul	chrome://nostalgy/content/thunderbirdOverlay.xul
 overlay	chrome://messenger/content/messageWindow.xul	chrome://nostalgy/content/messageOverlay.xul

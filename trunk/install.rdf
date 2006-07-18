@@ -4,7 +4,7 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>nostalgy@alain.frisch</em:id>
     <em:name>Nostalgy</em:name>
-    <em:version>0.1.3</em:version>
+    <em:version>0.1.4</em:version>
     <em:creator>Alain Frisch</em:creator>
     <em:description>Adds shortcuts to change folder, move message, with folder completion</em:description>
     <em:homepageURL>http://www.eleves.ens.fr/home/frisch/soft_mozilla.html</em:homepageURL>
@@ -12,7 +12,7 @@
       <Description>
         <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id> <!-- thunderbird -->
         <em:minVersion>1.5</em:minVersion>
-        <em:maxVersion>1.5.0.*</em:maxVersion>
+        <em:maxVersion>2.*</em:maxVersion>
       </Description>
     </em:targetApplication>
   </Description>

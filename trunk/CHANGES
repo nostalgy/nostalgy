@@ -5,6 +5,7 @@
     Alt-Escape: set focus on the message pane
     double Escape (within 200ms): set focus on the thread pane
   - allow the (S)ave and (C)opy to work from a standalone message window
+  - add a custom About box for the extension
 
 0.1.4
   - fixed this bug: folders where duplicated in the completion

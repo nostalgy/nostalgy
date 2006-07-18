@@ -2,13 +2,14 @@
 <!DOCTYPE overlay SYSTEM "chrome://nostalgy/locale/nostalgy.dtd">
 <overlay id="nostalgy-overlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-  <script src="overlay.js"/>
+
+ <script src="overlay.js"/>
 
  <keyset id="mailKeys">
   <key key="G" oncommand="NostalgyCmd('&nostalgy.go-memo;', ShowFolder);"/>
   <key key="S" oncommand="NostalgyCmd('&nostalgy.move-memo;', MoveToFolder);"/>
   <key key="C" oncommand="NostalgyCmd('&nostalgy.copy-memo;', CopyToFolder);"/>
-  <key key="X" oncommand="NostalgyMark();"/>
+  <key key="L" oncommand="NostalgyCollapseFolderPane();"/>
  </keyset>
 
 

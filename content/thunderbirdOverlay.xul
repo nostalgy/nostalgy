@@ -10,6 +10,7 @@
   <key key="S" oncommand="NostalgyCmd('&nostalgy.move-memo;', MoveToFolder);"/>
   <key key="C" oncommand="NostalgyCmd('&nostalgy.copy-memo;', CopyToFolder);"/>
   <key key="L" oncommand="NostalgyCollapseFolderPane();"/>
+  <key key="A" oncommand="window.openDialog('chrome://nostalgy/content/about.xul', 'About', 'modal,centerscreen,chrome,resizable=no');"/>
  </keyset>
 
 

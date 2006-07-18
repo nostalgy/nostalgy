@@ -59,6 +59,11 @@ function onNostalgyLoad() {
  NostalgyHide();
 }
 
+function NostalgyCollapseFolderPane() {
+ var fp = document.getElementById("folderPaneBox");
+ fp.collapsed = !fp.collapsed;
+}
+
 function NostalgyCmd(lab,cmd) {
  var nostalgyBox = document.getElementById("statusbar-nostalgy");
  focus_saved = document.commandDispatcher.focusedElement;
@@ -122,6 +127,7 @@ function IterateFolders(f) {
 
  var servers= amService.allServers;
  var seen = { };
+ var i;
  for (i = 0; i < servers.Count(); i++) {
   var server = servers.GetElementAt(i).
                QueryInterface(Components.interfaces.nsIMsgIncomingServer);
@@ -186,4 +192,18 @@ function NostalgyMark() {
 }
 
 
+var NostalgyLastEscapeTimeStamp = 0;
+
+function onNostalgyKeyPress(ev) {
+  if (ev.keyCode == 27) { 
+    if (ev.ctrlKey) { SetFocusFolderPane(); }
+    else if (ev.altKey) { SetFocusMessagePane(); }
+    else 
+    if (ev.timeStamp - NostalgyLastEscapeTimeStamp < 200) 
+     { SetFocusThreadPane(); }
+     else { NostalgyLastEscapeTimeStamp = ev.timeStamp; }
+  }
+}
+
 window.addEventListener("load", onNostalgyLoad, false);
+if (SetFocusFolderPane) window.addEventListener("keypress", onNostalgyKeyPress, false);

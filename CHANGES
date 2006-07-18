@@ -1,3 +1,11 @@
+0.1.5
+  - add the commands:
+    L: hide/show the folder pane
+    Ctrl-Escape: set focus on the folder pane
+    Alt-Escape: set focus on the message pane
+    double Escape (within 200ms): set focus on the thread pane
+  - allow the (S)ave and (C)opy to work from a standalone message window
+
 0.1.4
   - fixed this bug: folders where duplicated in the completion
     box as many times as there were POP3 accounts stored together

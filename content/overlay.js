@@ -119,12 +119,20 @@ function IterateFolders(f) {
  var amService = 
     Components.classes["@mozilla.org/messenger/account-manager;1"]
               .getService(Components.interfaces.nsIMsgAccountManager);
+
  var servers= amService.allServers;
+ var seen = { };
  for (i = 0; i < servers.Count(); i++) {
   var server = servers.GetElementAt(i).
                QueryInterface(Components.interfaces.nsIMsgIncomingServer);
   var root = server.rootMsgFolder;
-  IterateSubfolders(root,f);
+  var n = root.prettyName;
+  if (seen[n]) {
+    // Prevent duplicate folders in case of locally stored POP3 accounts
+  } else {
+    seen[n] = true;
+    IterateSubfolders(root,f);
+  }
  }
 }
 

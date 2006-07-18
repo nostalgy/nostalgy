@@ -1,0 +1,3 @@
+- Allow the "S" and "C" commands to work in the Message window.
+- Allow the user to define keyboard shortcuts to save messages to
+  specified folders with a single keystroke.

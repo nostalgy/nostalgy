@@ -1,3 +1,8 @@
+0.1.4
+  - fixed this bug: folders where duplicated in the completion
+    box as many times as there were POP3 accounts stored together
+    with the "Local Mail" account.
+
 0.1.3
   - better displayed names for folder (no more %20 for local folders)
   - better treatment of Escape

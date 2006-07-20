@@ -6,9 +6,15 @@
  <script src="overlay.js"/>
 
  <keyset id="mailKeys">
-  <key key="G" oncommand="NostalgyCmd('&nostalgy.go-memo;', ShowFolder);"/>
-  <key key="S" oncommand="NostalgyCmd('&nostalgy.move-memo;', MoveToFolder);"/>
-  <key key="C" oncommand="NostalgyCmd('&nostalgy.copy-memo;', CopyToFolder);"/>
+  <key key="G" oncommand="NostalgyCmd('&nostalgy.go-memo;', ShowFolder, '');"/>
+  <key key="S" 
+       oncommand="NostalgyCmd('&nostalgy.move-memo;', MoveToFolder, '');"/>
+  <key key="S" modifiers="shift" 
+       oncommand="NostalgyAgain('&nostalgy.move-memo;',MoveToFolder);"/>
+  <key key="C" 
+       oncommand="NostalgyCmd('&nostalgy.copy-memo;', CopyToFolder, '');"/>
+  <key key="C" modifiers="shift" 
+       oncommand="NostalgyAgain('&nostalgy.copy-memo;',CopyToFolder);"/>
   <key key="L" oncommand="NostalgyCollapseFolderPane();"/>
  </keyset>
 

@@ -50,6 +50,9 @@ myautocomplete.prototype.QueryInterface = function(iid) {
 var default_label = "";
 var focus_saved = null;
 var command = null;
+var last_folder_author = new Array();
+var last_folder_subject = new Array();
+var last_folder = null;
 
 function onNostalgyLoad() {
  var nostalgyBox = document.getElementById("statusbar-nostalgy");
@@ -64,14 +67,14 @@ function NostalgyCollapseFolderPane() {
  fp.collapsed = !fp.collapsed;
 }
 
-function NostalgyCmd(lab,cmd) {
+function NostalgyCmd(lab,cmd,init) {
  var nostalgyBox = document.getElementById("statusbar-nostalgy");
  focus_saved = document.commandDispatcher.focusedElement;
  if (!focus_saved) {
   focus_saved = document.getElementById("messagepane").contentWindow;
  }
- nostalgyBox.value = "";
  nostalgyBox.hidden = false;
+ nostalgyBox.value = init;
  setTimeout(function() { nostalgyBox.focus(); }, 50);
    // For some unknown reason, doing nostalgyBox.focus immediatly
    // sometimes does not work...
@@ -157,19 +160,51 @@ function IterateSubfolders(folder,f) {
  }
 }  
 
+function MailAuthor() {
+ return(gDBView.hdrForFirstSelectedMessage.author);
+}
+
+function MailSubject() {
+ return(gDBView.hdrForFirstSelectedMessage.subject);
+}
+
+function register_folder(folder) {
+ last_folder_author[MailAuthor()] = folder;
+ last_folder_subject[MailSubject()] = folder;
+ last_folder = folder
+}
+
+function get_last_folder() {
+ var r = last_folder_author[MailAuthor()];
+ if (r) { return(r); }
+ r = last_folder_subject[MailSubject()];
+ if (r) { return(r); }
+ return(last_folder);
+}
+
 /**  Commands **/
 
-function ShowFolder(folder) {
+function ShowFolder(folder) {	
  SelectFolder(folder.URI);
 }
 
 function MoveToFolder(folder) {
+ register_folder(folder);
  gDBView.doCommandWithFolder(nsMsgViewCommandType.moveMessages,folder);
  SetNextMessageAfterDelete();
 }
 
 function CopyToFolder(folder) {
+ register_folder(folder);
  gDBView.doCommandWithFolder(nsMsgViewCommandType.copyMessages,folder);
+}
+
+function NostalgyAgain(lab,cmd) {
+ var f = get_last_folder();
+ if (f) {
+   var nostalgyBox = document.getElementById("statusbar-nostalgy");
+   NostalgyCmd(lab, cmd, folder_name(f));
+ }
 }
 
 

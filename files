@@ -1,8 +1,13 @@
 content/about.xul
 content/overlay.js
 content/thunderbirdOverlay.xul
+content/NostalgyEditRule.xul
 content/messageOverlay.xul
 content/about.xhtml
+content/NostalgyPref.xul
+content/pref.js
+content/folders.js
+content/rule.js
 locale/en-US/nostalgy.dtd
 locale/en-US/nostalgy.properties
 defaults/preferences/nostalgy.js

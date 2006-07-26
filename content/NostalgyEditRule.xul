@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE window>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<dialog
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        title="Edit Nostalgy Rule"
+	buttons="accept,cancel"
+	ondialogaccept="onAcceptChanges();"
+>
+
+ <script src="folders.js"/>
+ <script src="rule.js"/>
+
+<vbox>
+ <groupbox>
+
+<grid flex="1">
+  <columns>
+    <column flex="1"/>
+    <column flex="2"/>
+  </columns>
+
+  <rows>
+    <row>
+      <label value="If field"/>
+      <radiogroup id="field">
+      <hbox>
+        <radio id="sender" label="Sender"/>
+        <radio id="subject" selected="true" label="Subject"/>
+        <radio id="both" label="Both"/>
+      </hbox>
+      </radiogroup>
+   </row>
+
+    <row>
+      <label value="contains"/>
+      <textbox id="contains"/>
+    </row>
+    <row>
+      <label value="then save to"/>
+      <textbox type="autocomplete" tabScrolling="true" id="folderselect"
+             flex="3" maxrows="15" crop="end" ontextcommand="ChooseFolder();"/>
+    </row>
+  </rows>
+</grid>
+ </groupbox>
+
+</vbox>
+
+</dialog>

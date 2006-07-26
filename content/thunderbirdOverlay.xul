@@ -3,7 +3,9 @@
 <overlay id="nostalgy-overlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+ <script src="folders.js"/>
  <script src="overlay.js"/>
+
 
  <keyset id="mailKeys">
   <key key="G" oncommand="NostalgyCmd('&nostalgy.go-memo;', ShowFolder, '');"/>
@@ -19,20 +21,28 @@
  </keyset>
 
 
- <textbox id="nostalgy-suggest" style="width: 300px;"/>
-      
- <statusbar id="status-bar">
-  <label id="statusbar-nostalgy-label" 
-         position="1"
-         value="&nostalgy.memo;"/>
-
-  <textbox id="statusbar-nostalgy" type="autocomplete" tabScrolling="true"
+ <window id="messengerWindow">
+  <statusbar hidden="true" class="chromeclass-status" id="nostalgy-statusbar">
+  <statusbarpanel flex="1">
+   <label id="nostalgy-command-label"/>
+   <textbox id="nostalgy-folderbox" type="autocomplete" tabScrolling="true"
 	   ontextcommand="NostalgyRunCommand();"
 	   ontextrevert="NostalgyHide();"
-           position="2"
-	   maxlength="160" flex="3"
-	   maxrows="15" crop="end"
-           style="width: 300px;"/>
+	   flex="1"
+	   maxrows="25" crop="center"
+           />
+  </statusbarpanel>
+  </statusbar>
+ </window>
+
+      
+ <statusbar id="statusTextBox">
+  <statusbarpanel insertbefore="statusText" >
+  <label id="statusbar-nostalgy-label" 
+         value="&nostalgy.memo;"/>
+  </statusbarpanel>
  </statusbar>
 
 </overlay>
+
+

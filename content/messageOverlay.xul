@@ -3,15 +3,37 @@
 <overlay id="nostalgy-message-overlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+ <script src="folders.js"/>
  <script src="overlay.js"/>
 
  <keyset id="mailKeys">
-  <key key="S" oncommand="NostalgyCmd('&nostalgy.move-memo;', MoveToFolder);"/>
-  <key key="C" oncommand="NostalgyCmd('&nostalgy.copy-memo;', CopyToFolder);"/>
+  <key key="S" oncommand="NostalgyCmd('&nostalgy.move-memo;', MoveToFolder, '');"/>
+  <key key="C" oncommand="NostalgyCmd('&nostalgy.copy-memo;', CopyToFolder, '');"/>
  </keyset>
 
 
- <statusbar id="status-bar">
+ <window id="messengerWindow">
+  <statusbar hidden="true" class="chromeclass-status" id="nostalgy-statusbar">
+  <statusbarpanel flex="1">
+   <label id="nostalgy-command-label"/>
+   <textbox id="nostalgy-folderbox" type="autocomplete" tabScrolling="true"
+	   ontextcommand="NostalgyRunCommand();"
+	   ontextrevert="NostalgyHide();"
+	   flex="1"
+	   maxrows="25" crop="center"
+           />
+  </statusbarpanel>
+  </statusbar>
+ </window>
+
+ <statusbar id="statusTextBox">
+  <statusbarpanel insertbefore="statusText" >
+  <label id="statusbar-nostalgy-label" 
+         value="&nostalgy.memomessage;"/>
+  </statusbarpanel>
+ </statusbar>
+
+<!-- <statusbar id="status-bar">
   <label id="statusbar-nostalgy-label" 
          position="1"
          value="&nostalgy.memomessage;"/>
@@ -24,6 +46,6 @@
 	   maxrows="15" crop="end"
            style="width: 300px;"/>
  </statusbar>
-
+-->
 
 </overlay>

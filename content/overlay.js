@@ -1,49 +1,10 @@
-function folder_name(folder) {
-  var uri = folder.prettyName;
-  while (!folder.isServer) {
-    folder = folder.parent;
-    uri = folder.prettyName + "/" + uri;
-  }
-  return (uri);
-}
+function gEBI(s) { return document.getElementById(s); }
 
-/** Autocompletion of folders **/
-
-function myautocomplete() {
- this.xresults = 
-  Components.classes[
-   "@mozilla.org/autocomplete/results;1"
-  ].getService(Components.interfaces.nsIAutoCompleteResults);
-}
-
-myautocomplete.prototype.onStartLookup = function(text, results, listener) {
- var items = this.xresults.items;
- items.Clear();
- var ltext = text.toLowerCase();
-
- var addItem = function (folder) {
-  var fname = folder_name(folder);
-  if (fname.toLowerCase().indexOf(ltext) < 0) { return; }
-  var newitem = 
-   Components.classes[
-    "@mozilla.org/autocomplete/item;1"
-   ].createInstance(Components.interfaces.nsIAutoCompleteItem);
-  newitem.value = fname;
-  items.AppendElement(newitem);
- };
- IterateFolders(addItem);
- this.xresults.searchString = text;
- this.xresults.defaultItemIndex = 0;
- listener.onAutoComplete(this.xresults, 1);
-}
-
-myautocomplete.prototype.onStopLookup = function() { }
-myautocomplete.prototype.onAutoComplete = function(text, results, listener){ }
-
-myautocomplete.prototype.QueryInterface = function(iid) {
- if (iid.equals(Components.interfaces.nsIAutoCompleteSession)) return this;
- throw Components.results.NS_NOINTERFACE;
-}
+var nostalgy_folderBox = null;
+var nostalgy_statusBar = null;
+var nostalgy_label = null;
+var nostalgy_th_statusBar = null;
+var nostalgy_cmdLabel = null;
 
 /** Driver **/
 
@@ -53,112 +14,88 @@ var command = null;
 var last_folder_author = new Array();
 var last_folder_subject = new Array();
 var last_folder = null;
+var glast_folder = null;
 
 function onNostalgyLoad() {
- var nostalgyBox = document.getElementById("statusbar-nostalgy");
- nostalgyBox.addSession(new myautocomplete());
- var label = document.getElementById("statusbar-nostalgy-label");
- default_label = label.value;
- NostalgyHide();
+ nostalgy_folderBox = gEBI("nostalgy-folderbox");
+ nostalgy_statusBar = gEBI("nostalgy-statusbar");
+ nostalgy_label = gEBI("statusbar-nostalgy-label");
+ nostalgy_th_statusBar = gEBI("status-bar");
+ nostalgy_cmdLabel = gEBI("nostalgy-command-label");
+
+ nostalgy_folderBox.addSession(new myautocomplete());
+ default_label = nostalgy_label.value;
+
+
+ gEBI("threadTree").addEventListener("select", NostalgyDefLabel, false); 
+
+ var saved_str = "";
+ nostalgy_folderBox.addEventListener("keydown", 
+  function(ev){ 
+   if (ev.keyCode == 9) { saved_str = nostalgy_folderBox.value; } 
+ }, false);
+ nostalgy_folderBox.addEventListener("keypress", 
+  function(ev){ 
+   if (ev.keyCode == 9) { nostalgy_folderBox.value = 
+				NostalgyCompleteUnique(saved_str); } 
+ }, true);
 }
+
+function NostalgyHide() {
+ nostalgy_statusBar.hidden = true;
+ nostalgy_th_statusBar.hidden = false;
+
+ if (focus_saved) {
+  focus_saved.focus ();
+  focus_saved = null;
+ }
+ NostalgyDefLabel();
+}
+
+
+
+function NostalgyDefLabel() { 
+ glast_folder = get_last_folder();
+ if (glast_folder) {
+   nostalgy_label.value = 
+       default_label + " [+Shift: ==> " + folder_name(glast_folder) + "]";
+ } else {
+   nostalgy_label.value = default_label;
+ }
+}
+
 
 function NostalgyCollapseFolderPane() {
  var fp = document.getElementById("folderPaneBox");
  fp.collapsed = !fp.collapsed;
 }
 
+
 function NostalgyCmd(lab,cmd,init) {
- var nostalgyBox = document.getElementById("statusbar-nostalgy");
  focus_saved = document.commandDispatcher.focusedElement;
- if (!focus_saved) {
-  focus_saved = document.getElementById("messagepane").contentWindow;
- }
- nostalgyBox.hidden = false;
- nostalgyBox.value = init;
- setTimeout(function() { nostalgyBox.focus(); }, 50);
+ if (!focus_saved) { focus_saved = gEBI("messagepane").contentWindow; }
+
+ nostalgy_cmdLabel.value = lab;
+ command = cmd;
+ nostalgy_statusBar.hidden = false;
+ nostalgy_th_statusBar.hidden = true;
+ nostalgy_folderBox.value = init;
+
+ setTimeout(function() { nostalgy_folderBox.focus(); }, 50);
    // For some unknown reason, doing nostalgyBox.focus immediatly
    // sometimes does not work...
-
- var label = document.getElementById("statusbar-nostalgy-label");
- label.value = lab;
- command = cmd;
 }
 
-function NostalgyHide() {
- var nostalgyBox = document.getElementById("statusbar-nostalgy");
- nostalgyBox.hidden = true;
- if (focus_saved) {
-  focus_saved.focus ();
-  focus_saved = null;
- }
- var label = document.getElementById("statusbar-nostalgy-label");
- label.value = default_label;
-}
 
 function NostalgyRunCommand() {
-  var nostalgyBox = document.getElementById("statusbar-nostalgy");
-  var folder = FindFolder(nostalgyBox.value);
-  if (folder) {
-   command(folder);
-  } else {
-   alert("No folder found");
-  }
-  NostalgyHide();
+  var f= NostalgyComplete(nostalgy_folderBox.value, nostalgy_folderBox);
+  if (f) { command(f); NostalgyHide(); }
+
+//  var folder = FindFolder(nostalgy_folderBox.value);
+//  if (folder) { command(folder); } 
+//  else { alert("No folder found"); }
+//  NostalgyHide();
 }
-
-/**  Folder traversal **/
-
-function FindFolder(uri)
-{
- var ret = null;
- uri = uri.toLowerCase();
- try {
-  IterateFolders(function (folder) {
-   if (folder_name(folder).toLowerCase() == uri) { ret = folder; throw(0); }
-  });
-  IterateFolders(function (folder) {
-   if (folder_name(folder).toLowerCase().indexOf(uri) >= 0) { ret = folder; throw(0); }
-  });
- } catch (ex) { }
- return ret;
-}
-
-function IterateFolders(f) {
- var amService = 
-    Components.classes["@mozilla.org/messenger/account-manager;1"]
-              .getService(Components.interfaces.nsIMsgAccountManager);
-
- var servers= amService.allServers;
- var seen = { };
- var i;
- for (i = 0; i < servers.Count(); i++) {
-  var server = servers.GetElementAt(i).
-               QueryInterface(Components.interfaces.nsIMsgIncomingServer);
-  var root = server.rootMsgFolder;
-  var n = root.prettyName;
-  if (seen[n]) {
-    // Prevent duplicate folders in case of locally stored POP3 accounts
-  } else {
-    seen[n] = true;
-    IterateSubfolders(root,f);
-  }
- }
-}
-
-function IterateSubfolders(folder,f) {
- if (!folder.isServer) { f(folder); }
- if (folder.hasSubFolders) {
-  var subfolders = folder.GetSubFolders();
-  var done = false;
-  while (!done) {
-   var subfolder = subfolders.currentItem().
-                   QueryInterface(Components.interfaces.nsIMsgFolder);
-   IterateSubfolders(subfolder,f);
-   try {subfolders.next();}
-   catch(e) {done = true;}
-  }
- }
-}  
 
 function MailAuthor() {
  return(gDBView.hdrForFirstSelectedMessage.author);
@@ -200,31 +137,11 @@ function CopyToFolder(folder) {
 }
 
 function NostalgyAgain(lab,cmd) {
- var f = get_last_folder();
- if (f) {
-   var nostalgyBox = document.getElementById("statusbar-nostalgy");
-   NostalgyCmd(lab, cmd, folder_name(f));
+ if (glast_folder) {
+   cmd(glast_folder);
  }
 }
 
-
-/** Marking **/
-
-function NostalgyMark() {
- var tree = window.parent.GetThreadTree();			  
-// var dbview = tree.builderView;
-// alert("Focus = " + tree.currentIndex);
- var sel = tree.view.selection;
- //alert("Sel = " + sel);
- // sel.toggleSelect(1);
-// var i = sel.currentIndex;
-// sel.rangedSelect(i,i,true);
- sel.currentIndex++;
-// var i = sel.currentIndex;
-// sel.rangedSelect(i,i,true);
- tree.treeBoxObject.ensureRowIsVisible(sel.currentIndex);
- treeView.selectionChanged();
-}
 
 
 var NostalgyLastEscapeTimeStamp = 0;
@@ -241,4 +158,6 @@ function onNostalgyKeyPress(ev) {
 }
 
 window.addEventListener("load", onNostalgyLoad, false);
-if (SetFocusFolderPane) window.addEventListener("keypress", onNostalgyKeyPress, false);
+if (SetFocusFolderPane) {
+  window.addEventListener("keypress", onNostalgyKeyPress, false);
+}

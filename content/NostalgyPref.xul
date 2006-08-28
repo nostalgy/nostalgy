@@ -7,10 +7,9 @@
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         title="Nostalgy Preferences">
 
- <script src="folders.js"/>
  <script src="pref.js"/>
 
-<vbox>
+<vbox style="width:800px">
  <groupbox>
  <listbox flex="1" id="rules">
   <listhead>
@@ -23,20 +22,24 @@
    <listcol/>
    <listcol flex="1"/>
   </listcols>
-  <listitem>
-   <listcell label="Both" value="both"/>
-   <listcell label="Bla"/>
-   <listcell label="Blablabla"/>
-  </listitem> 
  </listbox>
 
  <vbox align="center">
   <hbox>
-  <button label="Edit" default="true" onclick="DoEdit();"/>
-  <button label="Done"/>
+  <button label="Edit" accesskey="E" onclick="DoEdit();"/>
+  <button label="Delete" accesskey="D" onclick="DoDelete();"/>
+
+  <button label="New rule" accesskey="N" onclick="DoNewRule();"/>
+  <button label="Done" onclick="DoClose();"/>
   </hbox>
  </vbox>
  </groupbox>
 </vbox>
+
+ <keyset>
+  <key key="N" oncommand="DoNewRule();"/>
+  <key key="D" oncommand="DoDelete();"/>
+  <key key="E" oncommand="DoEdit();"/>
+ </keyset>
 
 </window>

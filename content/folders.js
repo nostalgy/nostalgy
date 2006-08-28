@@ -123,6 +123,17 @@ function FindFolder(uri)
  return ret;
 }
 
+function FindFolderExact(uri) {
+ var ret = null;
+ uri = uri.toLowerCase();
+ try {
+  IterateFolders(function (folder) {
+   if (folder_name(folder).toLowerCase() == uri) { ret = folder; throw(0); }
+  });
+ } catch (ex) { }
+ return ret;
+}
+
 function IterateFolders(f) {
  var amService = 
     Components.classes["@mozilla.org/messenger/account-manager;1"]

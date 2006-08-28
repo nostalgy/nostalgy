@@ -7,19 +7,19 @@
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         title="Edit Nostalgy Rule"
 	buttons="accept,cancel"
-	ondialogaccept="onAcceptChanges();"
+	ondialogaccept="return onAcceptChanges();"
 >
 
  <script src="folders.js"/>
- <script src="rule.js"/>
+ <script src="edit_rule.js"/>
 
-<vbox>
+<vbox style="width:600px">
  <groupbox>
 
 <grid flex="1">
   <columns>
+    <column flex="0"/>
     <column flex="1"/>
-    <column flex="2"/>
   </columns>
 
   <rows>

@@ -6,6 +6,64 @@ var nostalgy_label = null;
 var nostalgy_th_statusBar = null;
 var nostalgy_cmdLabel = null;
 
+/** Rules **/
+
+var NostalgyRules =
+{
+  register: function()
+  {
+    var prefService = Components.classes["@mozilla.org/preferences-service;1"]
+                            .getService(Components.interfaces.nsIPrefService);
+    this._branch = prefService.getBranch("extensions.nostalgy.");
+    this._branch2 = 
+        this._branch.QueryInterface(Components.interfaces.nsIPrefBranch2);
+    this._branch2.addObserver("", this, false);
+    this.get_rules();
+  },
+
+  unregister: function()
+  {
+    if(!this._branch2) return;
+    this._branch2.removeObserver("", this);
+  },
+
+  get_rules: function()
+  {
+    var r = eval(this._branch.getCharPref("rules"));
+    var i;
+    for (i = 0; i < r.length; i++) {
+      r[i].contains = r[i].contains.toLowerCase();
+    }
+    this.rules = r;
+  },
+
+  observe: function(aSubject, aTopic, aData)
+  {
+    if(aTopic != "nsPref:changed") return;
+    switch (aData) {
+      case "rules":
+        this.get_rules();
+        break;
+    }
+  },
+
+  apply: function(sender,subject)
+  {
+    var folder = null;
+    var rules = this.rules;
+    for (i = 0; (i < rules.length) && (!folder); i++) {
+      var r = rules[i];
+      if ((r.field != "subject") && (sender.indexOf(r.contains) >= 0)
+          || (r.field != "sender") && (subject.indexOf(r.contains) >= 0)) {
+        folder = FindFolderExact(r.folder);
+      }
+    }
+    return folder;
+  }
+}
+
+NostalgyRules.register();
+
 /** Driver **/
 
 var default_label = "";
@@ -14,7 +72,7 @@ var command = null;
 var last_folder_author = new Array();
 var last_folder_subject = new Array();
 var last_folder = null;
-var glast_folder = null;
+var gsuggest_folder = null;
 
 function onNostalgyLoad() {
  nostalgy_folderBox = gEBI("nostalgy-folderbox");
@@ -55,10 +113,10 @@ function NostalgyHide() {
 
 
 function NostalgyDefLabel() { 
- glast_folder = get_last_folder();
- if (glast_folder) {
+ gsuggest_folder = NostalgySuggest();
+ if (gsuggest_folder) {
    nostalgy_label.value = 
-       default_label + " [+Shift: ==> " + folder_name(glast_folder) + "]";
+       default_label + " [+Shift: ==> " + folder_name(gsuggest_folder) + "]";
  } else {
    nostalgy_label.value = default_label;
  }
@@ -98,11 +156,11 @@ function NostalgyRunCommand() {
 }
 
 function MailAuthor() {
- return(gDBView.hdrForFirstSelectedMessage.author);
+ return(gDBView.hdrForFirstSelectedMessage.author.toLowerCase());
 }
 
 function MailSubject() {
- return(gDBView.hdrForFirstSelectedMessage.subject);
+ return(gDBView.hdrForFirstSelectedMessage.subject.toLowerCase());
 }
 
 function register_folder(folder) {
@@ -111,12 +169,19 @@ function register_folder(folder) {
  last_folder = folder
 }
 
-function get_last_folder() {
- var r = last_folder_author[MailAuthor()];
+function NostalgySuggest() {
+ var r = null;
+ r = NostalgyRules.apply(MailAuthor(), MailSubject());
  if (r) { return(r); }
- r = last_folder_subject[MailSubject()];
- if (r) { return(r); }
- return(last_folder);
+
+// r = last_folder_author[MailAuthor()];
+// if (r) { return(r); }
+
+// r = last_folder_subject[MailSubject()];
+// if (r) { return(r); }
+
+// return(last_folder);
+  return(null);
 }
 
 /**  Commands **/
@@ -137,8 +202,8 @@ function CopyToFolder(folder) {
 }
 
 function NostalgyAgain(lab,cmd) {
- if (glast_folder) {
-   cmd(glast_folder);
+ if (gsuggest_folder) {
+   cmd(gsuggest_folder);
  }
 }
 

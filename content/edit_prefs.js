@@ -77,7 +77,7 @@ function MkPrefStr() {
 
 
 function EditRule(rule, accept) {
-  window.openDialog("chrome://nostalgy/content/NostalgyEditRule.xul", 
+  window.openDialog("chrome://nostalgy/content/edit_rule.xul", 
                      "_blank", 
 	             "dialog,chrome,modal,titlebar,resizable=yes",
 	             rule,accept);

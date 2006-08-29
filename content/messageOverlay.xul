@@ -13,7 +13,7 @@
 
  <commandset id="globalCommandset">
    <command id="cmd_nostalgyconfig" label="Nostalgy rules..." 
-     oncommand="openDialog('chrome://nostalgy/content/NostalgyPref.xul', 'nostalgy', 'resizable');"/>
+     oncommand="openDialog('chrome://nostalgy/content/edit_prefs.xul', 'nostalgy', 'resizable');"/>
   </commandset>
 
  <menupopup id="taskPopup">

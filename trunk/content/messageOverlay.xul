@@ -4,7 +4,7 @@
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
  <script src="folders.js"/>
- <script src="overlay.js"/>
+ <script src="nostalgy.js"/>
 
  <keyset id="mailKeys">
   <key key="S" oncommand="NostalgyCmd('&nostalgy.move-memo;', MoveToFolder, '');"/>

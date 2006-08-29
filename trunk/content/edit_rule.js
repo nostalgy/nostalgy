@@ -21,7 +21,8 @@ function onNostalgyLoad() {
 }
 
 function onAcceptChanges() {
- if (!FindFolderExact(gFolderSelect.value)) {
+ var folder = FirstCompletion(gFolderSelect.value);
+ if (!folder || (gFolderSelect.value == "")) {
    alert("Please choose an existing folder");
    return false;
  }
@@ -32,7 +33,7 @@ function onAcceptChanges() {
  var rule = { 
     field: gFieldSelect.selectedItem.getAttribute("id"),
     contains: gContainsSelect.value,
-    folder: gFolderSelect.value 
+    folder: folder_name(folder)
  };
     
  (window.arguments[1])(rule);

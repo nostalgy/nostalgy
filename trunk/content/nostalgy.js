@@ -124,7 +124,7 @@ function NostalgyDefLabel() {
 
 
 function NostalgyCollapseFolderPane() {
- var fp = document.getElementById("folderPaneBox");
+ var fp = gEBI("folderPaneBox");
  fp.collapsed = !fp.collapsed;
 }
 
@@ -210,6 +210,16 @@ function NostalgyAgain(lab,cmd) {
 
 
 var NostalgyLastEscapeTimeStamp = 0;
+var NostalgyEscapeDown = false;
+
+function isThreadPaneFocused() { 
+  return (WhichPaneHasFocus() == GetThreadTree()); 
+}
+
+function NostalgyScrollMsg(d) {
+ var b = gEBI("messagepane").contentDocument.getElementsByTagName("body")[0];
+ if (b) { b.scrollTop += d; }
+}
 
 function onNostalgyKeyPress(ev) {
   if (ev.keyCode == 27) { 
@@ -219,8 +229,14 @@ function onNostalgyKeyPress(ev) {
     if (ev.timeStamp - NostalgyLastEscapeTimeStamp < 200) 
      { SetFocusThreadPane(); }
      else { NostalgyLastEscapeTimeStamp = ev.timeStamp; }
-  }
+  } 
+  else if (ev.keyCode == 39 && isThreadPaneFocused() && ev.shiftKey)
+    { NostalgyScrollMsg(20); }
+  else if (ev.keyCode == 37 && isThreadPaneFocused() && ev.shiftKey)
+    { NostalgyScrollMsg(-20); }
 }
+
+
 
 window.addEventListener("load", onNostalgyLoad, false);
 if (SetFocusFolderPane) {

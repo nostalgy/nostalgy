@@ -21,24 +21,62 @@
 
    <h2>Nostalgy</h2>
 
+   Nostalgy adds several keyboard shortcuts to improve your
+   productivity with Thunderbird.
+
+   <h3>Folder commands</h3>
+
    <table border="1">
     <tr><th>Shortcut</th><th>Description</th></tr>
     <tr><td>G</td><td>Open a specific folder</td></tr>
     <tr><td>S</td><td>Move the current message to a specific folder</td></tr>
     <tr><td>C</td><td>Copy the current message to a specific folder</td></tr>
+   </table>
+
+   <p>As a remainder and a sign of Nostalgy's presence, these shortcuts are 
+      displayed in Thunderbird's status bar.</p>
+
+   <p>The G, S and C commands open an auto-completion box 
+      (in place of the status bar) 
+      where you can select a folder by typing part of its name. Regular 
+      expressions are accepted as well (and .. is a short-hand for .*
+      meaning: any sequence of characters). You can choose the first
+      suggested completion with Return, or first choose another one with
+      the Up/Down keys. You can cancel the command with Escape.</p>
+   <p>The S and C commands also work in a standalone message window.</p>
+
+   <h3>3-pane navigation</h3>
+
+   <table border="1">
+    <tr><th>Shortcut</th><th>Description</th></tr>
     <tr><td>L</td><td>Hide/show the folder pane</td></tr>
     <tr><td>Ctrl-Esc</td><td>Focus the folder pane</td></tr>
     <tr><td>Alt-Esc</td><td>Focus the message pane</td></tr>
     <tr><td>double Esc</td><td>Focus the thread pane</td></tr>
    </table>
 
-   <p>The G, S and C commands open a box (in the status line) where
-      you can select a folder by typing part of its name. You can cancel
-      with Escape.</p>
-   <p>The S and C commands also work in a standalone message window.</p>
+   <p>
+   When the thread pane is focused, you can scroll the currently
+   displayed message (up and down) by pressing Shift-Left/Shift-Right.
+   </p>
 
+   <p>
+   The rationale behind the L command is that thanks to Nostalgy's folder
+   commands, you rarely need the folder pane.
+   </p>
 
-   <p>The Nostalgy extension has been written by <a href="mailto:Alain.Frisch@inria.fr">Alain Frisch</a> <tt>Alain.Frisch@inria.fr</tt>. Comments ands suggestions are welcome!</p>
+   <h3>Rules</h3>
+
+   <p>Nostalgy has a notion of rule. A rule associates a folder to a
+   message by looking for a substring of the Sender or Subject (or both)
+   headers. When a rule selects a folder for a given message, Nostalgy
+   informs you in the status line.  You can then use the Shift-S/Shift-C
+   shortcuts to move/copy directly the message to this folder.  
+   Nostalgy's rules
+   can be edited from a command in the Tools menu.</p>
+
+   <h3>About Nostalgy...</h3>
+   <p>The Nostalgy extension has been written by Alain Frisch (<tt>Alain.Frisch@inria.fr</tt>). Comments ands suggestions are welcome!</p>
   </body>
 </html>
 

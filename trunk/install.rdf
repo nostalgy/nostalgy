@@ -9,7 +9,7 @@
     <em:description>Adds shortcuts to change folder, move message, with folder completion</em:description>
     <em:homepageURL>http://www.eleves.ens.fr/home/frisch/soft_mozilla.html</em:homepageURL>
     <em:aboutURL>chrome://nostalgy/content/about.xul</em:aboutURL>
-    <em:optionsURL>chrome://nostalgy/content/NostalgyPref.xul</em:optionsURL>
+    <em:optionsURL>chrome://nostalgy/content/edit_prefs.xul</em:optionsURL>
     <em:targetApplication>
       <Description>
         <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id> <!-- thunderbird -->

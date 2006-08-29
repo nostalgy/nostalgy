@@ -21,8 +21,11 @@
 
    <h2>Nostalgy</h2>
 
+   <p>
    Nostalgy adds several keyboard shortcuts to improve your
-   productivity with Thunderbird.
+   productivity with Thunderbird. A custom preference dialog 
+   for Nostalgy is available through the Tools menu.
+   </p>
 
    <h3>Folder commands</h3>
 
@@ -38,11 +41,17 @@
 
    <p>The G, S and C commands open an auto-completion box 
       (in place of the status bar) 
-      where you can select a folder by typing part of its name. Regular 
+      where you can select a folder by typing part of its name. 
+      Matching is case-insensitive. Regular 
       expressions are accepted as well (and .. is a short-hand for .*
       meaning: any sequence of characters). You can choose the first
       suggested completion with Return, or first choose another one with
       the Up/Down keys. You can cancel the command with Escape.</p>
+
+   <p>It is possible to restrict (see the preference dialog)
+   the completion to the folders on the
+   same server as the currently displayed folder.</p>
+
    <p>The S and C commands also work in a standalone message window.</p>
 
    <h3>3-pane navigation</h3>
@@ -72,8 +81,13 @@
    headers. When a rule selects a folder for a given message, Nostalgy
    informs you in the status line.  You can then use the Shift-S/Shift-C
    shortcuts to move/copy directly the message to this folder.  
-   Nostalgy's rules
-   can be edited from a command in the Tools menu.</p>
+   Nostalgy's rules can be edited from the preference dialog.</p>
+
+   <p>
+   When no rule apply to a given message, Nostalgy proposes to re-use
+   (with Shift-S/Shift-C) the folder same as for the last move/copy 
+   operation folder.
+   </p>
 
    <h3>About Nostalgy...</h3>
    <p>The Nostalgy extension has been written by Alain Frisch (<tt>Alain.Frisch@inria.fr</tt>). Comments ands suggestions are welcome!</p>

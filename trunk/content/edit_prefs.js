@@ -1,4 +1,7 @@
+function gEBI(s) { return document.getElementById(s); }
+
 var gList = null;
+var gRestrict = null;
 
 (function () {
    var m = {
@@ -94,6 +97,8 @@ function onAcceptChanges() {
   var prefs = Components.classes["@mozilla.org/preferences-service;1"].
                          getService(Components.interfaces.nsIPrefBranch);
   prefs.setCharPref("extensions.nostalgy.rules", MkPrefStr());
+  prefs.setBoolPref("extensions.nostalgy.restrict_to_current_server", 
+	gRestrict.checked);
   window.close();
 }
 
@@ -111,10 +116,12 @@ function DoDelete() {
 }
 
 function onNostalgyLoad() {
-  gList = document.getElementById("rules");
+  gList = gEBI("rules");
+  gRestrict = gEBI("restrict_to_current_server");
 
   var prefs = Components.classes["@mozilla.org/preferences-service;1"].
                          getService(Components.interfaces.nsIPrefBranch);
+
   var r = eval(prefs.getCharPref("extensions.nostalgy.rules"));
   var i;
   for (i = 0; i < r.length; i++) { 
@@ -122,6 +129,11 @@ function onNostalgyLoad() {
     r[i].contains = r[i].contains;
     CreateItem(r[i]); 
   }
+
+ var b = false;
+ try { b=prefs.getBoolPref("extensions.nostalgy.restrict_to_current_server"); }
+ catch (ex) { }
+ gRestrict.checked = b;
 }
 
 function onKeyPress(ev) {

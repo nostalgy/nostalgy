@@ -7,7 +7,7 @@
  <script src="nostalgy.js"/>
 
  <commandset id="globalCommandset">
-   <command id="cmd_nostalgyconfig" label="Nostalgy rules..." 
+   <command id="cmd_nostalgyconfig" label="Nostalgy..." 
      oncommand="openDialog('chrome://nostalgy/content/edit_prefs.xul', 'nostalgy', 'resizable');"/>
   </commandset>
 
@@ -23,13 +23,12 @@
   <key key="S" 
        oncommand="NostalgyCmd('&nostalgy.move-memo;', MoveToFolder, '');"/>
   <key key="S" modifiers="shift" 
-       oncommand="NostalgyAgain('&nostalgy.move-memo;',MoveToFolder);"/>
+       oncommand="NostalgySuggested('&nostalgy.move-memo;',MoveToFolder);"/>
   <key key="C" 
        oncommand="NostalgyCmd('&nostalgy.copy-memo;', CopyToFolder, '');"/>
   <key key="C" modifiers="shift" 
-       oncommand="NostalgyAgain('&nostalgy.copy-memo;',CopyToFolder);"/>
+       oncommand="NostalgySuggested('&nostalgy.copy-memo;',CopyToFolder);"/>
   <key key="L" oncommand="NostalgyCollapseFolderPane();"/>
-  <key key="X" oncommand="NostalgySelect();"/>
  </keyset>
 
 

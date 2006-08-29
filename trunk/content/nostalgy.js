@@ -1,5 +1,7 @@
 function gEBI(s) { return document.getElementById(s); }
 
+var in_message_window = !window.SetFocusFolderPane;
+
 var nostalgy_folderBox = null;
 var nostalgy_statusBar = null;
 var nostalgy_label = null;
@@ -19,6 +21,8 @@ var NostalgyRules =
         this._branch.QueryInterface(Components.interfaces.nsIPrefBranch2);
     this._branch2.addObserver("", this, false);
     this.get_rules();
+    restrict_to_current_server = 
+        this._branch.getBoolPref("restrict_to_current_server");
   },
 
   unregister: function()
@@ -43,6 +47,11 @@ var NostalgyRules =
     switch (aData) {
       case "rules":
         this.get_rules();
+        if (!in_message_window) { NostalgyDefLabel(); }
+        break;
+      case "restrict_to_current_server":
+        restrict_to_current_server = 
+           this._branch.getBoolPref("restrict_to_current_server");
         break;
     }
   },
@@ -51,6 +60,7 @@ var NostalgyRules =
   {
     var folder = null;
     var rules = this.rules;
+    var i = 0;
     for (i = 0; (i < rules.length) && (!folder); i++) {
       var r = rules[i];
       if ((r.field != "subject") && (sender.indexOf(r.contains) >= 0)
@@ -69,8 +79,8 @@ NostalgyRules.register();
 var default_label = "";
 var focus_saved = null;
 var command = null;
-var last_folder_author = new Array();
-var last_folder_subject = new Array();
+//var last_folder_author = new Array();
+//var last_folder_subject = new Array();
 var last_folder = null;
 var gsuggest_folder = null;
 
@@ -85,7 +95,9 @@ function onNostalgyLoad() {
  default_label = nostalgy_label.value;
 
 
- gEBI("threadTree").addEventListener("select", NostalgyDefLabel, false); 
+ if (!in_message_window) {
+   gEBI("threadTree").addEventListener("select", NostalgyDefLabel, false); 
+ }
 
  var saved_str = "";
  nostalgy_folderBox.addEventListener("keydown", 
@@ -164,15 +176,17 @@ function MailSubject() {
 }
 
 function register_folder(folder) {
- last_folder_author[MailAuthor()] = folder;
- last_folder_subject[MailSubject()] = folder;
- last_folder = folder
+// last_folder_author[MailAuthor()] = folder;
+// last_folder_subject[MailSubject()] = folder;
+  last_folder = folder
 }
 
 function NostalgySuggest() {
  var r = null;
- r = NostalgyRules.apply(MailAuthor(), MailSubject());
- if (r) { return(r); }
+ try {
+  r = NostalgyRules.apply(MailAuthor(), MailSubject());
+  if (r) { return(r); }
+ } catch (ex) { }
 
 // r = last_folder_author[MailAuthor()];
 // if (r) { return(r); }
@@ -180,8 +194,7 @@ function NostalgySuggest() {
 // r = last_folder_subject[MailSubject()];
 // if (r) { return(r); }
 
-// return(last_folder);
-  return(null);
+ return(last_folder);
 }
 
 /**  Commands **/
@@ -201,10 +214,8 @@ function CopyToFolder(folder) {
  gDBView.doCommandWithFolder(nsMsgViewCommandType.copyMessages,folder);
 }
 
-function NostalgyAgain(lab,cmd) {
- if (gsuggest_folder) {
-   cmd(gsuggest_folder);
- }
+function NostalgySuggested(lab,cmd) {
+ if (gsuggest_folder) { cmd(gsuggest_folder); }
 }
 
 
@@ -239,6 +250,6 @@ function onNostalgyKeyPress(ev) {
 
 
 window.addEventListener("load", onNostalgyLoad, false);
-if (SetFocusFolderPane) {
+if (!in_message_window) {
   window.addEventListener("keypress", onNostalgyKeyPress, false);
 }

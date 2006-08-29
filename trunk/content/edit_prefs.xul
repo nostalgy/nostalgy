@@ -37,11 +37,16 @@ shortcuts to move/copy the message to this folder.</label>
   <hbox>
   <button label="Edit" accesskey="E" oncommand="DoEdit();"/>
   <button label="Delete" accesskey="D" oncommand="DoDelete();"/>
-
   <button label="New rule" accesskey="N" oncommand="DoNewRule();"/>
   </hbox>
  </vbox>
  </groupbox>
+
+ <groupbox>
+   <checkbox label="Restrict folder completion to the current server"
+             id="restrict_to_current_server" accesskey="R"/>
+ </groupbox>
+
 </vbox>
 
  <keyset>

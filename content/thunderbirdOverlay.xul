@@ -4,7 +4,7 @@
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
  <script src="folders.js"/>
- <script src="overlay.js"/>
+ <script src="nostalgy.js"/>
 
  <commandset id="globalCommandset">
    <command id="cmd_nostalgyconfig" label="Nostalgy rules..." 
@@ -29,6 +29,7 @@
   <key key="C" modifiers="shift" 
        oncommand="NostalgyAgain('&nostalgy.copy-memo;',CopyToFolder);"/>
   <key key="L" oncommand="NostalgyCollapseFolderPane();"/>
+  <key key="X" oncommand="NostalgySelect();"/>
  </keyset>
 
 

@@ -3,6 +3,7 @@ pack:
 
 clean:
 	rm -f nostalgy.jar nostalgy.xpi *~
+	(cd content; rm *~)
 
 
 install:

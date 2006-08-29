@@ -24,12 +24,12 @@
 
   <rows>
     <row>
-      <label value="If field"/>
+      <label value="If header"/>
       <radiogroup id="field">
       <hbox>
         <radio id="sender" label="Sender"/>
         <radio id="subject" selected="true" label="Subject"/>
-        <radio id="any" label="Any"/>
+        <radio id="any" label="Sender or Subject"/>
       </hbox>
       </radiogroup>
    </row>

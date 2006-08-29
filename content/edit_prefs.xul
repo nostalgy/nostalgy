@@ -5,14 +5,21 @@
 <dialog
         xmlns:html="http://www.w3.org/1999/xhtml"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-	buttons="accept,cancel"
+	buttons="accept,cancel,extra2"
 	ondialogaccept="return onAcceptChanges();"
+	ondialogextra2="openDialog('chrome://nostalgy/content/about.xul', 'about_nostalgy', 'resizable');"
+	buttonlabelextra2="About Nostalgy..."
         title="Nostalgy Preferences">
 
  <script src="edit_prefs.js"/>
 
 <vbox style="width:800px">
  <groupbox>
+ <label>Rules associate folders to messages by looking for a 
+substring of the Sender or Subject (or both) headers. When a folder
+is selected for a given message, Nostalgy informs you in the status line.
+You can then use the Shift-S/Shift-C
+shortcuts to move/copy the message to this folder.</label>
  <listbox flex="1" id="rules">
   <listhead>
    <listheader label="Field"/>

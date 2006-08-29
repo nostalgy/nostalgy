@@ -29,7 +29,7 @@
       <hbox>
         <radio id="sender" label="Sender"/>
         <radio id="subject" selected="true" label="Subject"/>
-        <radio id="both" label="Both"/>
+        <radio id="any" label="Any"/>
       </hbox>
       </radiogroup>
    </row>

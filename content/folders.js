@@ -1,3 +1,5 @@
+var restrict_to_current_server = false;
+
 function NostalgyCrop(s,len) {
   var l = s.length;
   if (l < len) return s;
@@ -127,14 +129,14 @@ function FindFolderExact(uri) {
  var ret = null;
  uri = uri.toLowerCase();
  try {
-  IterateFolders(function (folder) {
+  IterateFoldersAllServers(function (folder) {
    if (folder_name(folder).toLowerCase() == uri) { ret = folder; throw(0); }
   });
  } catch (ex) { }
  return ret;
 }
 
-function IterateFolders(f) {
+function IterateFoldersAllServers(f) {
  var amService = 
     Components.classes["@mozilla.org/messenger/account-manager;1"]
               .getService(Components.interfaces.nsIMsgAccountManager);
@@ -142,6 +144,7 @@ function IterateFolders(f) {
  var servers= amService.allServers;
  var seen = { };
  var i;
+
  for (i = 0; i < servers.Count(); i++) {
   var server = servers.GetElementAt(i).
                QueryInterface(Components.interfaces.nsIMsgIncomingServer);
@@ -171,3 +174,13 @@ function IterateSubfolders(folder,f) {
  }
 }  
 
+function IterateFoldersCurrentServer(f) {
+ if (!window.gDBView) { alert("BLA!"); }
+ var server = gDBView.msgFolder.server;
+ IterateSubfolders(server.rootMsgFolder,f);
+}
+
+function IterateFolders(f) {
+ if (restrict_to_current_server) { IterateFoldersCurrentServer(f); }
+ else { IterateFoldersAllServers(f); }
+}

@@ -1,3 +1,8 @@
+0.1.6
+  - add the rule system (quick selection of a default folder for messages)
+  - add the Shift-Left/Shift-Right keys (scroll the message while the
+    thread pane is focused)
+
 0.1.5
   - add the commands:
     L: hide/show the folder pane

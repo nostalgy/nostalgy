@@ -1,6 +1,7 @@
 var restrict_to_current_server = false;
 
-function NostalgyCrop(s,len) {
+function NostalgyCrop(s) {
+  var len = 120;
   var l = s.length;
   if (l < len) return s;
   var l1 = len / 3;
@@ -10,7 +11,6 @@ function NostalgyCrop(s,len) {
 function NostalgyMakeRegexp(s) {
   return (new RegExp(s.replace(/\.\./g, ".*"), ""));
 }
-
 
 function folder_name(folder) {
   var uri = folder.prettyName;
@@ -33,14 +33,15 @@ function LongestCommonPrefix(s1,s2) {
 
 /** Autocompletion of folders **/
 
-function myautocomplete() {
+function NostalgyAutocomplete() {
  this.xresults = 
   Components.classes[
    "@mozilla.org/autocomplete/results;1"
   ].getService(Components.interfaces.nsIAutoCompleteResults);
 }
 
-myautocomplete.prototype.onStartLookup = function(text, results, listener) {
+NostalgyAutocomplete.prototype.onStartLookup = 
+function(text, results, listener) {
  var items = this.xresults.items;
  items.Clear();
  var ltext = NostalgyMakeRegexp(text.toLowerCase());
@@ -52,7 +53,7 @@ myautocomplete.prototype.onStartLookup = function(text, results, listener) {
    Components.classes[
     "@mozilla.org/autocomplete/item;1"
    ].createInstance(Components.interfaces.nsIAutoCompleteItem);
-  newitem.value = NostalgyCrop(fname,120);
+  newitem.value = NostalgyCrop(fname);
 
   items.AppendElement(newitem);
  };
@@ -62,19 +63,22 @@ myautocomplete.prototype.onStartLookup = function(text, results, listener) {
  listener.onAutoComplete(this.xresults, 1);
 }
 
-myautocomplete.prototype.onStopLookup = function() { }
-myautocomplete.prototype.onAutoComplete = function(text, results, listener){ }
+NostalgyAutocomplete.prototype.onStopLookup = 
+  function() { }
+NostalgyAutocomplete.prototype.onAutoComplete = 
+  function(text, results, listener){ }
 
-myautocomplete.prototype.QueryInterface = function(iid) {
+NostalgyAutocomplete.prototype.QueryInterface = 
+function(iid) {
  if (iid.equals(Components.interfaces.nsIAutoCompleteSession)) return this;
  throw Components.results.NS_NOINTERFACE;
 }
 
-/**  Folder traversal **/
+function NostalgyFolderSelectionBox(box) {
+ box.addSession(new NostalgyAutocomplete());
+}
 
-// If the completion is unique, return it. Otherwise, set
-// the value of the inputbox to the longest common prefix for all
-// the completions, and return null.
+/** Looking up folders by name **/
 
 function NostalgyCompleteUnique(s) {
   var nb = 0;
@@ -91,50 +95,50 @@ function NostalgyCompleteUnique(s) {
   if (ret) { return ret; } else { return s; }
 }
 
+// Resolve a string coming from a completion box
+// 1. check whether uri comes from the completion list (cropped exact uri)
+// 2. if not, assume the uri has been typed in by the user
+//    and take the first matching folder
+
+function NostalgyResolveFolder(uri) {
+  var ret = FindFolderCropped(uri);
+  if (ret) { return ret; } else { return (FirstCompletion(uri)); }
+}
+
 function FirstCompletion(uri) {
-  var nb = 0;
   var ret = null;
-
   var rexp = NostalgyMakeRegexp(uri.toLowerCase());
-  IterateFolders(function (f) {
-   if (folder_name(f).toLowerCase().match(rexp)) { 
-     nb++;
-     if (nb == 1) { ret = f; }
-   }
-  });
+
+  try {
+   IterateFolders(function (f) {
+    if (folder_name(f).toLowerCase().match(rexp)) { ret = f; throw(0); }
+   });
+  } catch (ex) { }
+
   return ret;
-}
-
-function NostalgyComplete(uri,box)
-{
- return (FirstCompletion(uri));
-}
-
-function FindFolder(uri)
-{
- var ret = null;
- uri = uri.toLowerCase();
- try {
-  IterateFolders(function (folder) {
-   if (folder_name(folder).toLowerCase() == uri) { ret = folder; throw(0); }
-  });
-  IterateFolders(function (folder) {
-   if (folder_name(folder).toLowerCase().indexOf(uri) >= 0) { ret = folder; throw(0); }
-  });
- } catch (ex) { }
- return ret;
 }
 
 function FindFolderExact(uri) {
  var ret = null;
- uri = uri.toLowerCase();
  try {
   IterateFoldersAllServers(function (folder) {
-   if (folder_name(folder).toLowerCase() == uri) { ret = folder; throw(0); }
+   if (folder_name(folder) == uri) { ret = folder; throw(0); }
   });
  } catch (ex) { }
  return ret;
 }
+
+function FindFolderCropped(uri) {
+ var ret = null;
+ try {
+  IterateFolders(function (folder) {
+   if (NostalgyCrop(folder_name(folder)) == uri) { ret = folder; throw(0); }
+  });
+ } catch (ex) { }
+ return ret;
+}
+
+/** Folder traversal **/
 
 function IterateFoldersAllServers(f) {
  var amService = 
@@ -175,7 +179,6 @@ function IterateSubfolders(folder,f) {
 }  
 
 function IterateFoldersCurrentServer(f) {
- if (!window.gDBView) { alert("BLA!"); }
  var server = gDBView.msgFolder.server;
  IterateSubfolders(server.rootMsgFolder,f);
 }

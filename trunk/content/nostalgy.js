@@ -22,8 +22,10 @@ var NostalgyRules =
         this._branch.QueryInterface(Components.interfaces.nsIPrefBranch2);
     this._branch2.addObserver("", this, false);
     this.get_rules();
-    restrict_to_current_server = 
-        this._branch.getBoolPref("restrict_to_current_server");
+    try {
+     restrict_to_current_server = 
+         this._branch.getBoolPref("restrict_to_current_server");
+    } catch (ex) { }
   },
 
   unregister: function()
@@ -34,12 +36,14 @@ var NostalgyRules =
 
   get_rules: function()
   {
-    var r = eval(this._branch.getCharPref("rules"));
-    var i;
-    for (i = 0; i < r.length; i++) {
-      r[i].contains = r[i].contains.toLowerCase();
-    }
-    this.rules = r;
+    try {
+     var r = eval(this._branch.getCharPref("rules"));
+     var i;
+     for (i = 0; i < r.length; i++) {
+       r[i].contains = r[i].contains.toLowerCase();
+     }
+     this.rules = r;
+    } catch (ex) { }
   },
 
   observe: function(aSubject, aTopic, aData)

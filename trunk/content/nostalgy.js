@@ -12,6 +12,7 @@ var nostalgy_cmdLabel = null;
 
 var NostalgyRules =
 {
+
   register: function()
   {
     var prefService = Components.classes["@mozilla.org/preferences-service;1"]

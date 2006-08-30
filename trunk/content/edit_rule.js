@@ -11,7 +11,7 @@ function onNostalgyLoad() {
  gFolderSelect = gEBI("folderselect");
  gContainsSelect = gEBI("contains");
  gFieldSelect = gEBI("field");
- gFolderSelect.addSession(new myautocomplete());
+ NostalgyFolderSelectionBox(gFolderSelect);
 
  gContainsSelect.focus();
 
@@ -21,8 +21,8 @@ function onNostalgyLoad() {
 }
 
 function onAcceptChanges() {
- var folder = FirstCompletion(gFolderSelect.value);
- if (!folder || (gFolderSelect.value == "")) {
+ var folder = FindFolderExact(gFolderSelect.value);
+ if (!folder) {
    alert("Please choose an existing folder");
    return false;
  }
@@ -41,8 +41,10 @@ function onAcceptChanges() {
 }
 
 function ChooseFolder() {
-  var folder = FindFolder(gFolderSelect.value);
-  if (folder) { gFolderSelect.value = folder_name(folder); }
+  if (gFolderSelect.value != "") {
+    var folder = NostalgyResolveFolder(gFolderSelect.value);
+    if (folder) { gFolderSelect.value = folder_name(folder); }
+  }
 }
 
 window.addEventListener("load", onNostalgyLoad, false);

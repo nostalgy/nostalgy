@@ -91,7 +91,7 @@ function onNostalgyLoad() {
  nostalgy_th_statusBar = gEBI("status-bar");
  nostalgy_cmdLabel = gEBI("nostalgy-command-label");
 
- nostalgy_folderBox.addSession(new myautocomplete());
+ NostalgyFolderSelectionBox(nostalgy_folderBox);
  default_label = nostalgy_label.value;
 
 
@@ -158,13 +158,10 @@ function NostalgyCmd(lab,cmd,init) {
 
 
 function NostalgyRunCommand() {
-  var f= NostalgyComplete(nostalgy_folderBox.value, nostalgy_folderBox);
-  if (f) { command(f); NostalgyHide(); }
-
-//  var folder = FindFolder(nostalgy_folderBox.value);
-//  if (folder) { command(folder); } 
-//  else { alert("No folder found"); }
-//  NostalgyHide();
+  var f = NostalgyResolveFolder(nostalgy_folderBox.value);
+  if (f) { command(f); }
+  else { alert("No folder " + nostalgy_folderBox.value); }
+  NostalgyHide();
 }
 
 function MailAuthor() {

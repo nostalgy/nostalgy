@@ -39,11 +39,12 @@ function SetItem(item, rule) {
   f.setAttribute("label", lab);
 
   item.childNodes.item(1).setAttribute("label", rule.contains);
-  item.childNodes.item(2).setAttribute("label", rule.folder);
+  item.childNodes.item(2).setAttribute("value", rule.folder);
+  item.childNodes.item(2).setAttribute("label", NostalgyCrop(rule.folder));
 }
 
 function RuleOfItem(item) {
- return ({ folder: item.childNodes.item(2).getAttribute("label"),
+ return ({ folder: item.childNodes.item(2).getAttribute("value"),
 	   contains: item.childNodes.item(1).getAttribute("label"),
 	   field: item.childNodes.item(0).getAttribute("value") });
 }

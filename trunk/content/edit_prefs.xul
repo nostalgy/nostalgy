@@ -11,6 +11,7 @@
 	buttonlabelextra2="About Nostalgy..."
         title="Nostalgy Preferences">
 
+ <script src="folders.js"/>
  <script src="edit_prefs.js"/>
 
 <vbox style="width:800px">
@@ -29,7 +30,7 @@ shortcuts to move/copy the message to this folder.</label>
   <listcols>
    <listcol/>
    <listcol/>
-   <listcol flex="1"/>
+   <listcol flex="10"/>
   </listcols>
  </listbox>
 
@@ -48,11 +49,5 @@ shortcuts to move/copy the message to this folder.</label>
  </groupbox>
 
 </vbox>
-
- <keyset>
-  <key key="N" oncommand="DoNewRule(); return true;"/>
-  <key key="D" oncommand="DoDelete(); return true;"/>
-  <key key="E" oncommand="DoEdit(); return true;"/>
- </keyset>
 
 </dialog>

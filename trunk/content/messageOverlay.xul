@@ -17,7 +17,7 @@
        oncommand="NostalgySuggested('&nostalgy.copy-memo;',CopyToFolder);"/>
  </keyset>
 
- <commandset id="globalCommandset">
+ <commandset id="tasksCommands">
    <command id="cmd_nostalgyconfig" label="Nostalgy rules..." 
      oncommand="openDialog('chrome://nostalgy/content/edit_prefs.xul', 'nostalgy', 'resizable');"/>
   </commandset>

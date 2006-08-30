@@ -123,6 +123,7 @@ function onNostalgyLoad() {
   var prefs = Components.classes["@mozilla.org/preferences-service;1"].
                          getService(Components.interfaces.nsIPrefBranch);
 
+  try {
   var r = eval(prefs.getCharPref("extensions.nostalgy.rules"));
   var i;
   for (i = 0; i < r.length; i++) { 
@@ -130,6 +131,7 @@ function onNostalgyLoad() {
     r[i].contains = r[i].contains;
     CreateItem(r[i]); 
   }
+  } catch (ex) { }
 
  var b = false;
  try { b=prefs.getBoolPref("extensions.nostalgy.restrict_to_current_server"); }

@@ -14,14 +14,14 @@
  <script src="folders.js"/>
  <script src="edit_prefs.js"/>
 
-<vbox style="width:800px">
- <groupbox>
+<vbox style="width:800px" flex="1">
+ <groupbox flex="1">
  <label>Rules associate folders to messages by looking for a 
 substring of the Sender or Subject (or both) headers. When a folder
 is selected for a given message, Nostalgy informs you in the status line.
 You can then use the Shift-S/Shift-C
 shortcuts to move/copy the message to this folder.</label>
- <listbox flex="1" id="rules">
+ <listbox rows="15" id="rules">
   <listhead>
    <listheader label="Field"/>
    <listheader label="Contains"/>

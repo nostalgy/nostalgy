@@ -201,8 +201,44 @@ function NostalgySuggest() {
 
 /**  Commands **/
 
-function ShowFolder(folder) {	
- SelectFolder(folder.URI);
+// NOTE. Thunderbird's SelectFolder is buggy. Here is a situation
+// where it breaks. Assume we want to select folder A/B/C, and that:
+//  (i) folder A is closed, (ii) folder B is open
+// TB would correctly open A but it would also incorrectly close B.
+// Here's the reason. SelectFolder calls EnsureFolderIndex to ensure that
+// folder C is visible, that is: all its ancestors are open.
+// The algorithm of TB's EnsureFolderIndex is:
+//   (i) is the folder is visible, ok
+//   (ii) otherwise, make the parent visible, and then *toggle* the state
+//        of the parent
+// This is wrong because the parent could already be open and the folder
+// could still be invisible if another ancestor is closed. In this
+// case, one must make the parent visible, and then check again
+// if the folder has become visible before toggling the parent's state
+
+
+function NostalgyEnsureFolderIndex(builder, msgFolder)
+{
+  // try to get the index of the folder in the tree
+  var index = builder.getIndexOfResource(msgFolder);
+  if (index == -1) {
+    // if we couldn't find the folder, make all its ancestors visible
+    parent_idx = NostalgyEnsureFolderIndex(builder, msgFolder.parent);
+    // maybe the folder is now visible
+    index = builder.getIndexOfResource(msgFolder);
+    // no: this means that the parent is closed, so open it.
+    if (index == -1) { 
+      builder.toggleOpenState(parent_idx); 
+      index = builder.getIndexOfResource(msgFolder);
+    }
+  }
+  return index;
+}
+
+function ShowFolder(folder) {
+  var folderTree = GetFolderTree();
+  var idx = NostalgyEnsureFolderIndex(folderTree.builderView, folder);
+  ChangeSelection(folderTree, idx);
 }
 
 function MoveToFolder(folder) {

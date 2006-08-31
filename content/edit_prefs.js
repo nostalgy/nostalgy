@@ -39,18 +39,26 @@ function SetItem(item, rule) {
   f.setAttribute("label", lab);
 
   item.childNodes.item(1).setAttribute("label", rule.contains);
-  item.childNodes.item(2).setAttribute("value", rule.folder);
-  item.childNodes.item(2).setAttribute("label", NostalgyCrop(rule.folder));
+
+  var u = "";
+  if (rule.under) { u = rule.under; }
+  item.childNodes.item(2).setAttribute("value", u);
+  item.childNodes.item(2).setAttribute("label", NostalgyCrop(u));
+
+  item.childNodes.item(3).setAttribute("value", rule.folder);
+  item.childNodes.item(3).setAttribute("label", NostalgyCrop(rule.folder));
 }
 
 function RuleOfItem(item) {
- return ({ folder: item.childNodes.item(2).getAttribute("value"),
+ return ({ folder: item.childNodes.item(3).getAttribute("value"),
+           under: item.childNodes.item(2).getAttribute("value"),
 	   contains: item.childNodes.item(1).getAttribute("label"),
 	   field: item.childNodes.item(0).getAttribute("value") });
 }
 
 function CreateItem(rule) {
   var item = document.createElement("listitem");
+  item.appendChild(document.createElement("listcell"));
   item.appendChild(document.createElement("listcell"));
   item.appendChild(document.createElement("listcell"));
   item.appendChild(document.createElement("listcell"));
@@ -64,6 +72,7 @@ function StrOfRule(rule) {
   return (
    "{field: '"    + rule.field            + "'," +
    " contains:  " + rule.contains.quote() + "," +
+   " under:  "    + rule.under.quote()    + "," +
    " folder:  "   + rule.folder.quote()   + "}"
   );
 }
@@ -104,7 +113,7 @@ function onAcceptChanges() {
 }
 
 function DoNewRule() {
-  EditRule({ field:"any", contains:"", folder:"" }, CreateItem);
+  EditRule({ field:"any", contains:"", folder:"", under:"" }, CreateItem);
 }
 
 function DoDelete() {
@@ -124,17 +133,14 @@ function onNostalgyLoad() {
                          getService(Components.interfaces.nsIPrefBranch);
 
   try {
-  var r = eval(prefs.getCharPref("extensions.nostalgy.rules"));
-  var i;
-  for (i = 0; i < r.length; i++) { 
-    r[i].folder = r[i].folder;
-    r[i].contains = r[i].contains;
-    CreateItem(r[i]); 
-  }
+   var r = eval(prefs.getCharPref("extensions.nostalgy.rules"));
+   var i;
+   for (i = 0; i < r.length; i++) { CreateItem(r[i]); }
   } catch (ex) { }
 
  var b = false;
- try { b=prefs.getBoolPref("extensions.nostalgy.restrict_to_current_server"); }
+ try { 
+  b=prefs.getBoolPref("extensions.nostalgy.restrict_to_current_server"); }
  catch (ex) { }
  gRestrict.checked = b;
 }

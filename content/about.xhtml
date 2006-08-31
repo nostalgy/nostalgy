@@ -78,7 +78,9 @@
 
    <p>Nostalgy has a notion of rule. A rule associates a folder to a
    message by looking for a substring of the Sender or Subject (or both)
-   headers. When a rule selects a folder for a given message, Nostalgy
+   headers. A rule can be restricted to match messages only under
+   a given server/folder. When a rule selects a folder for a given message,
+    Nostalgy
    informs you in the status line.  You can then use the Shift-S/Shift-C
    shortcuts to move/copy directly the message to this folder.  
    Nostalgy's rules can be edited from the preference dialog.</p>
@@ -86,7 +88,10 @@
    <p>
    When no rule apply to a given message, Nostalgy proposes to re-use
    (with Shift-S/Shift-C) the folder same as for the last move/copy 
-   operation folder.
+   operation folder. If the folder lookup has been restricted
+   to the current server (in the Nostalgy preference dialog), then
+   the last operation folder is attached to the current server. Otherwise,
+   it is global.
    </p>
 
    <h3>About Nostalgy...</h3>

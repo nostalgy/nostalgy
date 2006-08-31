@@ -13,7 +13,7 @@
  <script src="folders.js"/>
  <script src="edit_rule.js"/>
 
-<vbox style="width:600px">
+<vbox style="width:750px">
  <groupbox>
 
 <grid flex="1">
@@ -38,6 +38,13 @@
       <label value="contains"/>
       <textbox id="contains"/>
     </row>
+
+    <row>
+      <label value="and message folder is under"/>
+      <textbox type="autocomplete" tabScrolling="true" id="underselect"
+             flex="3" maxrows="15" crop="end" ontextcommand="ChooseUnder();"/>
+    </row>
+
     <row>
       <label value="then save to"/>
       <textbox type="autocomplete" tabScrolling="true" id="folderselect"

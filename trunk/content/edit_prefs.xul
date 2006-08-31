@@ -15,24 +15,29 @@
  <script src="edit_prefs.js"/>
 
 <vbox style="width:800px">
- <groupbox>
+ <groupbox flex="0">
  <label>Rules associate folders to messages by looking for a 
-substring of the Sender or Subject (or both) headers. When a folder
+substring of the Sender or Subject (or both) headers. A rule can be
+restricted to match messages under a given server/folder. When a folder
 is selected for a given message, Nostalgy informs you in the status line.
 You can then use the Shift-S/Shift-C
 shortcuts to move/copy the message to this folder.</label>
- <listbox id="rules">
+ <hbox flex="0">
+ <listbox id="rules" flex="0">
   <listhead>
    <listheader label="Field"/>
    <listheader label="Contains"/>
-   <listheader label="Folder"/>
+   <listheader label="Under"/>
+   <listheader label="Target"/>
   </listhead>
   <listcols>
    <listcol/>
    <listcol/>
-   <listcol flex="10"/>
+   <listcol width="150" maxwidth="150"/>
+   <listcol width="450" maxwidth="450"/>
   </listcols>
  </listbox>
+ </hbox>
 
  <vbox align="center">
   <hbox>

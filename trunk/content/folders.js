@@ -164,7 +164,7 @@ function IterateFoldersAllServers(f) {
 }
 
 function IterateSubfolders(folder,f) {
- if (!folder.isServer) { f(folder); }
+ /* if (!folder.isServer) */ { f(folder); }
  if (folder.hasSubFolders) {
   var subfolders = folder.GetSubFolders();
   var done = false;

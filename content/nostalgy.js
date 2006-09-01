@@ -26,6 +26,10 @@ var NostalgyRules =
      restrict_to_current_server = 
          this._branch.getBoolPref("restrict_to_current_server");
     } catch (ex) { }
+    try {
+     match_only_folder_name = 
+         this._branch.getBoolPref("match_only_folder_name");
+    } catch (ex) { }
   },
 
   unregister: function()
@@ -58,6 +62,10 @@ var NostalgyRules =
         restrict_to_current_server = 
            this._branch.getBoolPref("restrict_to_current_server");
         if (!in_message_window) { NostalgyDefLabel(); }
+        break;
+      case "match_only_folder_name":
+        match_only_folder_name = 
+           this._branch.getBoolPref("match_only_folder_name");
         break;
     }
   },
@@ -256,6 +264,7 @@ function ShowFolder(folder) {
   var folderTree = GetFolderTree();
   var idx = NostalgyEnsureFolderIndex(folderTree.builderView, folder);
   ChangeSelection(folderTree, idx);
+  setTimeout(function() { SetFocusThreadPane(); }, 0);
 }
 
 function MoveToFolder(folder) {

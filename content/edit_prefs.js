@@ -2,6 +2,7 @@ function gEBI(s) { return document.getElementById(s); }
 
 var gList = null;
 var gRestrict = null;
+var gMatchFolder = null;
 
 (function () {
    var m = {
@@ -109,6 +110,8 @@ function onAcceptChanges() {
   prefs.setCharPref("extensions.nostalgy.rules", MkPrefStr());
   prefs.setBoolPref("extensions.nostalgy.restrict_to_current_server", 
 	gRestrict.checked);
+  prefs.setBoolPref("extensions.nostalgy.match_only_folder_name", 
+	gMatchFolder.checked);
   window.close();
 }
 
@@ -128,6 +131,7 @@ function DoDelete() {
 function onNostalgyLoad() {
   gList = gEBI("rules");
   gRestrict = gEBI("restrict_to_current_server");
+  gMatchFolder = gEBI("match_only_folder_name");
 
   var prefs = Components.classes["@mozilla.org/preferences-service;1"].
                          getService(Components.interfaces.nsIPrefBranch);
@@ -143,6 +147,12 @@ function onNostalgyLoad() {
   b=prefs.getBoolPref("extensions.nostalgy.restrict_to_current_server"); }
  catch (ex) { }
  gRestrict.checked = b;
+
+ var b = false;
+ try { 
+  b=prefs.getBoolPref("extensions.nostalgy.match_only_folder_name"); }
+ catch (ex) { }
+ gMatchFolder.checked = b;
 }
 
 function onKeyPress(ev) {

@@ -54,7 +54,23 @@
 
    <p>The S and C commands also work in a standalone message window.</p>
 
+   <p>The G command also focuses the thread pane.</p>
+
    <h3>3-pane navigation</h3>
+
+   <p>
+   Because of the G command,
+   the folder pane becomes thus much less useful, and it can be
+   hidden with the L shortcut.
+   </p>
+
+   <p>
+   Nostalgy also allows to scroll the message while the thread pane
+   is focused with the Ctrl-Left/Right keys. Because of that,
+   it is a good idea to leave the thread pane always focused.
+   Nostalgy still provides shortcuts to easily focus one of the three
+   panes.
+   </p>
 
    <table border="1">
     <tr><th>Shortcut</th><th>Description</th></tr>
@@ -63,7 +79,7 @@
     <tr><td>Esc-M</td><td>Focus the message pane</td></tr>
     <tr><td>Esc-Esc</td><td>Focus the thread pane</td></tr>
     <tr><td>Ctrl-Left/Right</td>
-         <td>Scroll the message from the thread pane</td>
+         <td>Scroll the message from the thread pane</td></tr>
    </table>
 
    <p>The Esc-X shortcuts means: press and release Escape, and then
@@ -72,11 +88,6 @@
    <p>
    When the thread pane is focused, you can scroll the currently
    displayed message (up and down) by pressing Ctrl-Left/Ctrl-Right.
-   </p>
-
-   <p>
-   The rationale behind the L command is that thanks to Nostalgy's folder
-   commands, you rarely need the folder pane.
    </p>
 
    <h3>Rules</h3>
@@ -98,6 +109,23 @@
    the last operation folder is attached to the current server. Otherwise,
    it is global.
    </p>
+
+   <h3>Preferences</h3>
+   
+   <p>The preference dialog for Nostalgy is the place where rules are
+   defined. In addition, two switches control the way the completion
+   box (where folder names are proposed) is populated.</p>
+   <p>The first switch restricts the lookup to folders on the same server/account
+   as the currently active folder.</p>
+
+   <p>The second switch forces Nostalgy to interpret differently what
+      is typed in the text. Normally, when the option is disabled, 
+      it is interpreted as a regexp which can match an arbitrary substring
+      of the complete folder name (including the account name and 
+      the name of parent folders). When the option is enabled,
+      the regexp must match either a substring of the local folder name
+      (not the full name) or a prefix of the full folder name.</p>
+
 
    <h3>About Nostalgy...</h3>
    <p>The Nostalgy extension has been written by Alain Frisch (<tt>Alain.Frisch@inria.fr</tt>). Comments ands suggestions are welcome!</p>

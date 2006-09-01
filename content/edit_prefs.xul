@@ -51,6 +51,8 @@ shortcuts to move/copy the message to this folder.</label>
  <groupbox>
    <checkbox label="Restrict folder completion to the current server"
              id="restrict_to_current_server" accesskey="R"/>
+   <checkbox label="Match only on folder name, not on the full path"
+             id="match_only_folder_name" accesskey="P"/>
  </groupbox>
 
 </vbox>

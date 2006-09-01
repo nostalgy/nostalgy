@@ -28,6 +28,14 @@
   <key key="C" modifiers="shift" 
        oncommand="NostalgySuggested('&nostalgy.copy-memo;',CopyToFolder);"/>
   <key key="L" oncommand="NostalgyCollapseFolderPane();"/>
+
+  <key keycode="VK_LEFT" modifiers="shift" 
+       oncommand="NostalgyScrollMsg(-20);"/>
+  <key keycode="VK_RIGHT" modifiers="shift" 
+       oncommand="NostalgyScrollMsg(20);"/>
+  <key keycode="VK_ESCAPE" oncommand="NostalgyEscape(event);"/>
+  <key key="F" oncommand="NostalgySelectFolderPane(event);"/>
+  <key key="M" oncommand="NostalgySelectMessagePane(event);"/>
  </keyset>
 
 
@@ -36,7 +44,7 @@
   <statusbarpanel flex="1">
    <label id="nostalgy-command-label"/>
    <textbox id="nostalgy-folderbox" type="autocomplete" tabScrolling="true"
-	   ontextcommand="NostalgyRunCommand();"
+	   ontextcommand="NostalgyRunCommand();" 
 	   ontextrevert="NostalgyHide();"
 	   flex="1"
 	   maxrows="25" crop="center"

@@ -112,13 +112,20 @@ function onNostalgyLoad() {
  var saved_str = "";
  nostalgy_folderBox.addEventListener("keydown", 
   function(ev){ 
-   if (ev.keyCode == 9) { saved_str = nostalgy_folderBox.value; } 
+   if (ev.keyCode == 9) { 
+	saved_str = nostalgy_folderBox.value; 
+	ev.preventDefault(); 
+	ev.stopPropagation(); } 
  }, false);
+
  nostalgy_folderBox.addEventListener("keypress", 
   function(ev){ 
-   if (ev.keyCode == 9) { nostalgy_folderBox.value = 
-				NostalgyCompleteUnique(saved_str); } 
- }, true);
+   if (ev.keyCode == 9) { 
+    nostalgy_folderBox.value = NostalgyCompleteUnique(saved_str); 
+    ev.preventDefault(); 
+    ev.stopPropagation();
+   } 
+  }, true);
 }
 
 function NostalgyHide() {
@@ -161,7 +168,7 @@ function NostalgyCmd(lab,cmd,init) {
  nostalgy_th_statusBar.hidden = true;
  nostalgy_folderBox.value = init;
 
- setTimeout(function() { nostalgy_folderBox.focus(); }, 50);
+ setTimeout(function() { nostalgy_folderBox.focus(); }, 0);
    // For some unknown reason, doing nostalgyBox.focus immediatly
    // sometimes does not work...
 }
@@ -276,28 +283,27 @@ function isThreadPaneFocused() {
 }
 
 function NostalgyScrollMsg(d) {
- var b = gEBI("messagepane").contentDocument.getElementsByTagName("body")[0];
- if (b) { b.scrollTop += d; }
+ if (isThreadPaneFocused()) {
+  var b = gEBI("messagepane").contentDocument.getElementsByTagName("body")[0];
+  if (b) { b.scrollTop += d; }
+ }
 }
 
-function onNostalgyKeyPress(ev) {
-  if (ev.keyCode == 27) { 
-    if (ev.ctrlKey) { SetFocusFolderPane(); }
-    else if (ev.altKey) { SetFocusMessagePane(); }
-    else 
-    if (ev.timeStamp - NostalgyLastEscapeTimeStamp < 200) 
-     { SetFocusThreadPane(); }
-     else { NostalgyLastEscapeTimeStamp = ev.timeStamp; }
-  } 
-  else if (ev.keyCode == 39 && isThreadPaneFocused() && ev.shiftKey)
-    { NostalgyScrollMsg(20); }
-  else if (ev.keyCode == 37 && isThreadPaneFocused() && ev.shiftKey)
-    { NostalgyScrollMsg(-20); }
+function NostalgyEscape(ev) {
+  if (ev.timeStamp - NostalgyLastEscapeTimeStamp < 300) SetFocusThreadPane()
+  else NostalgyLastEscapeTimeStamp = ev.timeStamp;
 }
 
+function NostalgySelectFolderPane(ev) {
+  if (ev.timeStamp - NostalgyLastEscapeTimeStamp < 300) SetFocusFolderPane();
+}
 
+function NostalgySelectMessagePane(ev) {
+  if (ev.timeStamp - NostalgyLastEscapeTimeStamp < 300) SetFocusMessagePane();
+}
 
 window.addEventListener("load", onNostalgyLoad, false);
-if (!in_message_window) {
+/* if (!in_message_window) {
   window.addEventListener("keypress", onNostalgyKeyPress, false);
-}
+} */
+

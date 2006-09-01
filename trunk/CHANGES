@@ -1,8 +1,9 @@
 0.1.6
   - add the rule system (quick selection of a default folder for messages)
-  - add the Shift-Left/Shift-Right keys (scroll the message while the
+  - add the Ctrl-Left/Ctrl-Right keys (scroll the message while the
     thread pane is focused)
-  - change the pane-navigation commands (see about.xhtml)
+  - change pane-navigation commands (see about.xhtml)
+  - focus the thread pane when opening a folder with the G key
 
 0.1.5
   - add the commands:

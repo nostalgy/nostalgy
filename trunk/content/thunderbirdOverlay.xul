@@ -36,6 +36,7 @@
   <key keycode="VK_ESCAPE" oncommand="NostalgyEscape(event);"/>
   <key key="F" oncommand="NostalgySelectFolderPane(event);"/>
   <key key="M" oncommand="NostalgySelectMessagePane(event);"/>
+  <key key="I" oncommand="NostalgySelectSearch(event);"/>
  </keyset>
 
 

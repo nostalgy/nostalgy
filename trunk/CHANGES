@@ -4,6 +4,7 @@
     thread pane is focused)
   - change pane-navigation commands (see about.xhtml)
   - focus the thread pane when opening a folder with the G key
+  - add Esc-I to focus the search box
 
 0.1.5
   - add the commands:

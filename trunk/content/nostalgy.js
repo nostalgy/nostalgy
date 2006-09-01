@@ -311,6 +311,12 @@ function NostalgySelectMessagePane(ev) {
   if (ev.timeStamp - NostalgyLastEscapeTimeStamp < 300) SetFocusMessagePane();
 }
 
+function NostalgySelectSearch(ev) {
+  if (ev.timeStamp - NostalgyLastEscapeTimeStamp < 300) {
+    GetSearchInput().focus();
+  }
+}
+
 window.addEventListener("load", onNostalgyLoad, false);
 /* if (!in_message_window) {
   window.addEventListener("keypress", onNostalgyKeyPress, false);

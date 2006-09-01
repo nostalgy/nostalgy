@@ -31,7 +31,7 @@ shortcuts to move/copy the message to this folder.</label>
    <listheader label="Target"/>
   </listhead>
   <listcols>
-   <listcol/>
+   <listcol width="80" maxwidth="80"/>
    <listcol/>
    <listcol width="150" maxwidth="150"/>
    <listcol width="450" maxwidth="450"/>

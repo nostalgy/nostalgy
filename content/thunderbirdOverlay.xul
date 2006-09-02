@@ -33,6 +33,11 @@
        oncommand="NostalgyScrollMsg(-50);"/>
   <key keycode="VK_RIGHT" modifiers="control" 
        oncommand="NostalgyScrollMsg(50);"/>
+  <key keycode="VK_LEFT" modifiers="shift" 
+       oncommand="NostalgyScrollMsg(-50);"/>
+  <key keycode="VK_RIGHT" modifiers="shift" 
+       oncommand="NostalgyScrollMsg(50);"/>
+
   <key keycode="VK_ESCAPE" oncommand="NostalgyEscape(event);"/>
   <key key="F" oncommand="NostalgySelectFolderPane(event);"/>
   <key key="M" oncommand="NostalgySelectMessagePane(event);"/>

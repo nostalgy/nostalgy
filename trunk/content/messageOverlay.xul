@@ -43,24 +43,9 @@
 
  <statusbar id="statusTextBox">
   <statusbarpanel insertbefore="statusText" >
-  <label id="statusbar-nostalgy-label" 
+  <label id="statusbar-nostalgy-label" crop="center" flex="1"
          value="&nostalgy.memomessage;"/>
   </statusbarpanel>
  </statusbar>
-
-<!-- <statusbar id="status-bar">
-  <label id="statusbar-nostalgy-label" 
-         position="1"
-         value="&nostalgy.memomessage;"/>
-
-  <textbox id="statusbar-nostalgy" type="autocomplete" tabScrolling="true"
-	   ontextcommand="NostalgyRunCommand();"
-	   ontextrevert="NostalgyHide();"
-           position="2"
-	   maxlength="160" flex="3"
-	   maxrows="15" crop="end"
-           style="width: 300px;"/>
- </statusbar>
--->
 
 </overlay>

@@ -102,6 +102,10 @@ var last_folder_server = new Array();
 var last_folder = null;
 var gsuggest_folder = null;
 
+function onNostalgyResize() {
+  nostalgy_label.parentNode.maxWidth = document.width * 6 / 10;
+}
+
 function onNostalgyLoad() {
  nostalgy_folderBox = gEBI("nostalgy-folderbox");
  nostalgy_statusBar = gEBI("nostalgy-statusbar");
@@ -134,6 +138,15 @@ function onNostalgyLoad() {
     ev.stopPropagation();
    } 
   }, true);
+
+ window.addEventListener("mousedown", NostalgyHideIfBlurred, false);
+ // Don't know why, but the blur event does not seem to be fired properly...
+}
+
+function NostalgyHideIfBlurred() {
+  if ((!nostalgy_statusBar.hidden) && 
+      (document.commandDispatcher.focusedElement != nostalgy_folderBox))
+  { NostalgyHide(); }
 }
 
 function NostalgyHide() {
@@ -146,8 +159,6 @@ function NostalgyHide() {
  }
  NostalgyDefLabel();
 }
-
-
 
 function NostalgyDefLabel() { 
  gsuggest_folder = NostalgySuggest();
@@ -318,6 +329,7 @@ function NostalgySelectSearch(ev) {
 }
 
 window.addEventListener("load", onNostalgyLoad, false);
+window.addEventListener("resize", onNostalgyResize, false);
 /* if (!in_message_window) {
   window.addEventListener("keypress", onNostalgyKeyPress, false);
 } */

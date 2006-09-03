@@ -1,3 +1,8 @@
+0.1.7
+  - limit the width of the nostalgy label (which displays the default
+    folder) to avoid horizontal overflow of TB's window
+  - hide the nostalgy input box when blurred (does not work very well)
+
 0.1.6
   - add the rule system (quick selection of a default folder for messages)
   - add the Ctrl-Left/Ctrl-Right keys (scroll the message while the

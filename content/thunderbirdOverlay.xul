@@ -61,8 +61,8 @@
 
       
  <statusbar id="statusTextBox">
-  <statusbarpanel insertbefore="statusText" >
-  <label id="statusbar-nostalgy-label" 
+  <statusbarpanel insertbefore="statusText">
+  <label id="statusbar-nostalgy-label" crop="center" flex="1"
          value="&nostalgy.memo;"/>
   </statusbarpanel>
  </statusbar>

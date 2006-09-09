@@ -328,9 +328,26 @@ function NostalgySelectSearch(ev) {
   }
 }
 
+function onNostalgyKeyPress(ev) {
+  if (ev.timeStamp - NostalgyLastEscapeTimeStamp < 300) {
+    if (ev.charCode == 109) { // M
+      SetFocusMessagePane();
+      ev.preventDefault();
+    } else
+    if (ev.charCode == 102) { // F
+      SetFocusFolderPane();
+      ev.preventDefault();
+    } else
+    if (ev.charCode == 105) { // I
+      GetSearchInput().focus();
+      ev.preventDefault();
+    }
+  } 
+}
+
 window.addEventListener("load", onNostalgyLoad, false);
 window.addEventListener("resize", onNostalgyResize, false);
-/* if (!in_message_window) {
+if (!in_message_window) {
   window.addEventListener("keypress", onNostalgyKeyPress, false);
-} */
+} 
 

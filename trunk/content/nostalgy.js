@@ -275,7 +275,10 @@ function ShowFolder(folder) {
   var folderTree = GetFolderTree();
   var idx = NostalgyEnsureFolderIndex(folderTree.builderView, folder);
   ChangeSelection(folderTree, idx);
-  setTimeout(function() { SetFocusThreadPane(); }, 0);
+  setTimeout(function() { SetFocusThreadPane(); 
+        var s = GetThreadTree().view.selection;
+	if (s.count == 0) { s.select(s.currentIndex); }
+	}, 400);
 }
 
 function MoveToFolder(folder) {

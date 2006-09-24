@@ -4,7 +4,7 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>nostalgy@alain.frisch</em:id>
     <em:name>Nostalgy</em:name>
-    <em:version>0.1.7</em:version>
+    <em:version>0.1.8</em:version>
     <em:creator>Alain Frisch</em:creator>
     <em:description>Adds shortcuts to change folder, move message, with folder completion</em:description>
     <em:homepageURL>http://www.eleves.ens.fr/home/frisch/soft_mozilla.html</em:homepageURL>

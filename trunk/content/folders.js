@@ -13,13 +13,32 @@ function NostalgyMakeRegexp(s) {
   return (new RegExp(s.replace(/\.\./g, ".*"), ""));
 }
 
-function folder_name(folder) {
+function full_folder_name(folder) {
   var uri = folder.prettyName;
   while (!folder.isServer) {
     folder = folder.parent;
     uri = folder.prettyName + "/" + uri;
   }
   return uri;
+}
+
+function short_folder_name(folder) {
+  var uri = folder.prettyName;
+  if (folder.isServer) { return uri; }
+  folder = folder.parent;
+  while (!folder.isServer) {
+    uri = folder.prettyName + "/" + uri;
+    folder = folder.parent;
+  }
+  return uri;
+}
+
+function folder_name(folder) {
+  if (restrict_to_current_server) {
+    return(short_folder_name(folder));
+  } else {
+    return(full_folder_name(folder));
+  }
 }
 
 function LongestCommonPrefix(s1,s2) {
@@ -129,7 +148,7 @@ function FindFolderExact(uri) {
  var u = uri.toLowerCase();
  try {
   IterateFoldersAllServers(function (folder) {
-   if (folder_name(folder).toLowerCase() == u) { ret = folder; throw(0); }
+   if (full_folder_name(folder).toLowerCase() == u) { ret = folder; throw(0); }
   });
  } catch (ex) { }
  return ret;
@@ -171,17 +190,26 @@ function IterateFoldersAllServers(f) {
 }
 
 function IterateSubfolders(folder,f) {
- /* if (!folder.isServer) */ { f(folder); }
+ if (!folder.isServer || !restrict_to_current_server) { f(folder); }
  if (folder.hasSubFolders) {
   var subfolders = folder.GetSubFolders();
+  var arr = new Array();
   var done = false;
   while (!done) {
    var subfolder = subfolders.currentItem().
                    QueryInterface(Components.interfaces.nsIMsgFolder);
-   IterateSubfolders(subfolder,f);
+   arr.push(subfolder);
    try {subfolders.next();}
    catch(e) {done = true;}
   }
+
+  arr.sort(function (a,b) { 
+            var an = a.prettyName;
+            var bn = b.prettyName;
+            if (an < bn) { return (-1); } else { return 1; }
+           });
+  var i;
+  for (i = 0; i < arr.length; i++) { IterateSubfolders(arr[i],f) }
  }
 }  
 

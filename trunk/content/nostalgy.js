@@ -30,6 +30,14 @@ var NostalgyRules =
      match_only_folder_name = 
          this._branch.getBoolPref("match_only_folder_name");
     } catch (ex) { }
+    try {
+     sort_folders = 
+         this._branch.getBoolPref("sort_folders");
+    } catch (ex) { }
+    try {
+     match_case_sensitive =
+         this._branch.getBoolPref("match_case_sensitive");
+    } catch (ex) { }
   },
 
   unregister: function()
@@ -59,13 +67,17 @@ var NostalgyRules =
         if (!in_message_window) { NostalgyDefLabel(); }
         break;
       case "restrict_to_current_server":
-        restrict_to_current_server = 
-           this._branch.getBoolPref("restrict_to_current_server");
+        restrict_to_current_server = this._branch.getBoolPref(aData);
         if (!in_message_window) { NostalgyDefLabel(); }
         break;
       case "match_only_folder_name":
-        match_only_folder_name = 
-           this._branch.getBoolPref("match_only_folder_name");
+        match_only_folder_name = this._branch.getBoolPref(aData);
+        break;
+      case "sort_folders":
+        sort_folders = this._branch.getBoolPref(aData);
+        break;
+      case "match_case_sensitive":
+        match_case_sensitive = this._branch.getBoolPref(aData);
         break;
     }
   },
@@ -121,32 +133,16 @@ function onNostalgyLoad() {
    gEBI("threadTree").addEventListener("select", NostalgyDefLabel, false); 
  }
 
- var saved_str = "";
- nostalgy_folderBox.addEventListener("keydown", 
-  function(ev){ 
-   if (ev.keyCode == 9) { 
-	saved_str = nostalgy_folderBox.value; 
-	ev.preventDefault(); 
-	ev.stopPropagation(); } 
- }, false);
-
- nostalgy_folderBox.addEventListener("keypress", 
-  function(ev){ 
-   if (ev.keyCode == 9) { 
-    nostalgy_folderBox.value = NostalgyCompleteUnique(saved_str); 
-    ev.preventDefault(); 
-    ev.stopPropagation();
-   } 
-  }, true);
-
  window.addEventListener("mousedown", NostalgyHideIfBlurred, false);
  // Don't know why, but the blur event does not seem to be fired properly...
 }
 
 function NostalgyHideIfBlurred() {
-  if ((!nostalgy_statusBar.hidden) && 
-      (document.commandDispatcher.focusedElement != nostalgy_folderBox))
-  { NostalgyHide(); }
+  setTimeout(function (){
+    if ((!nostalgy_statusBar.hidden) && 
+        (document.commandDispatcher.focusedElement != nostalgy_folderBox))
+    { NostalgyHide(); }
+  }, 500);
 }
 
 function NostalgyHide() {
@@ -177,6 +173,7 @@ function NostalgyCollapseFolderPane() {
 }
 
 
+
 function NostalgyCmd(lab,cmd,init) {
  focus_saved = document.commandDispatcher.focusedElement;
  if (!focus_saved) { focus_saved = gEBI("messagepane").contentWindow; }
@@ -186,8 +183,13 @@ function NostalgyCmd(lab,cmd,init) {
  nostalgy_statusBar.hidden = false;
  nostalgy_th_statusBar.hidden = true;
  nostalgy_folderBox.value = init;
+ nostalgy_folderBox.shell_completion = false;
 
- setTimeout(function() { nostalgy_folderBox.focus(); }, 0);
+
+ setTimeout(function() { 
+    nostalgy_folderBox.focus();  
+    nostalgy_folderBox.processInput(); 
+ }, 0);
    // For some unknown reason, doing nostalgyBox.focus immediatly
    // sometimes does not work...
 }

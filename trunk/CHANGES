@@ -2,7 +2,9 @@ Since 0.1.8
   - select a message when entering a folder with the G key
   - don't prefix folder names with the server name when restricting
     to the current server
-  - folders are sorted by name in the completion box
+  - option to sort folders in the completion box
+  - completion even when not editing at the end of the box
+  - new shell-completion mode activated by Tab
 
 0.1.8
   - bug fix: the M and I keys were incorrectly captured

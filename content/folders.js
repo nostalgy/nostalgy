@@ -1,5 +1,7 @@
 var restrict_to_current_server = false;
 var match_only_folder_name = false;
+var sort_folders = false;
+var match_case_sensitive = false;
 
 function NostalgyCrop(s) {
   var len = 120;
@@ -11,6 +13,10 @@ function NostalgyCrop(s) {
 
 function NostalgyMakeRegexp(s) {
   return (new RegExp(s.replace(/\.\./g, ".*"), ""));
+}
+
+function mayLowerCase(s) {
+  if (!match_case_sensitive) { return (s.toLowerCase()); } else { return s; }
 }
 
 function full_folder_name(folder) {
@@ -55,14 +61,15 @@ function LongestCommonPrefix(s1,s2) {
 
 function NostalgyFolderMatch(f,reg) {
   if (match_only_folder_name) {
-    return (f.prettyName.toLowerCase().match(reg) ||
-            folder_name(f).toLowerCase().search(reg) == 0);
+    return (mayLowerCase(f.prettyName).match(reg) ||
+            mayLowerCase(folder_name(f)).search(reg) == 0);
   } else {
-    return (folder_name(f).toLowerCase().match(reg));
+    return (mayLowerCase(folder_name(f)).match(reg));
   }
 }
 
-function NostalgyAutocomplete() {
+function NostalgyAutocomplete(box) {
+ this.box = box;
  this.xresults = 
   Components.classes[
    "@mozilla.org/autocomplete/results;1"
@@ -74,7 +81,7 @@ function(text, results, listener) {
  var items = this.xresults.items;
  items.Clear();
 
- IterateMatches(text, function (folder) {
+ IterateMatches(text, this.box.shell_completion, function (folder) {
   var newitem = 
    Components.classes[
     "@mozilla.org/autocomplete/item;1"
@@ -89,7 +96,7 @@ function(text, results, listener) {
 }
 
 NostalgyAutocomplete.prototype.onStopLookup = 
-  function() { }
+  function() {  }
 NostalgyAutocomplete.prototype.onAutoComplete = 
   function(text, results, listener){ }
 
@@ -99,8 +106,77 @@ function(iid) {
  throw Components.results.NS_NOINTERFACE;
 }
 
+
+function NostalgyProcessResults(aSessionName, aResults, aStatus) {
+ this.clearResults(false); // clear results, but don't repaint yet
+ this.mLastResults[aSessionName] = aResults;
+ this.autoFillInput(aSessionName, aResults, false);
+ this.addResultElements(aSessionName, aResults);      
+ this.openResultPopup();
+}
+
+function NostalgyProcessInput() {
+ if (this.ignoreInputEvent)
+   return;
+ 
+ this.userAction = "typing";
+ this.mNeedToFinish = true;
+ this.mTransientValue = false;
+ this.mNeedToComplete = true;
+ this.currentSearchString = this.value;
+ this.resultsPopup.selectedIndex = null;
+ this.removeAttribute("noMatchesFound");
+
+ this.mAutoCompleteTimer = 
+   setTimeout(this.callListener, this.timeout, this, "startLookup");
+}
+
+function NostalgyProcessKeyPress(aEvent) {
+  this.mLastKeyCode = aEvent.keyCode;
+  var killEvent = false;
+  switch (aEvent.keyCode) {
+   case KeyEvent.DOM_VK_TAB:
+     this.shell_completion = true;
+     this.value = NostalgyCompleteUnique(this.value); 
+     this.processInput();
+     killEvent = true;
+     break;              
+              
+   case KeyEvent.DOM_VK_RETURN:
+     killEvent = this.mMenuOpen;
+     this.finishAutoComplete(true, true, aEvent);
+     this.closeResultPopup();
+     break;
+
+   case KeyEvent.DOM_VK_ESCAPE:
+     this.clearTimer();
+     killEvent = this.mMenuOpen;
+     this.undoAutoComplete();
+     this.closeResultPopup();
+     break;
+  
+   case KeyEvent.DOM_VK_PAGE_UP:
+   case KeyEvent.DOM_VK_DOWN:
+   case KeyEvent.DOM_VK_PAGE_DOWN:
+   case KeyEvent.DOM_VK_UP:
+     if (!aEvent.ctrlKey && !aEvent.metaKey) {
+       this.clearTimer();
+       killEvent = this.keyNavigation(aEvent);
+     }
+     break;
+  }
+  if (killEvent) {
+    aEvent.preventDefault();
+    aEvent.preventBubble();
+  }
+  return true;
+}
+
 function NostalgyFolderSelectionBox(box) {
- box.addSession(new NostalgyAutocomplete());
+ box.shell_completion = false;
+ box.addSession(new NostalgyAutocomplete(box));
+ box.processInput = NostalgyProcessInput;  
+ box.processKeyPress = NostalgyProcessKeyPress; 
 }
 
 /** Looking up folders by name **/
@@ -109,16 +185,16 @@ function NostalgyCompleteUnique(s) {
   var nb = 0;
   var ret = "";
 
-  var rexp = NostalgyMakeRegexp(s.toLowerCase());
+  var rexp = NostalgyMakeRegexp(mayLowerCase(s));
   IterateFolders(function (f) {
-   var n = folder_name(f).toLowerCase();
+   var n = mayLowerCase(folder_name(f));
    if (n.search(rexp) == 0) { 
      nb++;
      if (nb == 1) { ret = n; } else { ret = LongestCommonPrefix(ret,n); }
    }
   });
   if (ret) { 
-    var f = FindFolderExact(ret);
+    var f = FindFolderCompleted(ret);
     if (f) {
      if (f.hasSubFolders) { return (folder_name(f) + "/"); }
      else return (folder_name(f)); 
@@ -139,16 +215,27 @@ function NostalgyResolveFolder(uri) {
 
 function FirstCompletion(uri) {
   var ret = null;
-  IterateMatches(uri, function(f) { ret = f; throw(0); });
+  IterateMatches(uri, false, function(f) { ret = f; throw(0); });
   return ret;
 }
 
 function FindFolderExact(uri) {
  var ret = null;
- var u = uri.toLowerCase();
+ var u = mayLowerCase(uri);
  try {
   IterateFoldersAllServers(function (folder) {
-   if (full_folder_name(folder).toLowerCase() == u) { ret = folder; throw(0); }
+   if (mayLowerCase(full_folder_name(folder)) == u) { ret = folder; throw(0); }
+  });
+ } catch (ex) { }
+ return ret;
+}
+
+function FindFolderCompleted(uri) {
+ var ret = null;
+ var u = mayLowerCase(uri);
+ try {
+  IterateFoldersAllServers(function (folder) {
+   if (mayLowerCase(folder_name(folder)) == u) { ret = folder; throw(0); }
   });
  } catch (ex) { }
  return ret;
@@ -189,27 +276,43 @@ function IterateFoldersAllServers(f) {
  }
 }
 
+function CompareFolderNames(a,b) { 
+  var an = a.prettyName;
+  var bn = b.prettyName;
+  return ((an < bn) ? -1 : ((an > bn) ? 1 : 0));
+}
+
+var sorted_subfolders = new Array();
+
 function IterateSubfolders(folder,f) {
- if (!folder.isServer || !restrict_to_current_server) { f(folder); }
+ if (!folder.isServer || !restrict_to_current_server) { 
+  try { f(folder); }
+  catch (ex) { if (ex == 1) { return; } else { throw ex; } }
+ }
+ var arr;
  if (folder.hasSubFolders) {
+  if (sort_folders) {
+   arr = sorted_subfolders[full_folder_name(folder)];
+   if (arr) { for (var n in arr) { IterateSubfolders(arr[n],f); }
+              return; }
+  }
+
   var subfolders = folder.GetSubFolders();
   var arr = new Array();
   var done = false;
   while (!done) {
    var subfolder = subfolders.currentItem().
                    QueryInterface(Components.interfaces.nsIMsgFolder);
-   arr.push(subfolder);
+   if (sort_folders) { arr.push(subfolder); } 
+   else { IterateSubfolders(subfolder,f); }
    try {subfolders.next();}
    catch(e) {done = true;}
   }
-
-  arr.sort(function (a,b) { 
-            var an = a.prettyName;
-            var bn = b.prettyName;
-            if (an < bn) { return (-1); } else { return 1; }
-           });
-  var i;
-  for (i = 0; i < arr.length; i++) { IterateSubfolders(arr[i],f) }
+  if (sort_folders) {
+    arr.sort(CompareFolderNames);
+    sorted_subfolders[full_folder_name(folder)] = arr;
+    for (var n in arr) { IterateSubfolders(arr[n],f); }
+  }
  }
 }  
 
@@ -223,14 +326,20 @@ function IterateFolders(f) {
  else { IterateFoldersAllServers(f); }
 }
 
-function IterateMatches(uri,f) {
-  var ret = null;
-  var rexp = NostalgyMakeRegexp(uri.toLowerCase());
+function IterateMatches(uri,shell,f) {
+  var rexp = NostalgyMakeRegexp(mayLowerCase(uri));
 
-  try {
-   IterateFolders(function (folder) {
-    if (NostalgyFolderMatch(folder,rexp)) { f(folder); }
-   });
-  } catch (ex) { }
+  if (shell) {
+    IterateFolders(function (folder) {
+     var n = mayLowerCase(folder_name(folder));
+     if (n.search(rexp) == 0) { f(folder); throw(1); }
+    });
+  } else {
+    try {
+     IterateFolders(function (folder) {
+      if (NostalgyFolderMatch(folder,rexp)) { f(folder); }
+     });
+    } catch (ex) { }
+  }
 }
 

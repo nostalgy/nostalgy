@@ -42,11 +42,15 @@
    <p>The G, S and C commands open an auto-completion box 
       (in place of the status bar) 
       where you can select a folder by typing part of its name. 
-      Matching is case-insensitive. Regular 
+      Regular 
       expressions are accepted as well (and .. is a short-hand for .*
       meaning: any sequence of characters). You can choose the first
       suggested completion with Return, or first choose another one with
-      the Up/Down keys. You can cancel the command with Escape.</p>
+      the Up/Down keys. You can cancel the command with Escape.
+      The Tab key activates a shell-like autocompletion mode. In this mode,
+      the completed suggestions only mentions possible completions
+      one level down in the folder hierarchy, and the Tab key itself
+      automatically completes with the longest unambiguous fragment.</p>
 
    <p>It is possible to restrict (see the preference dialog)
    the completion to the folders on the
@@ -111,13 +115,18 @@
    it is global.
    </p>
 
+   <h3>Auto-completion</h3>
+ 
    <h3>Preferences</h3>
    
    <p>The preference dialog for Nostalgy is the place where rules are
-   defined. In addition, two switches control the way the completion
+   defined. In addition, four switches control the way the completion
    box (where folder names are proposed) is populated.</p>
-   <p>The first switch restricts the lookup to folders on the same server/account
-   as the currently active folder.</p>
+
+   <p>The first switch restricts the lookup to folders on the same
+   server/account as the currently active folder. In this mode,
+   the server name is not displayed (and must not be typed) in
+   the input line and the completion box.</p>
 
    <p>The second switch forces Nostalgy to interpret differently what
       is typed in the text. Normally, when the option is disabled, 
@@ -127,6 +136,11 @@
       the regexp must match either a substring of the local folder name
       (not the full name) or a prefix of the full folder name.</p>
 
+   <p>The third switch sorts folder in the completion box in alphabetical
+   order.</p>
+  
+   <p>The fourth switch controls whether folder names are matched
+   in a case sensitive or insensitive way.</p>
 
    <h3>About Nostalgy...</h3>
    <p>The Nostalgy extension has been written by Alain Frisch (<tt>Alain.Frisch@inria.fr</tt>). Comments ands suggestions are welcome!</p>

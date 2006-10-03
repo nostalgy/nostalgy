@@ -1,5 +1,6 @@
-Since 0.1.8
+0.1.9
   - select a message when entering a folder with the G key
+    (does not work currently)
   - don't prefix folder names with the server name when restricting
     to the current server
   - option to sort folders in the completion box

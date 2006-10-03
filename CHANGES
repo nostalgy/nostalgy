@@ -1,4 +1,5 @@
 0.1.9
+  - allow installation on Thunderbird 2.0b1
   - select a message when entering a folder with the G key
     (does not work currently)
   - don't prefix folder names with the server name when restricting

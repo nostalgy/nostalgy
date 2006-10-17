@@ -38,6 +38,10 @@ var NostalgyRules =
      match_case_sensitive =
          this._branch.getBoolPref("match_case_sensitive");
     } catch (ex) { }
+    try {
+     tab_shell_completion =
+         this._branch.getBoolPref("tab_shell_completion");
+    } catch (ex) { }
   },
 
   unregister: function()
@@ -78,6 +82,9 @@ var NostalgyRules =
         break;
       case "match_case_sensitive":
         match_case_sensitive = this._branch.getBoolPref(aData);
+        break;
+      case "tab_shell_completion":
+        tab_shell_completion = this._branch.getBoolPref(aData);
         break;
     }
   },

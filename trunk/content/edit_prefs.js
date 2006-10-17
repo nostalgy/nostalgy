@@ -6,7 +6,8 @@ var boolPrefs = [
  "restrict_to_current_server",
  "match_only_folder_name",
  "sort_folders",
- "match_case_sensitive"
+ "match_case_sensitive",
+ "tab_shell_completion"
 ];
 
 (function () {

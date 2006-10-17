@@ -2,6 +2,7 @@ var restrict_to_current_server = false;
 var match_only_folder_name = false;
 var sort_folders = false;
 var match_case_sensitive = false;
+var tab_shell_completion = false;
 
 function NostalgyCrop(s) {
   var len = 120;
@@ -136,10 +137,16 @@ function NostalgyProcessKeyPress(aEvent) {
   var killEvent = false;
   switch (aEvent.keyCode) {
    case KeyEvent.DOM_VK_TAB:
-     this.shell_completion = true;
-     this.value = NostalgyCompleteUnique(this.value); 
-     this.processInput();
-     killEvent = true;
+     if (tab_shell_completion) {
+       this.shell_completion = true;
+       this.value = NostalgyCompleteUnique(this.value); 
+       this.processInput();
+       killEvent = true;
+     }
+     else {
+       this.clearTimer();
+       killEvent = this.keyNavigation(aEvent);
+     }
      break;              
               
    case KeyEvent.DOM_VK_RETURN:

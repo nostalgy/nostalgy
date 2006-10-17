@@ -1,6 +1,8 @@
 Since 0.1.9
   - make shell-completion optional (default behavior for Tab is to cycle 
     through sugestions)
+  - bug fix: rules with non-empty folder condition don't match when 
+    restricting to current server
 
 0.1.9
   - allow installation on Thunderbird 2.0b1

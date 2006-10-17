@@ -94,7 +94,7 @@ var NostalgyRules =
     var folder = null;
     var rules = this.rules;
     var i = 0;
-    var current_folder = folder_name(gDBView.msgFolder);
+    var current_folder = full_folder_name(gDBView.msgFolder);
     for (i = 0; (i < rules.length) && (!folder); i++) {
       var r = rules[i];
       if (((r.field != "subject") && (sender.indexOf(r.contains) >= 0)

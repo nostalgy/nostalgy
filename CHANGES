@@ -1,6 +1,7 @@
 Since 0.1.9
   - make shell-completion optional (default behavior for Tab is to cycle 
     through sugestions)
+  - allow to switch between "To:" and "Cc:" fields efficiently
   - bug fix: rules with non-empty folder condition don't match when 
     restricting to current server
 

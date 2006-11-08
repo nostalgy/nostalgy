@@ -56,7 +56,17 @@ var NostalgyRules =
      var r = eval(this._branch.getCharPref("rules"));
      var i;
      for (i = 0; i < r.length; i++) {
-       r[i].contains = r[i].contains.toLowerCase();
+       var rule = r[i];
+       rule.contains = rule.contains.toLowerCase();
+       // convert from previous version
+       if (rule.field) {
+       if (rule.field == "any") { 
+        rule.sender = true;
+        rule.recipients = true;
+        rule.subject = true;
+       } else if (rule.field == "sender") rule.sender = true
+       else if (rule.field == "subject") rule.subject = true;
+       }
      }
      this.rules = r;
     } catch (ex) { }
@@ -89,7 +99,7 @@ var NostalgyRules =
     }
   },
 
-  apply: function(sender,subject)
+  apply: function(sender,subject,recipients)
   {
     var folder = null;
     var rules = this.rules;
@@ -97,8 +107,9 @@ var NostalgyRules =
     var current_folder = full_folder_name(gDBView.msgFolder);
     for (i = 0; (i < rules.length) && (!folder); i++) {
       var r = rules[i];
-      if (((r.field != "subject") && (sender.indexOf(r.contains) >= 0)
-          || (r.field != "sender") && (subject.indexOf(r.contains) >= 0))
+      if (((r.subject && (subject.indexOf(r.contains) >= 0))
+        ||(r.sender && (sender.indexOf(r.contains) >= 0))
+        ||(r.recipients && (recipients.indexOf(r.contains) >= 0)))
          && (current_folder.indexOf(r.under) == 0))
       {
         folder = FindFolderExact(r.folder);
@@ -209,6 +220,11 @@ function NostalgyRunCommand() {
   NostalgyHide();
 }
 
+function MailRecipients() {
+ var hdr = gDBView.hdrForFirstSelectedMessage;
+ return((hdr.recipients + ", " + hdr.ccList).toLowerCase());
+}
+
 function MailAuthor() {
  return(gDBView.hdrForFirstSelectedMessage.author.toLowerCase());
 }
@@ -227,7 +243,7 @@ function register_folder(folder) {
 function NostalgySuggest() {
  var r = null;
  try {
-  r = NostalgyRules.apply(MailAuthor(), MailSubject());
+  r = NostalgyRules.apply(MailAuthor(), MailSubject(), MailRecipients());
   if (r) { return(r); }
  } catch (ex) { }
 
@@ -332,6 +348,7 @@ function NostalgyEscape(ev) {
     300);
   if (NostalgyEscapePressed == 3) onClearSearch();
   if (NostalgyEscapePressed == 2) SetFocusThreadPane();
+  alert(MailRecipients());
 }
 
 function onNostalgyKeyPress(ev) {

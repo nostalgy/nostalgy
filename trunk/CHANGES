@@ -7,6 +7,8 @@ Since 0.1.9
   - triple Escape to clear the quick search box
   - double Escape in composer to focus on the message body
   - Escape-A in composer to open the AttachFile dialog
+  - allow to move rules up/down
+  - rules can match on recipients (To/Cc)
 
 0.1.9
   - allow installation on Thunderbird 2.0b1

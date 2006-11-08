@@ -24,23 +24,21 @@
 
   <rows>
     <row>
-      <label value="If header"/>
-      <radiogroup id="field">
+      <label value="Look header(s)"/>
       <hbox>
-        <radio id="sender" label="Sender"/>
-        <radio id="subject" selected="true" label="Subject"/>
-        <radio id="any" label="Sender or Subject"/>
+      <checkbox id="sender" label="From"/>  
+      <checkbox id="recipients" label="To/Cc"/>  
+      <checkbox id="subject" label="Subject"/>  
       </hbox>
-      </radiogroup>
    </row>
 
     <row>
-      <label value="contains"/>
+      <label value="for substring"/>
       <textbox id="contains"/>
     </row>
 
     <row>
-      <label value="and message folder is under"/>
+      <label value="when message is under folder"/>
       <textbox type="autocomplete" tabScrolling="true" id="underselect"
              flex="3" maxrows="15" crop="end" ontextcommand="ChooseUnder();"/>
     </row>

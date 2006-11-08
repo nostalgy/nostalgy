@@ -49,7 +49,6 @@ function NostalgyKeyPress(ev) {
 
 
 function onNostalgyLoad(){
-  var tbox = gEBI("addressingWidget");
   nostalgy_old_awRecipientKeyPress = window.awRecipientKeyPress;
   window.awRecipientKeyPress = nostalgy_awRecipientKeyPress;
   window.addEventListener("keypress", NostalgyKeyPress, false);

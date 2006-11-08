@@ -26,10 +26,33 @@ function nostalgy_awRecipientKeyPress(event, element) {
   nostalgy_old_awRecipientKeyPress(event, element);
 }
 
+var NostalgyEscapePressed = 0;
+
+function NostalgyEscape() {
+  NostalgyEscapePressed++;
+  var i = NostalgyEscapePressed;
+  setTimeout(
+    function(){ if (NostalgyEscapePressed==i) NostalgyEscapePressed = 0; },
+    300);
+  if (NostalgyEscapePressed == 2) setTimeout(SetMsgBodyFrameFocus,0);
+}
+
+function NostalgyKeyPress(ev) {
+  if (ev.keyCode == KeyEvent.DOM_VK_ESCAPE) { NostalgyEscape(); }
+  else if (NostalgyEscapePressed >= 1) {
+    if (ev.charCode == 97) { // A
+      goDoCommand('cmd_attachFile');
+      ev.preventDefault();
+    }
+  }
+}
+
+
 function onNostalgyLoad(){
   var tbox = gEBI("addressingWidget");
   nostalgy_old_awRecipientKeyPress = window.awRecipientKeyPress;
   window.awRecipientKeyPress = nostalgy_awRecipientKeyPress;
+  window.addEventListener("keypress", NostalgyKeyPress, false);
 }
 
 window.addEventListener("load", onNostalgyLoad, false);

@@ -4,6 +4,7 @@ Since 0.1.9
   - allow to switch between "To:" and "Cc:" fields efficiently
   - bug fix: rules with non-empty folder condition don't match when 
     restricting to current server
+  - triple Escape to clear the quick search box
 
 0.1.9
   - allow installation on Thunderbird 2.0b1

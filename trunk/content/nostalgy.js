@@ -321,27 +321,21 @@ function NostalgyScrollMsg(d) {
  }
 }
 
+
+var NostalgyEscapePressed = 0;
+
 function NostalgyEscape(ev) {
-  if (ev.timeStamp - NostalgyLastEscapeTimeStamp < 300) SetFocusThreadPane()
-  else NostalgyLastEscapeTimeStamp = ev.timeStamp;
-}
-
-function NostalgySelectFolderPane(ev) {
-  if (ev.timeStamp - NostalgyLastEscapeTimeStamp < 300) SetFocusFolderPane();
-}
-
-function NostalgySelectMessagePane(ev) {
-  if (ev.timeStamp - NostalgyLastEscapeTimeStamp < 300) SetFocusMessagePane();
-}
-
-function NostalgySelectSearch(ev) {
-  if (ev.timeStamp - NostalgyLastEscapeTimeStamp < 300) {
-    GetSearchInput().focus();
-  }
+  NostalgyEscapePressed++;
+  var i = NostalgyEscapePressed;
+  setTimeout(
+    function(){ if (NostalgyEscapePressed==i) NostalgyEscapePressed = 0; },
+    300);
+  if (NostalgyEscapePressed == 3) onClearSearch();
+  if (NostalgyEscapePressed == 2) SetFocusThreadPane();
 }
 
 function onNostalgyKeyPress(ev) {
-  if (ev.timeStamp - NostalgyLastEscapeTimeStamp < 300) {
+  if (NostalgyEscapePressed >= 1) {
     if (ev.charCode == 109) { // M
       SetFocusMessagePane();
       ev.preventDefault();

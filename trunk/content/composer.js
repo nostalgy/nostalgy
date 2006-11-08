@@ -30,9 +30,6 @@ function onNostalgyLoad(){
   var tbox = gEBI("addressingWidget");
   nostalgy_old_awRecipientKeyPress = window.awRecipientKeyPress;
   window.awRecipientKeyPress = nostalgy_awRecipientKeyPress;
-  alert("UUUX");
-/*  window.addEventListener("keypress", onNostalgyKeyPress, true);
-  alert("T"); */
 }
 
 window.addEventListener("load", onNostalgyLoad, false);

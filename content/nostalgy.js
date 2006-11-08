@@ -348,7 +348,6 @@ function NostalgyEscape(ev) {
     300);
   if (NostalgyEscapePressed == 3) onClearSearch();
   if (NostalgyEscapePressed == 2) SetFocusThreadPane();
-  alert(MailRecipients());
 }
 
 function onNostalgyKeyPress(ev) {

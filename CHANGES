@@ -5,6 +5,8 @@ Since 0.1.9
   - bug fix: rules with non-empty folder condition don't match when 
     restricting to current server
   - triple Escape to clear the quick search box
+  - double Escape in composer to focus on the message body
+  - Escape-A in composer to open the AttachFile dialog
 
 0.1.9
   - allow installation on Thunderbird 2.0b1

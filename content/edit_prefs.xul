@@ -43,7 +43,10 @@ shortcuts to move/copy the message to this folder.</label>
   <hbox>
   <button label="Edit" accesskey="E" oncommand="DoEdit();"/>
   <button label="Delete" accesskey="D" oncommand="DoDelete();"/>
-  <button label="New rule" accesskey="N" oncommand="DoNewRule();"/>
+  <button label="New" accesskey="N" oncommand="DoNewRule();"/>
+  <separator orient="vertical"/>
+  <button label="Move up" oncommand="DoMoveUp();"/>
+  <button label="Move down" oncommand="DoMoveDown();"/>
   </hbox>
  </vbox>
  </groupbox>

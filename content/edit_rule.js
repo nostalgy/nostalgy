@@ -2,7 +2,6 @@ function gEBI(id) { return (document.getElementById(id)); }
 
 var gFolderSelect = null;
 var gContainsSelect = null;
-var gFieldSelect = null;
 var gUnderSelect = null;
 
 function onNostalgyLoad() {
@@ -10,7 +9,6 @@ function onNostalgyLoad() {
  if (!rule) { alert("rule=null!"); }
 
  gContainsSelect = gEBI("contains");
- gFieldSelect = gEBI("field");
  gFolderSelect = gEBI("folderselect");
  NostalgyFolderSelectionBox(gFolderSelect);
  gUnderSelect = gEBI("underselect");
@@ -21,7 +19,9 @@ function onNostalgyLoad() {
  gFolderSelect.value = rule.folder;
  gUnderSelect.value = rule.under;
  gContainsSelect.value = rule.contains;
- gFieldSelect.selectedItem = gEBI(rule.field);
+ gEBI("sender").checked = rule.sender;
+ gEBI("recipients").checked = rule.recipients;
+ gEBI("subject").checked = rule.subject;
 }
 
 function onAcceptChanges() {
@@ -35,7 +35,9 @@ function onAcceptChanges() {
    return false;
  }
  var rule = { 
-    field: gFieldSelect.selectedItem.getAttribute("id"),
+    sender: gEBI("sender").checked,
+    recipients: gEBI("recipients").checked,
+    subject: gEBI("subject").checked,
     contains: gContainsSelect.value,
     folder: folder_name(folder),
     under: gUnderSelect.value

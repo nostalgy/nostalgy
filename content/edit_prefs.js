@@ -37,12 +37,11 @@ var boolPrefs = [
 function SetItem(item, rule) {
   var f = item.childNodes.item(0);
   var lab = "";
-  if (rule.field == "any") { lab = "Any"; }
-  else if (rule.field == "sender") { lab = "Sender"; }
-  else if (rule.field == "subject") { lab = "Subject"; }
-  else alert("Internal error: unknown field " + rule.field);
+  if (rule.sender) lab = lab + "F";
+  if (rule.recipients) lab = lab + "R";
+  if (rule.subject) lab = lab + "S";
 
-  f.setAttribute("value", rule.field);
+  f.setAttribute("value", lab);
   f.setAttribute("label", lab);
 
   item.childNodes.item(1).setAttribute("label", rule.contains);
@@ -57,10 +56,13 @@ function SetItem(item, rule) {
 }
 
 function RuleOfItem(item) {
+ var fields = item.childNodes.item(0).getAttribute("value");
  return ({ folder: item.childNodes.item(3).getAttribute("value"),
            under: item.childNodes.item(2).getAttribute("value"),
 	   contains: item.childNodes.item(1).getAttribute("label"),
-	   field: item.childNodes.item(0).getAttribute("value") });
+           sender: fields.indexOf("F") >= 0,
+           recipients: fields.indexOf("R") >= 0,
+           subject: fields.indexOf("S") >= 0 });
 }
 
 function CreateItem(rule) {
@@ -69,6 +71,15 @@ function CreateItem(rule) {
   item.appendChild(document.createElement("listcell"));
   item.appendChild(document.createElement("listcell"));
   item.appendChild(document.createElement("listcell"));
+ 
+  // convert from previous version
+  if (rule.field == "any") { 
+   rule.sender = true;
+   rule.recipients = true;
+   rule.subject = true;
+  } else if (rule.field == "sender") rule.sender = true
+  else if (rule.field == "subject") rule.subject = true;
+
   SetItem(item,rule);
   gList.appendChild(item);
   gList.selectedItem = item;
@@ -77,7 +88,9 @@ function CreateItem(rule) {
 
 function StrOfRule(rule) {
   return (
-   "{field: '"    + rule.field            + "'," +
+   "{sender: '"   + rule.sender           + "'," +
+   " recipients:'"+ rule.recipients       + "'," +
+   " subject:  '" + rule.subject          + "'," +
    " contains:  " + rule.contains.quote() + "," +
    " under:  "    + rule.under.quote()    + "," +
    " folder:  "   + rule.folder.quote()   + "}"
@@ -110,6 +123,29 @@ function DoEdit() {
   }
 }
 
+function SwapItems(idx1,idx2) {
+  var item1 = gList.getItemAtIndex(idx1);
+  var item2 = gList.getItemAtIndex(idx2);
+  var rule1 = RuleOfItem(item1);
+  var rule2 = RuleOfItem(item2);
+  SetItem(item1,rule2);
+  SetItem(item2,rule1);
+  gList.selectedIndex = idx2;
+  gList.ensureIndexIsVisible(idx2);
+}
+
+function DoMoveUp(idx1,idx2) {
+  var idx = gList.selectedIndex;
+  if (idx == 0) return;
+  SwapItems(idx,idx-1);
+}
+
+function DoMoveDown(idx1,idx2) {
+  var idx = gList.selectedIndex;
+  if (idx == gList.getRowCount() - 1) return;
+  SwapItems(idx,idx+1);
+}
+
 function onAcceptChanges() {
   var prefs = Components.classes["@mozilla.org/preferences-service;1"].
                          getService(Components.interfaces.nsIPrefBranch);
@@ -123,7 +159,8 @@ function onAcceptChanges() {
 }
 
 function DoNewRule() {
-  EditRule({ field:"any", contains:"", folder:"", under:"" }, CreateItem);
+  EditRule({ sender:true, recipients:true, subject:true, 
+             contains:"", folder:"", under:"" }, CreateItem);
 }
 
 function DoDelete() {

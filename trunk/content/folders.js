@@ -291,6 +291,10 @@ function CompareFolderNames(a,b) {
 
 var sorted_subfolders = new Array();
 
+function ClearNostalgyCache() {
+  sorted_subfolders = new Array();
+}
+
 function IterateSubfolders(folder,f) {
  if (!folder.isServer || !restrict_to_current_server) { 
   try { f(folder); }
@@ -299,9 +303,9 @@ function IterateSubfolders(folder,f) {
  var arr;
  if (folder.hasSubFolders) {
   if (sort_folders) {
-   arr = sorted_subfolders[full_folder_name(folder)];
-   if (arr) { for (var n in arr) { IterateSubfolders(arr[n],f); }
-              return; }
+    arr = sorted_subfolders[full_folder_name(folder)];
+    if (arr) { for (var n in arr) { IterateSubfolders(arr[n],f); }
+                return; }
   }
 
   var subfolders = folder.GetSubFolders();

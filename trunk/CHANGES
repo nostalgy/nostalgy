@@ -9,6 +9,13 @@ Since 0.1.9
   - Escape-A in composer to open the AttachFile dialog
   - allow to move rules up/down
   - rules can match on recipients (To/Cc)
+  - makes the rules work in standalone message windows
+  - bug fix: if the user started to type very quickly after the
+    the nostalgy completion box was enabled, some keys were lost
+    (or sent to other widgets)
+  - bug fix: invalidate the folder (sorted) list cache when a folder
+    is created or deleted (or renamed)
+    
 
 0.1.9
   - allow installation on Thunderbird 2.0b1

@@ -136,6 +136,17 @@ function onNostalgyResize() {
   nostalgy_label.parentNode.maxWidth = document.width * 6 / 10;
 }
 
+var NostalgyFolderListener = {
+ OnItemAdded: function(parentItem, item) { ClearNostalgyCache(); },
+ OnItemRemoved: function(parentItem, item) { ClearNostalgyCache(); },
+ OnItemPropertyChanged: function(item, property, oldValue, newValue) { },
+ OnItemIntPropertyChanged: function(item, property, oldValue, newValue) { },
+ OnItemBoolPropertyChanged: function(item, property, oldValue, newValue) { },
+ OnItemUnicharPropertyChanged: function(item, property, oldValue, newValue){ },
+ OnItemPropertyFlagChanged: function(item, property, oldFlag, newFlag) { },
+ OnItemEvent: function(folder, event) { }
+}
+
 function onNostalgyLoad() {
  nostalgy_folderBox = gEBI("nostalgy-folderbox");
  nostalgy_statusBar = gEBI("nostalgy-statusbar");
@@ -149,10 +160,23 @@ function onNostalgyLoad() {
 
  if (!in_message_window) {
    gEBI("threadTree").addEventListener("select", NostalgyDefLabel, false); 
+ } else {
+   // find a better way to be notified when the displayed message changes
+   var old = UpdateStandAloneMessageCounts;
+   UpdateStandAloneMessageCounts = function() {
+     old();
+     NostalgyDefLabel();
+   };
  }
 
  window.addEventListener("mousedown", NostalgyHideIfBlurred, false);
  // Don't know why, but the blur event does not seem to be fired properly...
+
+
+ var mSession = Components.classes[mailSessionContractID].getService(Components.interfaces.nsIMsgMailSession);
+ var nsIFolderListener = Components.interfaces.nsIFolderListener;
+ var notifyFlags = nsIFolderListener.added | nsIFolderListener.removed;
+ mSession.AddFolderListener(NostalgyFolderListener, notifyFlags);
 }
 
 function NostalgyHideIfBlurred() {
@@ -198,11 +222,10 @@ function NostalgyCmd(lab,cmd,init) {
 
  nostalgy_cmdLabel.value = lab;
  command = cmd;
- nostalgy_statusBar.hidden = false;
  nostalgy_th_statusBar.hidden = true;
- nostalgy_folderBox.value = init;
  nostalgy_folderBox.shell_completion = false;
-
+ nostalgy_statusBar.hidden = false;
+ nostalgy_folderBox.value = init;
 
  setTimeout(function() { 
     nostalgy_folderBox.focus();  
@@ -365,6 +388,15 @@ function onNostalgyKeyPress(ev) {
       ev.preventDefault();
     }
   } 
+  if (!nostalgy_statusBar.hidden &&
+      document.commandDispatcher.focusedElement.nodeName != "html:input") {
+    // ugly hack: it takes some time for the folderBox to be focused
+    if (ev.charCode) {
+      nostalgy_folderBox.value =  nostalgy_folderBox.value + 
+          String.fromCharCode(ev.charCode);
+    }
+      ev.preventDefault();
+  }
 }
 
 window.addEventListener("load", onNostalgyLoad, false);
@@ -372,4 +404,6 @@ window.addEventListener("resize", onNostalgyResize, false);
 if (!in_message_window) {
   window.addEventListener("keypress", onNostalgyKeyPress, false);
 } 
+
+
 

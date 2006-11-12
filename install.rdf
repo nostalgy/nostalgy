@@ -1,21 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
- xmlns:em="http://www.mozilla.org/2004/em-rdf#">
-  <Description about="urn:mozilla:install-manifest">
-    <em:id>nostalgy@alain.frisch</em:id>
-    <em:name>Nostalgy</em:name>
-    <em:version>0.1.9</em:version>
-    <em:creator>Alain Frisch</em:creator>
-    <em:description>Adds shortcuts to change folder, move message, with folder completion</em:description>
-    <em:homepageURL>http://www.eleves.ens.fr/home/frisch/soft_mozilla.html</em:homepageURL>
-    <em:aboutURL>chrome://nostalgy/content/about.xul</em:aboutURL>
-    <em:optionsURL>chrome://nostalgy/content/edit_prefs.xul</em:optionsURL>
-    <em:targetApplication>
-      <Description>
-        <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id> <!-- thunderbird -->
-        <em:minVersion>1.5</em:minVersion>
-        <em:maxVersion>2.0b1</em:maxVersion>
-      </Description>
-    </em:targetApplication>
-  </Description>
-</RDF>
+<?xml version="1.0"?>
+<RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
+         xmlns:NC="http://home.netscape.com/NC-rdf#"
+         xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Description RDF:about="urn:mozilla:install-manifest"
+                   em:id="nostalgy@alain.frisch"
+                   em:name="Nostalgy"
+                   em:version="0.1.9"
+                   em:creator="Alain Frisch"
+                   em:description="Adds shortcuts to change folder, move message, with folder completion"
+                   em:homepageURL="http://www.eleves.ens.fr/home/frisch/soft_mozilla.html"
+                   em:aboutURL="chrome://nostalgy/content/about.xul"
+                   em:optionsURL="chrome://nostalgy/content/edit_prefs.xul">
+    <em:targetApplication RDF:resource="rdf:#$3Mz8c3"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="rdf:#$3Mz8c3"
+                   em:id="{3550f703-e582-4d05-9a08-453d09bdfdc6}"
+                   em:minVersion="1.5"
+                   em:maxVersion="2.0b1" />
+</RDF:RDF>

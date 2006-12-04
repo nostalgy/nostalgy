@@ -1,15 +1,16 @@
-Since 0.1.9
+0.2.0
   - make shell-completion optional (default behavior for Tab is to cycle 
     through sugestions)
-  - allow to switch between "To:" and "Cc:" fields efficiently
-  - bug fix: rules with non-empty folder condition don't match when 
-    restricting to current server
+  - allow to switch between "To:" and "Cc:" fields efficiently in the composer
   - triple Escape to clear the quick search box
   - double Escape in composer to focus on the message body
   - Escape-A in composer to open the AttachFile dialog
   - allow to move rules up/down
   - rules can match on recipients (To/Cc)
-  - makes the rules work in standalone message windows
+
+  - bug fix: rules with non-empty folder condition don't match when 
+    restricting to current server
+  - bug fix: make the rules work in standalone message windows
   - bug fix: if the user started to type very quickly after the
     the nostalgy completion box was enabled, some keys were lost
     (or sent to other widgets)

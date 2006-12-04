@@ -58,6 +58,7 @@ function ChooseUnder() {
   if (gUnderSelect.value != "") {
     var under = NostalgyResolveFolder(gUnderSelect.value);
     if (under) { gUnderSelect.value = folder_name(under); }
+    setTimeout(function(){gFolderSelect.focus();},30);
   }
 }
 

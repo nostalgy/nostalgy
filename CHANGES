@@ -1,3 +1,7 @@
+Since 0.2.0
+  - fix for recent TB builds  (ontextcommand -> ontextentered,
+    ontextrevert -> ontextreverted)
+
 0.2.0
   - make shell-completion optional (default behavior for Tab is to cycle 
     through sugestions)

@@ -47,7 +47,9 @@
   <statusbarpanel flex="1">
    <label id="nostalgy-command-label"/>
    <textbox id="nostalgy-folderbox" type="autocomplete" tabScrolling="true"
+	   ontextentered="NostalgyRunCommand();" 
 	   ontextcommand="NostalgyRunCommand();" 
+	   ontextreverted="NostalgyHide();"
 	   ontextrevert="NostalgyHide();"
 	   flex="1"
 	   maxrows="25" crop="center"

@@ -39,14 +39,16 @@
 
     <row>
       <label value="when message is under folder"/>
-      <textbox type="autocomplete" tabScrolling="true" id="underselect"
-             flex="3" maxrows="15" crop="end" ontextcommand="ChooseUnder();"/>
+      <textbox type="autocomplete" tabScrolling="false" id="underselect"
+             flex="3" maxrows="15" crop="end" ontextentered="ChooseUnder();"
+             ontextcommand="ChooseUnder();"/>
     </row>
 
     <row>
       <label value="then save to"/>
-      <textbox type="autocomplete" tabScrolling="true" id="folderselect"
-             flex="3" maxrows="15" crop="end" ontextcommand="ChooseFolder();"/>
+      <textbox type="autocomplete" tabScrolling="false" id="folderselect"
+             flex="3" maxrows="15" crop="end"  ontextcommand="ChooseUnder();"
+             ontextentered="ChooseFolder();"/>
     </row>
   </rows>
 </grid>

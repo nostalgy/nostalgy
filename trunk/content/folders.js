@@ -153,6 +153,12 @@ function NostalgyProcessKeyPress(aEvent) {
      killEvent = this.mMenuOpen;
      this.finishAutoComplete(true, true, aEvent);
      this.closeResultPopup();
+
+     // in recent TB 2.0 nighlty builds, this is not triggered
+     // automatically...
+     if (this.hasAttribute("ontextcommand")) {
+      eval(this.getAttribute("ontextcommand"));
+     }
      break;
 
    case KeyEvent.DOM_VK_ESCAPE:
@@ -174,7 +180,7 @@ function NostalgyProcessKeyPress(aEvent) {
   }
   if (killEvent) {
     aEvent.preventDefault();
-    aEvent.preventBubble();
+    aEvent.stopPropagation();
   }
   return true;
 }

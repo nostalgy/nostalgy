@@ -17,7 +17,6 @@ function nostalgy_awRecipientKeyPress(event, element) {
 	  element.value = u.substr(2,u.length - 2);
  	  element.selectionStart = 0; element.selectionEnd = 0;
         }, 0);
-	event.preventBubble();
 	event.stopPropagation();
 	return;
     }

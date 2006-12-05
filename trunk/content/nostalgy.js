@@ -369,7 +369,10 @@ function NostalgyEscape(ev) {
   setTimeout(
     function(){ if (NostalgyEscapePressed==i) NostalgyEscapePressed = 0; },
     300);
-  if (NostalgyEscapePressed == 3) onClearSearch();
+  if (NostalgyEscapePressed == 3) { 
+	onClearSearch();
+	setTimeout(SetFocusThreadPane,100);
+  }
   if (NostalgyEscapePressed == 2) SetFocusThreadPane();
 }
 

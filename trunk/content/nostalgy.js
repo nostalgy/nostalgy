@@ -10,6 +10,16 @@ var nostalgy_cmdLabel = null;
 
 /** Rules **/
 
+function match_contains(field,contain) {
+  var re = /^\/(.*)\/$/;
+  if (contain.match(re)) {
+   var m = re.exec(contain);
+   var re = RegExp(m[1], "");
+   return field.match(re);
+  }
+  return (field.indexOf(contain) >= 0);
+}
+
 var NostalgyRules =
 {
 
@@ -107,9 +117,9 @@ var NostalgyRules =
     var current_folder = full_folder_name(gDBView.msgFolder);
     for (i = 0; (i < rules.length) && (!folder); i++) {
       var r = rules[i];
-      if (((r.subject && (subject.indexOf(r.contains) >= 0))
-        ||(r.sender && (sender.indexOf(r.contains) >= 0))
-        ||(r.recipients && (recipients.indexOf(r.contains) >= 0)))
+      if (((r.subject && match_contains(subject,r.contains))
+        ||(r.sender && match_contains(sender,r.contains))
+        ||(r.recipients && match_contains(recipients,r.contains)))
          && (current_folder.indexOf(r.under) == 0))
       {
         folder = FindFolderExact(r.folder);

@@ -115,6 +115,13 @@ uppercase, you don't need to press Shift.</p>
    Nostalgy's rules can be edited from the preference dialog.</p>
 
    <p>
+   It is possible to match fields with a regexp instead of simply looking
+   for a substring. This is done by enclosing the corresponding field
+   with slashes. E.g. <tt>/^me@domain\.com$/</tt> will match the field
+   for an exact value (not a substring).
+   </p>
+
+   <p>
    When no rule apply to a given message, Nostalgy proposes to re-use
    (with Shift-S/Shift-C) the folder same as for the last move/copy 
    operation folder. If the folder lookup has been restricted

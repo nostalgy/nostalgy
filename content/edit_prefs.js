@@ -88,9 +88,9 @@ function CreateItem(rule) {
 
 function StrOfRule(rule) {
   return (
-   "{sender: '"   + rule.sender           + "'," +
-   " recipients:'"+ rule.recipients       + "'," +
-   " subject:  '" + rule.subject          + "'," +
+   "{sender:  "   + rule.sender           + "," +
+   " recipients: "+ rule.recipients       + "," +
+   " subject:   " + rule.subject          + "," +
    " contains:  " + rule.contains.quote() + "," +
    " under:  "    + rule.under.quote()    + "," +
    " folder:  "   + rule.folder.quote()   + "}"

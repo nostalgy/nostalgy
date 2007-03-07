@@ -1,7 +1,10 @@
-Since 0.2.1
+0.2.2
   - bug fix: field choices in rules were not saved correctly
   - allows to match fields with regexps in rules
-  - allow to switch to "Bcc:" in the composer
+  - allows to switch to "Bcc:" in the composer
+  - let the extension work with TB 2.0b2
+  - allows to jump to a folder even if it is not visible in the current
+    folder view
 
 0.2.1
   - fix for recent TB builds  (ontextcommand -> ontextentered,

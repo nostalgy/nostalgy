@@ -7,6 +7,6 @@ clean:
 
 
 install:
-	scp CHANGES clipper.ens.fr:www/info/CHANGES_NOSTALGY
-	scp content/about.xhtml clipper.ens.fr:www/info/ABOUT_NOSTALGY.html
-	scp nostalgy.xpi clipper.ens.fr:www/info/nostalgy-current.xpi
+	scp CHANGES frisch.fr:www/info/CHANGES_NOSTALGY
+	scp content/about.xhtml frisch.fr:www/info/ABOUT_NOSTALGY.html
+	scp nostalgy.xpi frisch.fr:www/info/nostalgy-current.xpi

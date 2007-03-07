@@ -317,6 +317,10 @@ function NostalgyEnsureFolderIndex(builder, msgFolder)
   var index = builder.getIndexOfResource(msgFolder);
   if (index == -1) {
     // if we couldn't find the folder, make all its ancestors visible
+
+    if (!msgFolder.parent) { throw 0; }  
+	// Folder not reachable in current view
+
     parent_idx = NostalgyEnsureFolderIndex(builder, msgFolder.parent);
     // maybe the folder is now visible
     index = builder.getIndexOfResource(msgFolder);
@@ -331,12 +335,24 @@ function NostalgyEnsureFolderIndex(builder, msgFolder)
 
 function ShowFolder(folder) {
   var folderTree = GetFolderTree();
-  var idx = NostalgyEnsureFolderIndex(folderTree.builderView, folder);
-  ChangeSelection(folderTree, idx);
-  setTimeout(function() { SetFocusThreadPane(); 
+  var totry = 1;
+  var savedFolderView;
+  if (window.CycleFolderView) { 
+    totry = kNumFolderViews;
+    savedFolderView = gCurrentFolderView;
+  }
+  while (totry > 0) {
+    try {
+      var idx = NostalgyEnsureFolderIndex(folderTree.builderView, folder);
+      ChangeSelection(folderTree, idx);
+      setTimeout(function() { SetFocusThreadPane(); 
         var s = GetThreadTree().view.selection;
 	if (s.count == 0) { s.select(s.currentIndex); }
-	}, 400);
+      }, 400);
+      totry = 0;
+    } catch (ex) { totry--; CycleFolderView(true); }
+  }
+  if (window.CycleFolderView) { loadFolderView(savedFolderView); }
 }
 
 function MoveToFolder(folder) {

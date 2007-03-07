@@ -8,7 +8,7 @@
                    em:version="0.2.2"
                    em:creator="Alain Frisch"
                    em:description="Adds shortcuts to change folder, move message, with folder completion"
-                   em:homepageURL="http://www.eleves.ens.fr/home/frisch/soft_mozilla.html"
+                   em:homepageURL="http://alain.frisch.fr/soft_mozilla.html"
                    em:aboutURL="chrome://nostalgy/content/about.xul"
                    em:optionsURL="chrome://nostalgy/content/edit_prefs.xul">
     <em:targetApplication RDF:resource="rdf:#$3Mz8c3"/>

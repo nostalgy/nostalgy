@@ -262,6 +262,28 @@ function MailAuthor() {
  return(gDBView.hdrForFirstSelectedMessage.author.toLowerCase());
 }
 
+function MailAuthorName()
+{
+  var msgHdr = gDBView.hdrForFirstSelectedMessage;
+  var headerParser = 
+ Components.classes["@mozilla.org/messenger/headerparser;1"].
+   getService(Components.interfaces.nsIMsgHeaderParser);
+ var emailAddress = headerParser.extractHeaderAddressMailboxes(null, msgHdr.author);
+  return emailAddress;
+}
+
+function MailRecipName()
+{
+  var msgHdr = gDBView.hdrForFirstSelectedMessage;
+  var headerParser = 
+ Components.classes["@mozilla.org/messenger/headerparser;1"].
+   getService(Components.interfaces.nsIMsgHeaderParser);
+ var emailAddress = headerParser.extractHeaderAddressMailboxes(null, msgHdr.recipients);
+  var i = emailAddress.indexOf(" ",0);
+  if (i > 0) emailAddress = emailAddress.substr(0,i-1);
+  return emailAddress;
+}
+
 function MailSubject() {
  return(gDBView.hdrForFirstSelectedMessage.subject.toLowerCase());
 }
@@ -333,6 +355,13 @@ function NostalgyEnsureFolderIndex(builder, msgFolder)
   return index;
 }
 
+function NostalgySelectLastMsg() {
+  if (gDBView) {
+     if (gDBView.numSelected == 0)
+       gDBView.selectMsgByKey(gDBView.getKeyAt(0));
+  }
+}
+
 function ShowFolder(folder) {
   var folderTree = GetFolderTree();
   var totry = 1;
@@ -341,6 +370,9 @@ function ShowFolder(folder) {
     totry = kNumFolderViews;
     savedFolderView = gCurrentFolderView;
   }
+  var input = GetSearchInput();
+  var search = input.value;
+  if (input.showingSearchCriteria) search = "";
   while (totry > 0) {
     try {
       var idx = NostalgyEnsureFolderIndex(folderTree.builderView, folder);
@@ -353,6 +385,11 @@ function ShowFolder(folder) {
     } catch (ex) { totry--; CycleFolderView(true); }
   }
   if (window.CycleFolderView) { loadFolderView(savedFolderView); }
+  if (search != "") {
+    input.focus();
+    input.value = search;
+    setTimeout(function(){onEnterInSearchBar(true);}, 200);
+  }
 }
 
 function MoveToFolder(folder) {
@@ -389,6 +426,11 @@ function NostalgyScrollMsg(d) {
 
 var NostalgyEscapePressed = 0;
 
+function NostalgyFocusThreadPane() {
+  SetFocusThreadPane();
+  NostalgySelectLastMsg();
+}
+
 function NostalgyEscape(ev) {
   NostalgyEscapePressed++;
   var i = NostalgyEscapePressed;
@@ -397,15 +439,40 @@ function NostalgyEscape(ev) {
     300);
   if (NostalgyEscapePressed == 3) { 
 	onClearSearch();
-	setTimeout(SetFocusThreadPane,100);
+	setTimeout(NostalgyFocusThreadPane,100);
   }
-  if (NostalgyEscapePressed == 2) SetFocusThreadPane();
+  if (NostalgyEscapePressed == 2) NostalgyFocusThreadPane();
+}
+
+function NostalgyFocusMessagePane() {
+  // for some reason, advanceFocusIntoSubtree(getebi("messagepane")) does not work
+
+  SetFocusMessagePane();
+  var i = 10;
+  while (i > 0 && 
+         top.document.commandDispatcher.focusedWindow.name != "messagepane") 
+  { 
+    document.commandDispatcher.advanceFocus(); i--; 
+  }
+}
+
+function NostalgySearchSender() {
+  var recips = gDBView.msgFolder.displayRecipients;
+  var key = gDBView.hdrForFirstSelectedMessage.messageKey;
+  var input = GetSearchInput();
+  input.focus();
+  input.searchMode =  1; // sender = kQuickSearchSender
+  var name = (recips ? MailRecipName() : MailAuthorName());
+  if (input.value == name) input.value = ""; else input.value = name;
+  onEnterInSearchBar(true);
+  SetFocusThreadPane();
+  gDBView.selectMsgByKey(key);
 }
 
 function onNostalgyKeyPress(ev) {
   if (NostalgyEscapePressed >= 1) {
     if (ev.charCode == 109) { // M
-      SetFocusMessagePane();
+      NostalgyFocusMessagePane();
       ev.preventDefault();
     } else
     if (ev.charCode == 102) { // F

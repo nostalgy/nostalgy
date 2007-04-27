@@ -1,3 +1,11 @@
+After 0.2.3
+  - bug fix: esc-M set focus on the message content, not the "subject" field
+  - the "`" key (back quote) search for all messages from the same
+    author as the current message (in the Sent fold, search mail sent To:
+    the same address as the first To: of the current message)
+  - when selecting a new folder with the G key, keep the current value
+    of the quick search box (if any)
+
 0.2.3
   - let it work with TB 2.0
 

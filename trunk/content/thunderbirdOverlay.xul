@@ -28,6 +28,7 @@
   <key key="C" modifiers="shift" 
        oncommand="NostalgySuggested('&nostalgy.copy-memo;',CopyToFolder);"/>
   <key key="L" oncommand="NostalgyCollapseFolderPane();"/>
+  <key key="`" oncommand="NostalgySearchSender();"/>
 
   <key keycode="VK_LEFT" modifiers="control" 
        oncommand="NostalgyScrollMsg(-50);"/>
@@ -65,6 +66,9 @@
          value="&nostalgy.memo;"/>
   </statusbarpanel>
  </statusbar>
+
+<!-- <tree id="threadTree" onclick="alert('Click' + NostalgyEscapePressed);">
+ </tree> -->
 
 </overlay>
 

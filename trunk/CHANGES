@@ -1,4 +1,4 @@
-0.2.4
+0.2.5
   - bug fix: esc-M set focus on the message content, not the "subject" field
     (for TB 2.0)
   - bug fix: S and C commands did not work properly in stand-alone

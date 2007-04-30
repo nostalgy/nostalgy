@@ -187,6 +187,18 @@ function onNostalgyLoad() {
  var nsIFolderListener = Components.interfaces.nsIFolderListener;
  var notifyFlags = nsIFolderListener.added | nsIFolderListener.removed;
  mSession.AddFolderListener(NostalgyFolderListener, notifyFlags);
+
+ // NostalgyKeys();
+}
+
+function NostalgyKeys() {
+  var nodes = this.document.getElementsByTagName("key");
+  for (i = 0, l = nodes.length; i < l; i++) 
+   if (nodes[i].getAttribute("nostalgy_key")) {
+     alert(nodes[i].getAttribute("nostalgy_key") + " = " +
+           nodes[i].getAttribute("key"));
+     nodes[i].setAttribute("key","O");
+   }
 }
 
 function NostalgyHideIfBlurred() {
@@ -500,6 +512,3 @@ window.addEventListener("resize", onNostalgyResize, false);
 if (!in_message_window) {
   window.addEventListener("keypress", onNostalgyKeyPress, false);
 } 
-
-
-

@@ -18,17 +18,28 @@
 
 
  <keyset id="mailKeys">
-  <key key="G" oncommand="NostalgyCmd('&nostalgy.go-memo;', ShowFolder, '');"/>
-  <key key="S" 
+  <key id="NostalgyChangeFolder"
+       nostalgy_key = "Go (change folder)"
+       key="G" 
+       oncommand="NostalgyCmd('&nostalgy.go-memo;', ShowFolder, '');"/>
+  <key id = "NostalgySaveMessage"
+       key="S" 
        oncommand="NostalgyCmd('&nostalgy.move-memo;', MoveToFolder, '');"/>
-  <key key="S" modifiers="shift" 
+  <key id = "NostalgySaveMessageSuggested"
+       key="S" modifiers="shift" 
        oncommand="NostalgySuggested('&nostalgy.move-memo;',MoveToFolder);"/>
-  <key key="C" 
+  <key id = "NostalgyCopyMessage"
+       key="C" 
        oncommand="NostalgyCmd('&nostalgy.copy-memo;', CopyToFolder, '');"/>
-  <key key="C" modifiers="shift" 
+  <key id = "NostalgyCopyMessageSuggested"
+       key="C" modifiers="shift" 
        oncommand="NostalgySuggested('&nostalgy.copy-memo;',CopyToFolder);"/>
-  <key key="L" oncommand="NostalgyCollapseFolderPane();"/>
-  <key key="`" oncommand="NostalgySearchSender();"/>
+  <key id = "NostalgyCollapseFolderPane"
+       key="L" 
+       oncommand="NostalgyCollapseFolderPane();"/>
+  <key id = "NostalgySearchSender"
+       key="`" 
+       oncommand="NostalgySearchSender();"/>
 
   <key keycode="VK_LEFT" modifiers="control" 
        oncommand="NostalgyScrollMsg(-50);"/>

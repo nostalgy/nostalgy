@@ -202,5 +202,35 @@ function onKeyPress(ev) {
   if ((ev.keyCode == 46) || (ev.keyCode == 8)) { DoDelete(); }
 }
 
+
+function Recognize(event) {
+ event.preventDefault();
+ event.stopPropagation();
+
+ var gVKNames = [];
+
+ for (var property in KeyEvent) {
+  gVKNames[KeyEvent[property]] = property.replace("DOM_","");
+ }
+ gVKNames[8] = "VK_BACK";
+
+ var gEdit = event.target;
+
+ var modifiers = [];
+ if(event.altKey) modifiers.push("alt");
+ if(event.ctrlKey) modifiers.push("control");
+ if(event.metaKey) modifiers.push("meta");
+ if(event.shiftKey) modifiers.push("shift");
+
+ modifiers = modifiers.join(" ");
+
+ var key = ""; var keycode = "";
+ if(event.charCode) key = String.fromCharCode(event.charCode).toUpperCase();
+ else { keycode = gVKNames[event.keyCode]; if(!keycode) return;}
+
+ gEdit.value = modifiers + " " + key + keycode;
+}
+
+
 window.addEventListener("load", onNostalgyLoad, false);
 window.addEventListener("keypress", onKeyPress, false);

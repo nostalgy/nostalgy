@@ -14,8 +14,18 @@
  <script src="folders.js"/>
  <script src="edit_prefs.js"/>
 
-<vbox style="width:800px">
- <groupbox flex="0">
+<!-- <vbox > -->
+
+ <tabbox style="width:800px">
+ <tabs>
+ <tab label="Rules"/>
+ <tab label="Completion"/>
+ <tab label="Keys"/>
+ </tabs>
+ <tabpanels>
+
+ <tabpanel>
+ <groupbox flex="0"  style="width:800px">
  <label>Rules associate folders to messages by looking for a 
 substring of the Sender or Subject (or both) headers. A rule can be
 restricted to match messages under a given server/folder. When a folder
@@ -50,7 +60,9 @@ shortcuts to move/copy the message to this folder.</label>
   </hbox>
  </vbox>
  </groupbox>
+ </tabpanel>
 
+ <tabpanel>
  <groupbox>
    <checkbox label="Restrict folder completion to the current server"
              id="restrict_to_current_server" accesskey="R"/>
@@ -59,11 +71,41 @@ shortcuts to move/copy the message to this folder.</label>
    <checkbox label="Sort folders alphabetically"
              id="sort_folders" accesskey="S"/>
    <checkbox label="Match folder names in a case sensitive way"
-             id="match_case_sensitive" accesskey="C"/>
-   <checkbox label="Tab triggers shell-like completion (otherwise, cycle through suggestions)"
+             id="match_case_sensitive" accesskey="C"/>   <checkbox label="Tab triggers shell-like completion (otherwise, cycle through suggestions)"
              id="tab_shell_completion" accesskey="T"/>
  </groupbox>
+ </tabpanel>
 
-</vbox>
+ <tabpanel>
+ <groupbox>
+   <hbox align="center">
+   <checkbox label="Change folder (Go)"/>
+   <deck align="end">
+   <label onclick="var p = this.parentNode;
+p.selectedIndex=1; p.selectedPanel.value = this.value; 
+p.selectedPanel.focus(); 
+">G</label>
+   <textbox flex="1"
+            onclick="this.select();" 
+            onkeypress="Recognize(event); this.parentNode.selectedIndex=0; this.parentNode.selectedPanel.value = this.value;"
+   />
+   </deck>
+   </hbox>
+<!--
+   <hbox>
+   <checkbox label="Save message"/>
+   <deck>
+   <label onclick="this.parentNode.selectedIndex=1; this.parentNode.selectedPanel.value = this.value; this.parentNode.selectedPanel.focus(); ">xxx</label>
+   <textbox flex="1" value="xxx"
+            onclick="this.select();" 
+            onkeypress="Recognize(event); this.parentNode.selectedIndex=0; this.parentNode.selectedPanel.value = this.value;"
+   />
+   </deck>
+   </hbox>
+-->
+ </groupbox>
+ </tabpanel>
+ </tabpanels>
+ </tabbox>
 
 </dialog>

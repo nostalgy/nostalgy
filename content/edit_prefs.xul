@@ -14,8 +14,6 @@
  <script src="folders.js"/>
  <script src="edit_prefs.js"/>
 
-<!-- <vbox > -->
-
  <tabbox style="width:800px">
  <tabs>
  <tab label="Rules"/>
@@ -77,32 +75,11 @@ shortcuts to move/copy the message to this folder.</label>
  </tabpanel>
 
  <tabpanel>
- <groupbox>
-   <hbox align="center">
-   <checkbox label="Change folder (Go)"/>
-   <deck align="end">
-   <label onclick="var p = this.parentNode;
-p.selectedIndex=1; p.selectedPanel.value = this.value; 
-p.selectedPanel.focus(); 
-">G</label>
-   <textbox flex="1"
-            onclick="this.select();" 
-            onkeypress="Recognize(event); this.parentNode.selectedIndex=0; this.parentNode.selectedPanel.value = this.value;"
-   />
-   </deck>
-   </hbox>
-<!--
-   <hbox>
-   <checkbox label="Save message"/>
-   <deck>
-   <label onclick="this.parentNode.selectedIndex=1; this.parentNode.selectedPanel.value = this.value; this.parentNode.selectedPanel.focus(); ">xxx</label>
-   <textbox flex="1" value="xxx"
-            onclick="this.select();" 
-            onkeypress="Recognize(event); this.parentNode.selectedIndex=0; this.parentNode.selectedPanel.value = this.value;"
-   />
-   </deck>
-   </hbox>
--->
+ <groupbox style="width:800px">
+   <grid>
+   <columns> <column/> <column width="150"/> <column/> </columns>
+   <rows id="key_rows"/>
+   </grid>
  </groupbox>
  </tabpanel>
  </tabpanels>

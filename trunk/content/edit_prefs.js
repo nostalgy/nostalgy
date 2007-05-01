@@ -2,12 +2,25 @@ function gEBI(s) { return document.getElementById(s); }
 
 var gList = null;
 
+var wait_key = null;
+var wait_key_old = "";
+
 var boolPrefs = [ 
  "restrict_to_current_server",
  "match_only_folder_name",
  "sort_folders",
  "match_case_sensitive",
  "tab_shell_completion"
+];
+
+var keys = [
+ ["save","Save message","S"],
+ ["save_suggest","Save as suggested","shift S"],
+ ["copy","Copy message","C"],
+ ["copy_suggest","Copy as suggested","shift C"],
+ ["go","Go to folder","G"],
+ ["hide_folders","Hide folder pane","L"],
+ ["search_sender","Show messages from same sender","`"]
 ];
 
 (function () {
@@ -155,6 +168,12 @@ function onAcceptChanges() {
     var n = boolPrefs[i];
     prefs.setBoolPref("extensions.nostalgy."+n,	gEBI(n).checked);
   }
+ 
+  if (wait_key) { wait_key.value = wait_key_old; wait_key = null; }
+  for (var i in keys)
+    prefs.setCharPref("extensions.nostalgy.keys."+keys[i][0],
+                      gEBI("key_" + keys[i][0]).value);
+
   window.close();
 }
 
@@ -180,6 +199,25 @@ function getBoolPref(prefs,s) {
  return b;
 }
 
+function createElem(tag,attrs,children) {
+ var x = document.createElement(tag);
+ for (var a in attrs) x.setAttribute(a,attrs[a]);
+ if (children) for (var i in children) x.appendChild(children[i]);
+ return x;
+}
+
+function createKeyRow(id,txt,v) {
+  return createElem("row",{ }, [
+    createElem("label", { value:txt+":" }),
+    createElem("label", { id:"key_" + id, class:"text-link", 
+                          value:v, 
+                          onclick:"WaitKey(this);",
+                          onblur:"Cancel(this);" }),
+    createElem("label", { class:"text-link", value:"disable",
+                   onclick:"this.previousSibling.value = '(disabled)';"} )
+  ]);
+}
+
 function onNostalgyLoad() {
   gList = gEBI("rules");
 
@@ -196,41 +234,70 @@ function onNostalgyLoad() {
    var n = boolPrefs[i];
    gEBI(n).checked = getBoolPref(prefs, n);
  }
+
+ for (var i in keys) {
+  var v = keys[i][2];
+  try {
+    v = prefs.getCharPref("extensions.nostalgy.keys." + keys[i][0]);
+  } catch (ex) { }
+  gEBI("key_rows").appendChild(createKeyRow(keys[i][0],keys[i][1],v));
+ }
 }
 
 function onKeyPress(ev) {
-  if ((ev.keyCode == 46) || (ev.keyCode == 8)) { DoDelete(); }
+  if (!wait_key && ((ev.keyCode == 46) || (ev.keyCode == 8))) DoDelete();
+  // should only to that in the relevant tab
+
+  else if (wait_key && ev.keyCode == KeyEvent.DOM_VK_ESCAPE) {
+    ev.preventDefault();
+    ev.stopPropagation();
+    wait_key.value = wait_key_old;
+    wait_key = null;
+  } else if (wait_key && ev.keyCode != 13) {
+    Recognize(ev,wait_key);
+    wait_key = null;
+  }
 }
 
 
-function Recognize(event) {
- event.preventDefault();
- event.stopPropagation();
+function Recognize(ev, tgt) {
+ ev.preventDefault();
+ ev.stopPropagation();
 
  var gVKNames = [];
 
  for (var property in KeyEvent) {
-  gVKNames[KeyEvent[property]] = property.replace("DOM_","");
+  gVKNames[KeyEvent[property]] = property.replace("DOM_VK_","");
  }
- gVKNames[8] = "VK_BACK";
 
- var gEdit = event.target;
+ var comps = [];
+ if(ev.altKey) comps.push("alt");
+ if(ev.ctrlKey) comps.push("control");
+ if(ev.metaKey) comps.push("meta");
+ if(ev.shiftKey) comps.push("shift");
 
- var modifiers = [];
- if(event.altKey) modifiers.push("alt");
- if(event.ctrlKey) modifiers.push("control");
- if(event.metaKey) modifiers.push("meta");
- if(event.shiftKey) modifiers.push("shift");
 
- modifiers = modifiers.join(" ");
+ var k = "";
+ if(ev.charCode == 32) k = "SPACE";
+ else if(ev.charCode) k = String.fromCharCode(ev.charCode).toUpperCase();
+ else k = gVKNames[ev.keyCode];
 
- var key = ""; var keycode = "";
- if(event.charCode) key = String.fromCharCode(event.charCode).toUpperCase();
- else { keycode = gVKNames[event.keyCode]; if(!keycode) return;}
+ if (!k) return;
+ comps.push(k);
 
- gEdit.value = modifiers + " " + key + keycode;
+ tgt.value = comps.join(" ");
 }
 
+function WaitKey(tgt) {
+  if (wait_key) wait_key.value = wait_key_old;
+  wait_key_old = tgt.value;
+  tgt.value = "key?";
+  wait_key = tgt;
+}
+
+function Cancel(tgt) {
+  if (tgt == wait_key) { wait_key.value = wait_key_old; wait_key = null; }
+}
 
 window.addEventListener("load", onNostalgyLoad, false);
 window.addEventListener("keypress", onKeyPress, false);

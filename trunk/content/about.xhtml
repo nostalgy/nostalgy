@@ -24,7 +24,9 @@
    <p>
    Nostalgy adds several keyboard shortcuts to improve your
    productivity with Thunderbird. A custom preference dialog 
-   for Nostalgy is available through the Tools menu.
+   for Nostalgy is available through the Tools menu. Below we
+   give default values for shortcuts (they can be changed from
+   the preference dialog).
    </p>
 
    <h3>Folder commands</h3>
@@ -164,32 +166,42 @@ opens the file attachment dialog.</p>
 
    <h3>Preferences</h3>
    
-   <p>The preference dialog for Nostalgy is the place where rules are
-   defined. In addition, five switches control the way the completion
-   box (where folder names are proposed) is populated.</p>
+   <p>The preference dialog for Nostalgy has several tabs.
+   The first tab is the place where rules are
+   defined. The second tab has five switches to control the way the completion
+   box (where folder names are proposed) is populated (see below).
+   The third pane allows you to configure Nostalgy's shortcuts
+   (click on the key to change it) or to disable some of them.
+   You might need to restart Thunderbird for changes to shortcuts
+   to take effect.
+   </p>
 
-   <p>The first switch restricts the lookup to folders on the same
+   <p>Here is a description of the completion options:</p>
+ 
+   <ul>
+   <li>The first switch restricts the lookup to folders on the same
    server/account as the currently active folder. In this mode,
    the server name is not displayed (and must not be typed) in
-   the input line and the completion box.</p>
+   the input line and the completion box.</li>
 
-   <p>The second switch forces Nostalgy to interpret differently what
+   <li>The second switch forces Nostalgy to interpret differently what
       is typed in the text. Normally, when the option is disabled, 
       it is interpreted as a regexp which can match an arbitrary substring
       of the complete folder name (including the account name and 
       the name of parent folders). When the option is enabled,
       the regexp must match either a substring of the local folder name
-      (not the full name) or a prefix of the full folder name.</p>
+      (not the full name) or a prefix of the full folder name.</li>
 
-   <p>The third switch sorts folder in the completion box in alphabetical
-   order.</p>
+   <li>The third switch sorts folder in the completion box in alphabetical
+   order.</li>
   
-   <p>The fourth switch controls whether folder names are matched
-   in a case sensitive or insensitive way.</p>
+   <li>The fourth switch controls whether folder names are matched
+   in a case sensitive or insensitive way.</li>
 
-   <p>The fifth switch controls whether the Tab key triggers shell-like
+   <li>The fifth switch controls whether the Tab key triggers shell-like
       completion. If it is unchecked, Tab simply cycles through suggestions,
-      like the down arrow key.</p>
+      like the down arrow key.</li>
+   </ul>
 
    <hr/>
 

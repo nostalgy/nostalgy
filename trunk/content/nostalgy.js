@@ -8,6 +8,25 @@ var nostalgy_label = null;
 var nostalgy_th_statusBar = null;
 var nostalgy_cmdLabel = null;
 
+/** Keys **/
+
+function NostalgySetKey(s,k) {
+  k.removeAttribute("modifiers");
+  k.removeAttribute("key");
+  k.removeAttribute("keycode");
+  k.removeAttribute("charcode");
+
+  if (s == "(disabled)") { k.setAttribute("keycode","VK_SHIFT"); return; }
+
+  var comps = s.split(/ /);
+  var mods = comps.slice(0,comps.length - 1).join(" ");
+  s = comps[comps.length-1];
+  
+  if (mods) k.setAttribute("modifiers",mods);
+  if (s.length == 1) k.setAttribute("key",s);
+  else k.setAttribute("keycode","VK_" + s);
+}
+
 /** Rules **/
 
 function match_contains(field,contain) {
@@ -52,6 +71,20 @@ var NostalgyRules =
      tab_shell_completion =
          this._branch.getBoolPref("tab_shell_completion");
     } catch (ex) { }
+  },
+
+  register_keys: function() {
+    var keys = document.getElementsByTagName("key");
+    for (var i in keys) {
+      if (keys[i].id) {
+       var f = keys[i].id.match(/nostalgy_key_(.+)/);
+       if (f)
+       try {
+         var v = this._branch.getCharPref("keys." + f[1]);
+         NostalgySetKey(v,keys[i]);
+       } catch (ex) { }
+      }
+    }
   },
 
   unregister: function()
@@ -107,6 +140,7 @@ var NostalgyRules =
         tab_shell_completion = this._branch.getBoolPref(aData);
         break;
     }
+    if (aData.match("keys.")) this.register_keys();
   },
 
   apply: function(sender,subject,recipients)
@@ -158,6 +192,8 @@ var NostalgyFolderListener = {
 }
 
 function onNostalgyLoad() {
+ NostalgyRules.register_keys();
+
  nostalgy_folderBox = gEBI("nostalgy-folderbox");
  nostalgy_statusBar = gEBI("nostalgy-statusbar");
  nostalgy_label = gEBI("statusbar-nostalgy-label");

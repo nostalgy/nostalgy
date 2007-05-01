@@ -18,26 +18,25 @@
 
 
  <keyset id="mailKeys">
-  <key id="NostalgyChangeFolder"
-       nostalgy_key = "Go (change folder)"
+  <key id="nostalgy_key_go"
        key="G" 
        oncommand="NostalgyCmd('&nostalgy.go-memo;', ShowFolder, '');"/>
-  <key id = "NostalgySaveMessage"
+  <key id = "nostalgy_key_save"
        key="S" 
        oncommand="NostalgyCmd('&nostalgy.move-memo;', MoveToFolder, '');"/>
-  <key id = "NostalgySaveMessageSuggested"
+  <key id = "nostalgy_key_save_suggest"
        key="S" modifiers="shift" 
        oncommand="NostalgySuggested('&nostalgy.move-memo;',MoveToFolder);"/>
-  <key id = "NostalgyCopyMessage"
+  <key id = "nostalgy_key_copy"
        key="C" 
        oncommand="NostalgyCmd('&nostalgy.copy-memo;', CopyToFolder, '');"/>
-  <key id = "NostalgyCopyMessageSuggested"
+  <key id = "nostalgy_key_copy_suggest"
        key="C" modifiers="shift" 
        oncommand="NostalgySuggested('&nostalgy.copy-memo;',CopyToFolder);"/>
-  <key id = "NostalgyCollapseFolderPane"
+  <key id = "nostalgy_key_hide_folders"
        key="L" 
        oncommand="NostalgyCollapseFolderPane();"/>
-  <key id = "NostalgySearchSender"
+  <key id = "nostalgy_key_search_sender"
        key="`" 
        oncommand="NostalgySearchSender();"/>
 
@@ -77,9 +76,6 @@
          value="&nostalgy.memo;"/>
   </statusbarpanel>
  </statusbar>
-
-<!-- <tree id="threadTree" onclick="alert('Click' + NostalgyEscapePressed);">
- </tree> -->
 
 </overlay>
 

@@ -8,6 +8,11 @@ var nostalgy_label = null;
 var nostalgy_th_statusBar = null;
 var nostalgy_cmdLabel = null;
 
+
+//function NostalgyMessageTag(key, addKey) {
+//  alert("NostalgyMessageTag(key=" + key + ", addKey=" + addKey + ")");
+//}
+
 /** Keys **/
 
 function NostalgySetKey(s,k) {
@@ -149,6 +154,7 @@ var NostalgyRules =
     var rules = this.rules;
     var i = 0;
     var current_folder = full_folder_name(gDBView.msgFolder);
+    nostalgy_search_folder_options.require_file = true;
     for (i = 0; (i < rules.length) && (!folder); i++) {
       var r = rules[i];
       if (((r.subject && match_contains(subject,r.contains))
@@ -169,7 +175,7 @@ NostalgyRules.register();
 
 var default_label = "";
 var focus_saved = null;
-var command = null;
+var nostalgy_command = null;
 //var last_folder_author = new Array();
 //var last_folder_subject = new Array();
 var last_folder_server = new Array();
@@ -191,7 +197,16 @@ var NostalgyFolderListener = {
  OnItemEvent: function(folder, event) { }
 }
 
+function debug(aText)
+{
+  var csClass = Components.classes['@mozilla.org/consoleservice;1'];
+  var cs = csClass.getService(Components.interfaces.nsIConsoleService);
+  cs.logStringMessage(aText);
+}
+
 function onNostalgyLoad() {
+// ToggleMessageTag = NostalgyMessageTag;
+
  NostalgyRules.register_keys();
 
  nostalgy_folderBox = gEBI("nostalgy-folderbox");
@@ -274,16 +289,17 @@ function NostalgyCollapseFolderPane() {
 
 
 
-function NostalgyCmd(lab,cmd,init) {
+function NostalgyCmd(lab,cmd,require_file) {
  focus_saved = document.commandDispatcher.focusedElement;
  if (!focus_saved) { focus_saved = gEBI("messagepane").contentWindow; }
 
+ nostalgy_search_folder_options.require_file = require_file;
  nostalgy_cmdLabel.value = lab;
- command = cmd;
+ nostalgy_command = cmd;
  nostalgy_th_statusBar.hidden = true;
  nostalgy_folderBox.shell_completion = false;
  nostalgy_statusBar.hidden = false;
- nostalgy_folderBox.value = init;
+ nostalgy_folderBox.value = "";
 
  setTimeout(function() { 
     nostalgy_folderBox.focus();  
@@ -296,8 +312,8 @@ function NostalgyCmd(lab,cmd,init) {
 
 function NostalgyRunCommand() {
   var f = NostalgyResolveFolder(nostalgy_folderBox.value);
-  if (f) { command(f); }
-  else { alert("No folder " + nostalgy_folderBox.value); }
+  if (f) nostalgy_command(f); 
+  else alert("No folder " + nostalgy_folderBox.value);
   NostalgyHide();
 }
 
@@ -411,6 +427,11 @@ function NostalgySelectLastMsg() {
 }
 
 function ShowFolder(folder) {
+  if (folder.tag) {
+    ViewChange(kViewTagMarker + folder.key, folder.tag);
+    return;
+  }
+
   var folderTree = GetFolderTree();
   var totry = 1;
   var savedFolderView;
@@ -440,15 +461,28 @@ function ShowFolder(folder) {
   }
 }
 
+function NostalgyToggleMessageTag(tag) {
+  if (GetNumSelectedMessages() < 1) return;
+
+  var msgHdr = gDBView.hdrForFirstSelectedMessage;
+  var curKeys = msgHdr.getStringProperty("keywords");
+  if (msgHdr.label) curKeys += " $label" + msgHdr.label;
+  var addKey  = (" " + curKeys + " ").indexOf(" " + tag.key + " ") < 0;
+
+  ToggleMessageTag(tag.key,addKey);
+}
+
 function MoveToFolder(folder) {
  register_folder(folder);
- gDBView.doCommandWithFolder(nsMsgViewCommandType.moveMessages,folder);
+ if (folder.tag) NostalgyToggleMessageTag(folder);
+ else gDBView.doCommandWithFolder(nsMsgViewCommandType.moveMessages,folder);
  SetNextMessageAfterDelete();
 }
 
 function CopyToFolder(folder) {
  register_folder(folder);
- gDBView.doCommandWithFolder(nsMsgViewCommandType.copyMessages,folder);
+ if (folder.tag) NostalgyToggleMessageTag(folder);
+ else gDBView.doCommandWithFolder(nsMsgViewCommandType.copyMessages,folder);
 }
 
 function NostalgySuggested(lab,cmd) {
@@ -486,8 +520,9 @@ function NostalgyEscape(ev) {
     function(){ if (NostalgyEscapePressed==i) NostalgyEscapePressed = 0; },
     300);
   if (NostalgyEscapePressed == 3) { 
-	onClearSearch();
-	setTimeout(NostalgyFocusThreadPane,100);
+    onClearSearch();
+    ViewChange(kViewItemAll, "All");  // TODO: localized string
+    setTimeout(NostalgyFocusThreadPane,100);
   }
   if (NostalgyEscapePressed == 2) NostalgyFocusThreadPane();
 }

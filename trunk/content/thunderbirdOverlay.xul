@@ -20,16 +20,16 @@
  <keyset id="mailKeys">
   <key id="nostalgy_key_go"
        key="G" 
-       oncommand="NostalgyCmd('&nostalgy.go-memo;', ShowFolder, '');"/>
+       oncommand="NostalgyCmd('&nostalgy.go-memo;', ShowFolder, false);"/>
   <key id = "nostalgy_key_save"
        key="S" 
-       oncommand="NostalgyCmd('&nostalgy.move-memo;', MoveToFolder, '');"/>
+       oncommand="NostalgyCmd('&nostalgy.move-memo;', MoveToFolder, true);"/>
   <key id = "nostalgy_key_save_suggest"
        key="S" modifiers="shift" 
        oncommand="NostalgySuggested('&nostalgy.move-memo;',MoveToFolder);"/>
   <key id = "nostalgy_key_copy"
        key="C" 
-       oncommand="NostalgyCmd('&nostalgy.copy-memo;', CopyToFolder, '');"/>
+       oncommand="NostalgyCmd('&nostalgy.copy-memo;', CopyToFolder, true);"/>
   <key id = "nostalgy_key_copy_suggest"
        key="C" modifiers="shift" 
        oncommand="NostalgySuggested('&nostalgy.copy-memo;',CopyToFolder);"/>

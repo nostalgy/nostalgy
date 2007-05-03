@@ -8,11 +8,11 @@
 
  <keyset id="mailKeys">
   <key key="S" 
-       oncommand="NostalgyCmd('&nostalgy.move-memo;', MoveToFolder, '');"/>
+       oncommand="NostalgyCmd('&nostalgy.move-memo;', MoveToFolder, true);"/>
   <key key="S" modifiers="shift" 
        oncommand="NostalgySuggested('&nostalgy.move-memo;',MoveToFolder);"/>
   <key key="C" 
-       oncommand="NostalgyCmd('&nostalgy.copy-memo;', CopyToFolder, '');"/>
+       oncommand="NostalgyCmd('&nostalgy.copy-memo;', CopyToFolder, true);"/>
   <key key="C" modifiers="shift" 
        oncommand="NostalgySuggested('&nostalgy.copy-memo;',CopyToFolder);"/>
  </keyset>

@@ -93,7 +93,7 @@ uppercase, you don't need to press Shift.</p>
     <tr><td>Esc-F</td><td>Focus the folder pane</td></tr>
     <tr><td>Esc-M</td><td>Focus the message pane</td></tr>
     <tr><td>Esc-Esc</td><td>Focus the thread pane</td></tr>
-    <tr><td>Esc-Esc-Esc</td><td>Focus the thread pane, clear quick search box</td></tr>
+    <tr><td>Esc-Esc-Esc</td><td>Focus the thread pane, clear quick search box, select the "All" view</td></tr>
     <tr><td>Esc-I</td><td>Focus the quick search box</td></tr>
     <tr><td>Ctrl-Left/Right</td>
          <td>Scroll the message from the thread pane</td></tr>
@@ -151,6 +151,31 @@ uppercase, you don't need to press Shift.</p>
 	In the Sent folder, the search is done on the first recipient (To:
 	header)	instead.</li>
    </ul>
+
+   <h3>Tags</h3>
+
+   <p>
+   Starting from version 2.0, Thunderbird supports so-called tags, which
+   are a generalization of former labels. Tags can be defined by the
+   user and several tags can be attached to a message.
+   </p>
+
+   <p>
+   Nostalgy helps you use tags. In the completion box for Go/Save/Copy 
+   commands, existing tags will appear prefixed with a semi-colon.
+   A "Go" command applied to a tag will restrict the current folder view
+   to show only the messages that have this tag. A "Save" or a "Copy"
+   command applied to a tag will toggle this tag for the selected
+   messages (the first selected message is used to determine if the
+   tag has to be added or removed). Note that Save and Copy have the same
+   behavior when a tag is selected.
+   </p>
+
+   <p>
+   It is possible to use a tag instead of a folder as a target for
+   Nostalgy's rules.
+   </p>
+
 
    <h3>In the Composer</h3>
 

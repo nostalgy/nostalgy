@@ -1,3 +1,10 @@
+Since 0.2.6
+  - does not show Saved Search Folders for Copy/Move commands completion
+  - makes it possible to add/remove tags with the Copy/Move commands
+  - makes it possible to "go" to a tag (i.e. select the corresponding view)
+  - Esc-Esc-Esc selects the "All" view (in addition to clearing the Quick
+    Search box)
+
 0.2.6
   - allow the user to configure shortcuts
 

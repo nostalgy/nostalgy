@@ -21,6 +21,7 @@ function mayLowerCase(s) {
 }
 
 function full_folder_name(folder) {
+  if (folder.tag) return (":" + folder.tag);
   var uri = folder.prettyName;
   while (!folder.isServer) {
     folder = folder.parent;
@@ -30,6 +31,7 @@ function full_folder_name(folder) {
 }
 
 function short_folder_name(folder) {
+  if (folder.tag) return folder.tag;
   var uri = folder.prettyName;
   if (folder.isServer) { return uri; }
   folder = folder.parent;
@@ -261,6 +263,8 @@ function FindFolderCropped(uri) {
 /** Folder traversal **/
 
 function IterateFoldersAllServers(f) {
+ IterateTags(f);
+
  var amService = 
     Components.classes["@mozilla.org/messenger/account-manager;1"]
               .getService(Components.interfaces.nsIMsgAccountManager);
@@ -291,12 +295,22 @@ function CompareFolderNames(a,b) {
 
 var sorted_subfolders = new Array();
 
+// ugly: should be passed as argument to IterateFolders-like functions
+var nostalgy_search_folder_options = {
+   require_file: true  // do we want only folder to which we can copy/move
+                       // messages to? (excludes saved search folder)
+     
+};
+
 function ClearNostalgyCache() {
   sorted_subfolders = new Array();
 }
 
 function IterateSubfolders(folder,f) {
- if (!folder.isServer || !restrict_to_current_server) { 
+ if ((!folder.isServer || !restrict_to_current_server)
+     && (folder.canFileMessages || 
+         !nostalgy_search_folder_options.require_file))
+ { 
   try { f(folder); }
   catch (ex) { if (ex == 1) { return; } else { throw ex; } }
  }
@@ -328,8 +342,17 @@ function IterateSubfolders(folder,f) {
 }  
 
 function IterateFoldersCurrentServer(f) {
+ IterateTags(f);
  var server = gDBView.msgFolder.server;
  IterateSubfolders(server.rootMsgFolder,f);
+}
+
+function IterateTags(f) {
+ var tagService = 
+  Components.classes["@mozilla.org/messenger/tagservice;1"]
+            .getService(Components.interfaces.nsIMsgTagService);
+ var tagArray = tagService.getAllTags({});
+ for (var i = 0; i < tagArray.length; i++) f(tagArray[i]);
 }
 
 function IterateFolders(f) {

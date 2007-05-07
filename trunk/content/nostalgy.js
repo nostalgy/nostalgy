@@ -9,10 +9,6 @@ var nostalgy_th_statusBar = null;
 var nostalgy_cmdLabel = null;
 
 
-//function NostalgyMessageTag(key, addKey) {
-//  alert("NostalgyMessageTag(key=" + key + ", addKey=" + addKey + ")");
-//}
-
 /** Keys **/
 
 function NostalgySetKey(s,k) {
@@ -197,16 +193,7 @@ var NostalgyFolderListener = {
  OnItemEvent: function(folder, event) { }
 }
 
-function debug(aText)
-{
-  var csClass = Components.classes['@mozilla.org/consoleservice;1'];
-  var cs = csClass.getService(Components.interfaces.nsIConsoleService);
-  cs.logStringMessage(aText);
-}
-
 function onNostalgyLoad() {
-// ToggleMessageTag = NostalgyMessageTag;
-
  NostalgyRules.register_keys();
 
  nostalgy_folderBox = gEBI("nostalgy-folderbox");

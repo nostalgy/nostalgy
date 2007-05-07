@@ -4,6 +4,13 @@ var sort_folders = false;
 var match_case_sensitive = false;
 var tab_shell_completion = false;
 
+function NostalgyDebug(aText)
+{
+  var csClass = Components.classes['@mozilla.org/consoleservice;1'];
+  var cs = csClass.getService(Components.interfaces.nsIConsoleService);
+  cs.logStringMessage(aText);
+}
+
 function NostalgyCrop(s) {
   var len = 120;
   var l = s.length;
@@ -31,7 +38,7 @@ function full_folder_name(folder) {
 }
 
 function short_folder_name(folder) {
-  if (folder.tag) return folder.tag;
+  if (folder.tag) return (":" + folder.tag);
   var uri = folder.prettyName;
   if (folder.isServer) { return uri; }
   folder = folder.parent;
@@ -40,6 +47,11 @@ function short_folder_name(folder) {
     folder = folder.parent;
   }
   return uri;
+}
+
+function nostalgy_prettyName(folder) {
+ if (folder.tag) return (":" + folder.tag);
+ return folder.prettyName;
 }
 
 function folder_name(folder) {
@@ -64,7 +76,7 @@ function LongestCommonPrefix(s1,s2) {
 
 function NostalgyFolderMatch(f,reg) {
   if (match_only_folder_name) {
-    return (mayLowerCase(f.prettyName).match(reg) ||
+    return (mayLowerCase(nostalgy_prettyName(f)).match(reg) ||
             mayLowerCase(folder_name(f)).search(reg) == 0);
   } else {
     return (mayLowerCase(folder_name(f)).match(reg));
@@ -348,10 +360,12 @@ function IterateFoldersCurrentServer(f) {
 }
 
 function IterateTags(f) {
+ try {
  var tagService = 
   Components.classes["@mozilla.org/messenger/tagservice;1"]
             .getService(Components.interfaces.nsIMsgTagService);
  var tagArray = tagService.getAllTags({});
+ } catch (ex) { NostalgyDebug(ex); return; }
  for (var i = 0; i < tagArray.length; i++) f(tagArray[i]);
 }
 

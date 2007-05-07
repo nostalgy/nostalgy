@@ -1,4 +1,9 @@
-Since 0.2.6
+Since 0.2.7
+  - make it work again with TB 1.5
+  - bug fix: prefix tags with ":" even in "Restrict to current server mode"
+  - bug fix for "match only on folder name"
+
+0.2.7
   - does not show Saved Search Folders for Copy/Move commands completion
   - makes it possible to add/remove tags with the Copy/Move commands
   - makes it possible to "go" to a tag (i.e. select the corresponding view)

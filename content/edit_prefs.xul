@@ -69,8 +69,11 @@ shortcuts to move/copy the message to this folder.</label>
    <checkbox label="Sort folders alphabetically"
              id="sort_folders" accesskey="S"/>
    <checkbox label="Match folder names in a case sensitive way"
-             id="match_case_sensitive" accesskey="C"/>   <checkbox label="Tab triggers shell-like completion (otherwise, cycle through suggestions)"
+             id="match_case_sensitive" accesskey="C"/>   
+   <checkbox label="Tab triggers shell-like completion (otherwise, cycle through suggestions)"
              id="tab_shell_completion" accesskey="T"/>
+   <checkbox label="Always include tags"
+             id="always_include_tags"/> 
  </groupbox>
  </tabpanel>
 

@@ -152,30 +152,29 @@ uppercase, you don't need to press Shift.</p>
 	header)	instead.</li>
    </ul>
 
-   <h3>Tags</h3>
+<h3>Tags</h3>
 
-   <p>
-   Starting from version 2.0, Thunderbird supports so-called tags, which
-   are a generalization of former labels. Tags can be defined by the
-   user and several tags can be attached to a message.
-   </p>
 
-   <p>
-   Nostalgy helps you use tags. In the completion box for Go/Save/Copy 
-   commands, existing tags will appear prefixed with a semi-colon.
-   A "Go" command applied to a tag will restrict the current folder view
-   to show only the messages that have this tag. A "Save" or a "Copy"
-   command applied to a tag will toggle this tag for the selected
-   messages (the first selected message is used to determine if the
-   tag has to be added or removed). Note that Save and Copy have the same
-   behavior when a tag is selected.
-   </p>
+<p> Starting from version 2.0, Thunderbird supports tags, along
+with traditional folders, as a way to organize your
+messages. Thunderbird's tagging feature replaces its former labeling
+feature, and allows users to define an unlimited number of tags, more
+than one of which can be attached to a single message. </p>
 
-   <p>
-   It is possible to use a tag instead of a folder as a target for
-   Nostalgy's rules.
-   </p>
+<p>Nostalgy helps you use tags in much the same way it helps you use folders:
+The completion box for the Go/Save/Copy commands has always listed your
+email folders, but for Thunderbird 2.0, it also lists your existing tags,
+prefixed with a semi-colon.</p>
 
+<p>A "Go" command applied to a tag restricts the current folder view to show
+only the messages that have this tag (Esc-Esc-Esc restores the "All
+messages" view). A "Save" or a "Copy" command applied to a tag toggles the
+tag on or off for the selected messages (the first selected message is used
+to determine if the tag has to be added or removed). Note that Save and Copy
+have the same behavior when applied to tags.</p>
+
+<p>You may also use tags rather than folders as targets for Nostalgy's
+rules.</p>
 
    <h3>In the Composer</h3>
 
@@ -204,12 +203,14 @@ opens the file attachment dialog.</p>
    <p>Here is a description of the completion options:</p>
  
    <ul>
-   <li>The first switch restricts the lookup to folders on the same
+   <li><b>Restrict folder completion to the current server:</b>
+   limit lookup to folders on the same
    server/account as the currently active folder. In this mode,
    the server name is not displayed (and must not be typed) in
    the input line and the completion box.</li>
 
-   <li>The second switch forces Nostalgy to interpret differently what
+   <li><b>Match only on folder name, not on the full path:</b>
+      force Nostalgy to interpret differently what
       is typed in the text. Normally, when the option is disabled, 
       it is interpreted as a regexp which can match an arbitrary substring
       of the complete folder name (including the account name and 
@@ -217,20 +218,23 @@ opens the file attachment dialog.</p>
       the regexp must match either a substring of the local folder name
       (not the full name) or a prefix of the full folder name.</li>
 
-   <li>The third switch sorts folder in the completion box in alphabetical
-   order.</li>
+   <li><b>Sort folders alphabetically</b>.</li>
   
-   <li>The fourth switch controls whether folder names are matched
-   in a case sensitive or insensitive way.</li>
+   <li><b>Match folder names in a case sensitive way</b>.</li>
 
-   <li>The fifth switch controls whether the Tab key triggers shell-like
-      completion. If it is unchecked, Tab simply cycles through suggestions,
-      like the down arrow key.</li>
+
+   <li><b>Tab triggers shell-like completion (otherwise, cycle through suggestions)</b>.</li>
+
+   <li><b>Always include tags</b>: if set, tags are always included
+in the completion box; otherwise, tags are included only if
+the input box starts with a colon character, or if no folder matches.
+</li>
    </ul>
 
    <hr/>
 
-   <p>The Nostalgy extension has been written by Alain Frisch (<tt>Alain.Frisch@inria.fr</tt>). Comments ands suggestions are welcome!</p>
+   <p>The Nostalgy extension has been written by Alain Frisch (<tt>Alain.Frisch@inria.fr</tt>). Comments and suggestions are welcome!  Donations
+can be sent to the Paypal account <tt>alain@frisch.fr</tt>.</p>
   </body>
 </html>
 

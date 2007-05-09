@@ -1,3 +1,8 @@
+Since 0.2.8
+  - new option "always include tags"; when disabled, tags are added to the
+    completion box only if the input box starts with ":" or if
+    there is no matching folder
+
 0.2.8
   - make it work again with TB 1.5
   - bug fix: prefix tags with ":" even in "Restrict to current server mode"

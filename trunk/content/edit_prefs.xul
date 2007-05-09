@@ -5,7 +5,7 @@
 <dialog
         xmlns:html="http://www.w3.org/1999/xhtml"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-	buttons="accept,cancel,extra2"
+	buttons="accept,extra2"
 	ondialogaccept="return onAcceptChanges();"
 	ondialogextra2="openDialog('chrome://nostalgy/content/about.xul', 'about_nostalgy', 'resizable');"
 	buttonlabelextra2="Nostalgy usage directions..."

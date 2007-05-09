@@ -12,7 +12,7 @@ var keys = [
  ["copy_suggest","Copy as suggested","shift C"],
  ["go","Go to folder","G"],
  ["hide_folders","Hide folder pane","L"],
- ["search_sender","Show messages from same sender","`"]
+ ["search_sender","Show messages from same sender","`"],
 ];
 
 (function () {

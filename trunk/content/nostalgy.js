@@ -52,26 +52,12 @@ var NostalgyRules =
         this._branch.QueryInterface(Components.interfaces.nsIPrefBranch2);
     this._branch2.addObserver("", this, false);
     this.get_rules();
-    try {
-     restrict_to_current_server = 
-         this._branch.getBoolPref("restrict_to_current_server");
-    } catch (ex) { }
-    try {
-     match_only_folder_name = 
-         this._branch.getBoolPref("match_only_folder_name");
-    } catch (ex) { }
-    try {
-     sort_folders = 
-         this._branch.getBoolPref("sort_folders");
-    } catch (ex) { }
-    try {
-     match_case_sensitive =
-         this._branch.getBoolPref("match_case_sensitive");
-    } catch (ex) { }
-    try {
-     tab_shell_completion =
-         this._branch.getBoolPref("tab_shell_completion");
-    } catch (ex) { }
+
+    for (var n in nostalgy_completion_options) {
+      try {
+        nostalgy_completion_options[n] = this._branch.getBoolPref(n);
+      } catch (ex) { }
+    }
   },
 
   register_keys: function() {
@@ -119,27 +105,15 @@ var NostalgyRules =
   observe: function(aSubject, aTopic, aData)
   {
     if(aTopic != "nsPref:changed") return;
-    switch (aData) {
-      case "rules":
-        this.get_rules();
-        if (!in_message_window) { NostalgyDefLabel(); }
-        break;
-      case "restrict_to_current_server":
-        restrict_to_current_server = this._branch.getBoolPref(aData);
-        if (!in_message_window) { NostalgyDefLabel(); }
-        break;
-      case "match_only_folder_name":
-        match_only_folder_name = this._branch.getBoolPref(aData);
-        break;
-      case "sort_folders":
-        sort_folders = this._branch.getBoolPref(aData);
-        break;
-      case "match_case_sensitive":
-        match_case_sensitive = this._branch.getBoolPref(aData);
-        break;
-      case "tab_shell_completion":
-        tab_shell_completion = this._branch.getBoolPref(aData);
-        break;
+    if (aData == "rules") {
+      this.get_rules();
+      if (!in_message_window) NostalgyDefLabel();
+      return;
+    }
+    if (nostalgy_completion_options[aData] != undefined) {
+     nostalgy_completion_options[aData] = this._branch.getBoolPref(aData);
+     if (!in_message_window) NostalgyDefLabel();
+     return;
     }
     if (aData.match("keys.")) this.register_keys();
   },
@@ -359,7 +333,7 @@ function NostalgySuggest() {
 // r = last_folder_subject[MailSubject()];
 // if (r) { return(r); }
 
- if (restrict_to_current_server) { 
+ if (nostalgy_completion_options.restrict_to_current_server) { 
    return(last_folder_server[gDBView.msgFolder.server.key]); 
  } else { 
    return(last_folder); 

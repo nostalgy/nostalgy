@@ -1,8 +1,11 @@
-var restrict_to_current_server = false;
-var match_only_folder_name = false;
-var sort_folders = false;
-var match_case_sensitive = false;
-var tab_shell_completion = false;
+var nostalgy_completion_options = {
+  restrict_to_current_server : false,
+  match_only_folder_name : false,
+  sort_folders : false,
+  match_case_sensitive : false,
+  tab_shell_completion : false,
+  always_include_tags  : false
+};
 
 function NostalgyDebug(aText)
 {
@@ -24,7 +27,10 @@ function NostalgyMakeRegexp(s) {
 }
 
 function mayLowerCase(s) {
-  if (!match_case_sensitive) { return (s.toLowerCase()); } else { return s; }
+  if (!nostalgy_completion_options.match_case_sensitive) 
+    return (s.toLowerCase());
+  else 
+    return s;
 }
 
 function full_folder_name(folder) {
@@ -55,7 +61,7 @@ function nostalgy_prettyName(folder) {
 }
 
 function folder_name(folder) {
-  if (restrict_to_current_server) {
+  if (nostalgy_completion_options.restrict_to_current_server) {
     return(short_folder_name(folder));
   } else {
     return(full_folder_name(folder));
@@ -75,7 +81,7 @@ function LongestCommonPrefix(s1,s2) {
 /** Autocompletion of folders **/
 
 function NostalgyFolderMatch(f,reg) {
-  if (match_only_folder_name) {
+  if (nostalgy_completion_options.match_only_folder_name) {
     return (mayLowerCase(nostalgy_prettyName(f)).match(reg) ||
             mayLowerCase(folder_name(f)).search(reg) == 0);
   } else {
@@ -94,9 +100,10 @@ function NostalgyAutocomplete(box) {
 NostalgyAutocomplete.prototype.onStartLookup = 
 function(text, results, listener) {
  var items = this.xresults.items;
+ var nb = 0;
  items.Clear();
 
- IterateMatches(text, this.box.shell_completion, function (folder) {
+ var f = function (folder) {
   var newitem = 
    Components.classes[
     "@mozilla.org/autocomplete/item;1"
@@ -104,7 +111,18 @@ function(text, results, listener) {
   newitem.value = NostalgyCrop(folder_name(folder));
 
   items.AppendElement(newitem);
- });
+  nb++;
+ }; 
+
+ nostalgy_search_folder_options.do_tags = 
+   nostalgy_completion_options.always_include_tags || 
+   (text.substr(0,1) == ":");
+ IterateMatches(text, this.box.shell_completion, f);
+ if (nb == 0 && !nostalgy_search_folder_options.do_tags) {
+  nostalgy_search_folder_options.do_tags = true;
+  IterateMatches(text, this.box.shell_completion, f);
+ }
+
  this.xresults.searchString = text;
  this.xresults.defaultItemIndex = 0;
  listener.onAutoComplete(this.xresults, 1);
@@ -151,7 +169,7 @@ function NostalgyProcessKeyPress(aEvent) {
   var killEvent = false;
   switch (aEvent.keyCode) {
    case KeyEvent.DOM_VK_TAB:
-     if (tab_shell_completion) {
+     if (nostalgy_completion_options.tab_shell_completion) {
        this.shell_completion = true;
        this.value = NostalgyCompleteUnique(this.value); 
        this.processInput();
@@ -309,9 +327,9 @@ var sorted_subfolders = new Array();
 
 // ugly: should be passed as argument to IterateFolders-like functions
 var nostalgy_search_folder_options = {
-   require_file: true  // do we want only folder to which we can copy/move
-                       // messages to? (excludes saved search folder)
-     
+   require_file: true,  // do we want only folder to which we can copy/move
+                        // messages to? (excludes saved search folder)
+   do_tags: false
 };
 
 function ClearNostalgyCache() {
@@ -319,7 +337,8 @@ function ClearNostalgyCache() {
 }
 
 function IterateSubfolders(folder,f) {
- if ((!folder.isServer || !restrict_to_current_server)
+ if ((!folder.isServer || 
+      !nostalgy_completion_options.restrict_to_current_server)
      && (folder.canFileMessages || 
          !nostalgy_search_folder_options.require_file))
  { 
@@ -328,7 +347,7 @@ function IterateSubfolders(folder,f) {
  }
  var arr;
  if (folder.hasSubFolders) {
-  if (sort_folders) {
+  if (nostalgy_completion_options.sort_folders) {
     arr = sorted_subfolders[full_folder_name(folder)];
     if (arr) { for (var n in arr) { IterateSubfolders(arr[n],f); }
                 return; }
@@ -340,12 +359,12 @@ function IterateSubfolders(folder,f) {
   while (!done) {
    var subfolder = subfolders.currentItem().
                    QueryInterface(Components.interfaces.nsIMsgFolder);
-   if (sort_folders) { arr.push(subfolder); } 
+   if (nostalgy_completion_options.sort_folders) { arr.push(subfolder); } 
    else { IterateSubfolders(subfolder,f); }
    try {subfolders.next();}
    catch(e) {done = true;}
   }
-  if (sort_folders) {
+  if (nostalgy_completion_options.sort_folders) {
     arr.sort(CompareFolderNames);
     sorted_subfolders[full_folder_name(folder)] = arr;
     for (var n in arr) { IterateSubfolders(arr[n],f); }
@@ -360,6 +379,7 @@ function IterateFoldersCurrentServer(f) {
 }
 
 function IterateTags(f) {
+ if (!nostalgy_search_folder_options.do_tags) return;
  try {
  var tagService = 
   Components.classes["@mozilla.org/messenger/tagservice;1"]
@@ -370,8 +390,9 @@ function IterateTags(f) {
 }
 
 function IterateFolders(f) {
- if (restrict_to_current_server) { IterateFoldersCurrentServer(f); }
- else { IterateFoldersAllServers(f); }
+ if (nostalgy_completion_options.restrict_to_current_server) 
+   IterateFoldersCurrentServer(f);
+ else IterateFoldersAllServers(f);
 }
 
 function IterateMatches(uri,shell,f) {

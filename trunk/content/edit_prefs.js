@@ -5,14 +5,6 @@ var gList = null;
 var wait_key = null;
 var wait_key_old = "";
 
-var boolPrefs = [ 
- "restrict_to_current_server",
- "match_only_folder_name",
- "sort_folders",
- "match_case_sensitive",
- "tab_shell_completion"
-];
-
 var keys = [
  ["save","Save message","S"],
  ["save_suggest","Save as suggested","shift S"],
@@ -164,10 +156,8 @@ function onAcceptChanges() {
                          getService(Components.interfaces.nsIPrefBranch);
   prefs.setCharPref("extensions.nostalgy.rules", MkPrefStr());
 
-  for (var i in boolPrefs) {
-    var n = boolPrefs[i];
+  for (var n in nostalgy_completion_options)
     prefs.setBoolPref("extensions.nostalgy."+n,	gEBI(n).checked);
-  }
  
   if (wait_key) { wait_key.value = wait_key_old; wait_key = null; }
   for (var i in keys)
@@ -230,10 +220,8 @@ function onNostalgyLoad() {
    for (i = 0; i < r.length; i++) { CreateItem(r[i]); }
   } catch (ex) { }
 
- for (var i in boolPrefs) {
-   var n = boolPrefs[i];
+ for (var n in nostalgy_completion_options)
    gEBI(n).checked = getBoolPref(prefs, n);
- }
 
  for (var i in keys) {
   var v = keys[i][2];

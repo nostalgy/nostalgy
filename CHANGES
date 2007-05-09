@@ -2,6 +2,7 @@ Since 0.2.8
   - new option "always include tags"; when disabled, tags are added to the
     completion box only if the input box starts with ":" or if
     there is no matching folder
+  - it is possible to create a new tag in the completion box
 
 0.2.8
   - make it work again with TB 1.5

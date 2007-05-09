@@ -271,11 +271,40 @@ function NostalgyCmd(lab,cmd,require_file) {
 }
 
 
+function NostalgyCreateTag(name) {
+ var tagService = 
+    Components.classes["@mozilla.org/messenger/tagservice;1"]
+              .getService(Components.interfaces.nsIMsgTagService);
+ tagService.addTag(name, '', '');
+ var key = tagService.getKeyForTag(name);
+ var ok = false;
+ var args = {result: "", keyToEdit: key, 
+             okCallback: function(){ ok = true; } };
+ var dialog = window.openDialog(
+                              "chrome://messenger/content/newTagDialog.xul",
+                              "",
+                              "chrome,titlebar,modal",
+                              args);    
+  if (ok) nostalgy_command({ tag:name,key:key });   
+  else tagService.deleteKey(key);
+}
+
 function NostalgyRunCommand() {
-  var f = NostalgyResolveFolder(nostalgy_folderBox.value);
-  if (f) nostalgy_command(f); 
-  else alert("No folder " + nostalgy_folderBox.value);
   NostalgyHide();
+  var s = nostalgy_folderBox.value;
+  var f = NostalgyResolveFolder(s);
+  if (f) nostalgy_command(f); 
+  else { 
+    if (s.substr(0,1) == ":" && s != ":") {
+      var name;
+      if (s.substr(s.length-1,1) == ":") 
+         name = s.substr(1,s.length - 2);
+      else 
+         name = s.substr(1,s.length - 1);
+      NostalgyCreateTag(name);
+    } else
+      alert("No folder " + s);
+  }
 }
 
 function MailRecipients() {

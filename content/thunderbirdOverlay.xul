@@ -21,6 +21,9 @@
   <key id="nostalgy_key_go"
        key="G" 
        oncommand="NostalgyCmd('&nostalgy.go-memo;', ShowFolder, false);"/>
+  <key id="nostalgy_key_go_suggest"
+       key="G" modifiers="shift" 
+       oncommand="NostalgySuggested('&nostalgy.go-memo;', ShowFolder);"/>
   <key id = "nostalgy_key_save"
        key="S" 
        oncommand="NostalgyCmd('&nostalgy.move-memo;', MoveToFolder, true);"/>

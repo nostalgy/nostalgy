@@ -7,7 +7,8 @@ var nostalgy_statusBar = null;
 var nostalgy_label = null;
 var nostalgy_th_statusBar = null;
 var nostalgy_cmdLabel = null;
-
+var custom_keys = { };
+var timeout_regkey = 0;
 
 /** Keys **/
 
@@ -72,6 +73,17 @@ var NostalgyRules =
        } catch (ex) { }
       }
     }
+    var a = this._branch.getChildList("actions.", { });
+    custom_keys = { };
+    var s = "";
+    for (var i in a) {
+      var id = a[i].substr(8);
+      try {
+        var key = this._branch.getCharPref("keys." + id);
+        var cmd = this._branch.getCharPref("actions." + id);
+       custom_keys[key] = cmd;
+      } catch (ex) { }
+    }
   },
 
   unregister: function()
@@ -115,7 +127,12 @@ var NostalgyRules =
      if (!in_message_window) NostalgyDefLabel();
      return;
     }
-    if (aData.match("keys.")) this.register_keys();
+    if (aData.match("keys.")) {
+      if (timeout_regkey) return;
+      timeout_regkey = 1;
+      var r = this;
+      setTimeout(function() { timeout_regkey = 0; r.register_keys(); }, 1000);
+    }
   },
 
   apply: function(sender,subject,recipients)
@@ -153,7 +170,8 @@ var last_folder = null;
 var gsuggest_folder = null;
 
 function onNostalgyResize() {
-  nostalgy_label.parentNode.maxWidth = document.width * 6 / 10;
+  if (nostalgy_label)
+    nostalgy_label.parentNode.maxWidth = document.width * 6 / 10;
 }
 
 var NostalgyFolderListener = {
@@ -529,17 +547,36 @@ function NostalgyFocusMessagePane() {
   }
 }
 
+var last_cycle_restrict_value = null;
+var last_cycle_restrict = 0;
+
 function NostalgySearchSender() {
+  var input = GetSearchInput();
+  try {
   var recips = gDBView.msgFolder.displayRecipients;
   var key = gDBView.hdrForFirstSelectedMessage.messageKey;
-  var input = GetSearchInput();
   input.focus();
-  input.searchMode =  1; // sender = kQuickSearchSender
+  input.showingSearchCriteria = false;
+  input.clearButtonHidden = false;
   var name = (recips ? MailRecipName() : MailAuthorName());
-  if (input.value == name) input.value = ""; else input.value = name;
-  onEnterInSearchBar(true);
+  var subj = MailSubject();
+  if (input.value != last_cycle_restrict_value) last_cycle_restrict = 0;
+  last_cycle_restrict++;
+  if (last_cycle_restrict == 1)
+  { input.value = name; input.searchMode = kQuickSearchSender; }
+  else if (last_cycle_restrict == 2)
+  { input.value = subj; input.searchMode = kQuickSearchSubject; }
+  else
+  { last_cycle_restrict = 0; input.value = ""; }
+  last_cycle_restrict_value = input.value;
+  onEnterInSearchBar();
   SetFocusThreadPane();
   gDBView.selectMsgByKey(key);
+  } catch (ex) { 
+   input.focus();
+   last_cycle_restrict = 0; input.value = "";  onEnterInSearchBar();
+   SetFocusThreadPane();
+  }
 }
 
 function onNostalgyKeyPress(ev) {
@@ -556,6 +593,7 @@ function onNostalgyKeyPress(ev) {
       GetSearchInput().focus();
       ev.preventDefault();
     }
+    return;
   } 
   if (!nostalgy_statusBar.hidden &&
       document.commandDispatcher.focusedElement.nodeName != "html:input") {
@@ -564,7 +602,22 @@ function onNostalgyKeyPress(ev) {
       nostalgy_folderBox.value =  nostalgy_folderBox.value + 
           String.fromCharCode(ev.charCode);
     }
-      ev.preventDefault();
+    ev.preventDefault();
+    return;
+  }
+  var k = custom_keys[RecognizeKey(ev)];
+  if (k) { ParseCommand(k); ev.preventDefault(); }
+}
+
+function ParseCommand(k) {
+  var spl = k.match(/(.*) -> (.*)/);
+  var folder = NostalgyResolveFolder(spl[2]);
+  if (!folder) { alert("Cannot find folder " + folder); return; }
+  switch (spl[1]) {
+   case "Go": ShowFolder(folder); break;
+   case "Save": MoveToFolder(folder); break;
+   case "Copy": CopyToFolder(folder); break;
+   default: alert("Unknown command " + spl[1]); return;
   }
 }
 

@@ -1,8 +1,12 @@
-Since 0.2.8
+0.2.9
+  - the user can define custom shortcuts (Go/Save/Copy to some specific folder)
+  - new "shift-G" shortcut (Go as suggested)
   - new option "always include tags"; when disabled, tags are added to the
     completion box only if the input box starts with ":" or if
     there is no matching folder
-  - it is possible to create a new tag in the completion box
+  - it is possible to create new tags in the completion box
+  - the "`" shortcut now cycles through "view messages from same sender"
+    -> "view messages with same subject" -> "normal view"
 
 0.2.8
   - make it work again with TB 1.5

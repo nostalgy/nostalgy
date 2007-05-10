@@ -34,21 +34,19 @@
 
     <row>
       <label value="for substring"/>
-      <textbox id="contains"/>
+      <textbox id="contains" onkeypress="OnKeyPressTxt(event);"/>
     </row>
 
     <row>
       <label value="when message is under folder"/>
-      <textbox type="autocomplete" tabScrolling="false" id="underselect"
-             flex="3" maxrows="15" crop="end" ontextentered="ChooseUnder();"
-             ontextcommand="ChooseUnder();"/>
+      <textbox type="autocomplete" id="underselect"
+               nostalgyfolderbox="ChooseUnder();"/>
     </row>
 
     <row>
       <label value="then save to"/>
-      <textbox type="autocomplete" tabScrolling="false" id="folderselect"
-             flex="3" maxrows="15" crop="end"  ontextcommand="ChooseUnder();"
-             ontextentered="ChooseFolder();"/>
+      <textbox type="autocomplete" id="folderselect"
+             nostalgyfolderbox="ChooseFolder();"/>
     </row>
   </rows>
 </grid>

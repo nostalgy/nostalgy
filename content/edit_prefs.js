@@ -4,6 +4,11 @@ var gList = null;
 
 var wait_key = null;
 var wait_key_old = "";
+var key_rows = null;
+var folder_select = null;
+var kKeysPrefs = "extensions.nostalgy.keys.";
+var kCustomActionsPrefs = "extensions.nostalgy.actions.";
+var max_custom = (-1);
 
 var keys = [
  ["save","Save message","S"],
@@ -11,8 +16,9 @@ var keys = [
  ["copy","Copy message","C"],
  ["copy_suggest","Copy as suggested","shift C"],
  ["go","Go to folder","G"],
+ ["go_suggest","Go as suggested","shift G"],
  ["hide_folders","Hide folder pane","L"],
- ["search_sender","Show messages from same sender","`"],
+ ["search_sender","Show messages with same sender/same subject","`"],
 ];
 
 (function () {
@@ -161,8 +167,27 @@ function onAcceptChanges() {
  
   if (wait_key) { wait_key.value = wait_key_old; wait_key = null; }
   for (var i in keys)
-    prefs.setCharPref("extensions.nostalgy.keys."+keys[i][0],
-                      gEBI("key_" + keys[i][0]).value);
+    prefs.setCharPref(kKeysPrefs+keys[i][0],gEBI("key_" + keys[i][0]).value);
+
+
+  var a = prefs.getChildList(kKeysPrefs, { });
+  for (var i in a) {
+    var id = a[i].substr(kKeysPrefs.length);
+    if (id.substr(0,1) == "_") {
+      try {
+       prefs.clearUserPref(kKeysPrefs+id);
+       prefs.clearUserPref(kCustomActionsPrefs+id); 
+      } catch (ex) { }
+    }
+  }
+
+  var e = document.getElementsByTagName("label");
+  for (var i = 0; i < e.length; i++)
+   if (e[i].id.substr(0,5) == "key__") {
+      var id = e[i].id.substr(4);
+      prefs.setCharPref(kKeysPrefs+id,e[i].value);
+      prefs.setCharPref(kCustomActionsPrefs+id,e[i].previousSibling.value);
+   }
 
   window.close();
 }
@@ -197,19 +222,34 @@ function createElem(tag,attrs,children) {
 }
 
 function createKeyRow(id,txt,v) {
+  var is_custom = id.substr(0,1) == "_";
+  var buttons = [ ];
+  if (!is_custom)
+   buttons.push(createElem("label", { class:"text-link", value:"disable",
+          onclick:"this.parentNode.previousSibling.value = '(disabled)';"}));
+  else
+   buttons.push(createElem("label", { class:"text-link", value:"delete",
+          onclick:"RemoveRow(this.parentNode.parentNode);" }));
+
   return createElem("row",{ }, [
-    createElem("label", { value:txt+":" }),
+    createElem("label", { value:txt }),
     createElem("label", { id:"key_" + id, class:"text-link", 
                           value:v, 
                           onclick:"WaitKey(this);",
                           onblur:"Cancel(this);" }),
-    createElem("label", { class:"text-link", value:"disable",
-                   onclick:"this.previousSibling.value = '(disabled)';"} )
+    createElem("hbox", { }, buttons)
   ]);
 }
 
+function RemoveRow(r) {
+  r.parentNode.removeChild(r);
+}
+
 function onNostalgyLoad() {
+  NostalgyFolderSelectionBoxes();
+
   gList = gEBI("rules");
+  folder_select = gEBI("folderselect");
 
   var prefs = Components.classes["@mozilla.org/preferences-service;1"].
                          getService(Components.interfaces.nsIPrefBranch);
@@ -223,12 +263,26 @@ function onNostalgyLoad() {
  for (var n in nostalgy_completion_options)
    gEBI(n).checked = getBoolPref(prefs, n);
 
- for (var i in keys) {
+ key_rows = gEBI("key_rows");
+ for (var i = 0; i < keys.length; i++) {
   var v = keys[i][2];
   try {
-    v = prefs.getCharPref("extensions.nostalgy.keys." + keys[i][0]);
+    v = prefs.getCharPref(kKeysPrefs + keys[i][0]);
   } catch (ex) { }
-  gEBI("key_rows").appendChild(createKeyRow(keys[i][0],keys[i][1],v));
+  key_rows.appendChild(createKeyRow(keys[i][0],keys[i][1],v));
+ }
+
+ var a = prefs.getChildList(kKeysPrefs, { });
+ for (var i in a) {
+   var id = a[i].substr(kKeysPrefs.length);
+   if (id.substr(0,1) == "_") {
+     var n = parseInt(id.substr(1));
+     try {
+       if (n > max_custom) max_custom = n; 
+       var cmd = prefs.getCharPref(kCustomActionsPrefs + id);
+       key_rows.appendChild(createKeyRow(id,cmd,prefs.getCharPref(a[i])));
+     } catch (ex) { }
+   }
  }
 }
 
@@ -244,6 +298,9 @@ function onKeyPress(ev) {
   } else if (wait_key && ev.keyCode != 13) {
     Recognize(ev,wait_key);
     wait_key = null;
+  } else if (ev.keyCode == KeyEvent.DOM_VK_RETURN) {
+    ev.preventDefault();
+    ev.stopPropagation();
   }
 }
 
@@ -251,29 +308,8 @@ function onKeyPress(ev) {
 function Recognize(ev, tgt) {
  ev.preventDefault();
  ev.stopPropagation();
-
- var gVKNames = [];
-
- for (var property in KeyEvent) {
-  gVKNames[KeyEvent[property]] = property.replace("DOM_VK_","");
- }
-
- var comps = [];
- if(ev.altKey) comps.push("alt");
- if(ev.ctrlKey) comps.push("control");
- if(ev.metaKey) comps.push("meta");
- if(ev.shiftKey) comps.push("shift");
-
-
- var k = "";
- if(ev.charCode == 32) k = "SPACE";
- else if(ev.charCode) k = String.fromCharCode(ev.charCode).toUpperCase();
- else k = gVKNames[ev.keyCode];
-
- if (!k) return;
- comps.push(k);
-
- tgt.value = comps.join(" ");
+ var k = RecognizeKey(ev);
+ if (k) tgt.value = k;
 }
 
 function WaitKey(tgt) {
@@ -284,7 +320,32 @@ function WaitKey(tgt) {
 }
 
 function Cancel(tgt) {
-  if (tgt == wait_key) { wait_key.value = wait_key_old; wait_key = null; }
+  if (tgt == wait_key) { 
+   var old = wait_key_old;
+   setTimeout(function() {
+      if (document.commandDispatcher.focusedElement != tgt) {
+        tgt.value = old;
+        if (tgt == wait_key) wait_key = null;
+      }
+   },500);
+  }
+}
+
+function SelectFolder() {
+  if (folder_select.value != "") {
+    var folder = NostalgyResolveFolder(folder_select.value);
+    if (folder) { 
+      var name = folder_name(folder);
+      max_custom++;
+      var cmd = gEBI("cmdkind").selectedItem.value;
+      key_rows.appendChild(createKeyRow("_" + max_custom,cmd + " -> " + name,
+                           "(disabled)"));
+      folder_select.value = "";
+      var e = gEBI("key__" + max_custom);
+      e.focus();
+      WaitKey(e);
+    }
+  }
 }
 
 window.addEventListener("load", onNostalgyLoad, false);

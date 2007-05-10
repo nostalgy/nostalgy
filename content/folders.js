@@ -212,10 +212,27 @@ function NostalgyProcessKeyPress(aEvent) {
 }
 
 function NostalgyFolderSelectionBox(box) {
+ var cmd = box.getAttribute("nostalgyfolderbox");
+ if (cmd) {
+  box.setAttribute("ontextentered",cmd);
+  box.setAttribute("ontextcommand",cmd);
+  box.setAttribute("maxrows","15");
+  box.setAttribute("crop","end");
+  box.setAttribute("flex","3");
+  box.setAttribute("tabScrolling","false");
+ }
+
  box.shell_completion = false;
  box.addSession(new NostalgyAutocomplete(box));
  box.processInput = NostalgyProcessInput;  
  box.processKeyPress = NostalgyProcessKeyPress; 
+}
+
+function NostalgyFolderSelectionBoxes() {
+ var e = document.getElementsByTagName("textbox");
+ for (var i = 0; i < e.length; i++)
+  if (e[i].hasAttribute("nostalgyfolderbox"))
+    NostalgyFolderSelectionBox(e[i]);
 }
 
 /** Looking up folders by name **/
@@ -410,5 +427,31 @@ function IterateMatches(uri,shell,f) {
      });
     } catch (ex) { }
   }
+}
+
+
+var gVKNames = null;
+
+function RecognizeKey(ev) {
+ if (gVKNames == null) {
+  gVKNames = [];
+  for (var property in KeyEvent)
+    gVKNames[KeyEvent[property]] = property.replace("DOM_VK_","");
+ }
+
+ var comps = [];
+ if(ev.altKey) comps.push("alt");
+ if(ev.ctrlKey) comps.push("control");
+ if(ev.metaKey) comps.push("meta");
+ if(ev.shiftKey) comps.push("shift");
+
+ var k = "";
+ if(ev.charCode == 32) k = "SPACE";
+ else if(ev.charCode) k = String.fromCharCode(ev.charCode).toUpperCase();
+ else k = gVKNames[ev.keyCode];
+
+ if (!k) return "";
+ comps.push(k);
+ return comps.join(" ");
 }
 

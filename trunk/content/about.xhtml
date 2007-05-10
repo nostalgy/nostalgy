@@ -107,6 +107,14 @@ uppercase, you don't need to press Shift.</p>
    displayed message (up and down) by pressing Ctrl-Left/Ctrl-Right.
    </p>
 
+   <h3>Custom shortcuts</h3>
+
+   <p>
+   In the preference dialog, you can define any number of custom
+   keyboard shortcuts. A custom shortcut triggers
+   a Go, a Save or a Copy command to a specific folder.
+   </p>
+
    <h3>Rules</h3>
 
    <p>Nostalgy has a notion of rule. A rule associates a folder to a
@@ -115,8 +123,8 @@ uppercase, you don't need to press Shift.</p>
    A rule can be restricted to match messages only under
    a given server/folder. When a rule selects a folder for a given message,
     Nostalgy
-   informs you in the status line.  You can then use the Shift-S/Shift-C
-   shortcuts to move/copy directly the message to this folder.  
+   informs you in the status line.  You can then use the Shift-S/Shift-C/Shift-G
+   shortcuts to move/copy/go directly to this folder.  
    Nostalgy's rules can be edited from the preference dialog.</p>
 
    <p>
@@ -128,7 +136,7 @@ uppercase, you don't need to press Shift.</p>
 
    <p>
    When no rule apply to a given message, Nostalgy proposes to re-use
-   (with Shift-S/Shift-C) the folder same as for the last move/copy 
+   (with Shift-S/Shift-C/Shift-G) the folder same as for the last move/copy 
    operation folder. If the folder lookup has been restricted
    to the current server (in the Nostalgy preference dialog), then
    the last operation folder is attached to the current server. Otherwise,
@@ -147,9 +155,11 @@ uppercase, you don't need to press Shift.</p>
    <li>The key "`" (backquote) launches a QuickSearch for messages
 	from the same sender as the currently selected message.
 	This re-creates the famous Alt-Click behavior from Eudora.
-	If you press the same key again, the QuickSearch is cancelled.
+	If you press the same key again, messages with the same
+        subject are searched. And if you press again,
+        the QuickSearch is cancelled.
 	In the Sent folder, the search is done on the first recipient (To:
-	header)	instead.</li>
+	header)	instead of the sender.</li>
    </ul>
 
 <h3>Tags</h3>
@@ -204,7 +214,8 @@ opens the file attachment dialog.</p>
    defined. The second tab has five switches to control the way the completion
    box (where folder names are proposed) is populated (see below).
    The third pane allows you to configure Nostalgy's shortcuts
-   (click on the key to change it) or to disable some of them.
+   (click on the key to change it), to disable some of them,
+   or to manage custom shortcuts.
    You might need to restart Thunderbird for changes to shortcuts
    to take effect.
    </p>

@@ -8,11 +8,11 @@ function onNostalgyLoad() {
  var rule = window.arguments[0];
  if (!rule) { alert("rule=null!"); }
 
+ NostalgyFolderSelectionBoxes();
+
  gContainsSelect = gEBI("contains");
  gFolderSelect = gEBI("folderselect");
- NostalgyFolderSelectionBox(gFolderSelect);
  gUnderSelect = gEBI("underselect");
- NostalgyFolderSelectionBox(gUnderSelect);
 
  gContainsSelect.focus();
 
@@ -25,9 +25,17 @@ function onNostalgyLoad() {
 }
 
 function onAcceptChanges() {
+/*
+ var f = document.commandDispatcher.focusedElement;
+ while (f && f.tagName != "textbox") f = f.parentNode;
+ if (f && f.hasAttribute("nostalgyfolderbox"))
+   eval(f.getAttribute("nostalgyfolderbox"));
+*/
+
  var folder = FindFolderExact(gFolderSelect.value);
  if (!folder) {
    alert("Please choose an existing folder");
+   gFolderSelect.focus();
    return false;
  }
  if (gContainsSelect.value == "") {
@@ -59,6 +67,14 @@ function ChooseUnder() {
     var under = NostalgyResolveFolder(gUnderSelect.value);
     if (under) { gUnderSelect.value = folder_name(under); }
     setTimeout(function(){gFolderSelect.focus();},30);
+  }
+}
+
+function OnKeyPressTxt(ev) {
+  if (ev.keyCode==KeyEvent.DOM_VK_RETURN) {
+   setTimeout(function(){gUnderSelect.focus();},30);
+   ev.preventDefault();
+   ev.stopPropagation();
   }
 }
 

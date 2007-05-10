@@ -79,10 +79,21 @@ shortcuts to move/copy the message to this folder.</label>
 
  <tabpanel>
  <groupbox style="width:800px">
-   <grid>
+   <grid style="overflow:auto; height:300px">
    <columns> <column/> <column width="150"/> <column/> </columns>
    <rows id="key_rows"/>
    </grid>
+  <separator orient="horizontal"/>
+  <hbox>
+  <radiogroup id="cmdkind" orient="horizontal">
+  <radio value="Go" label="Go" selected="true"/>
+  <radio value="Save" label="Save"/>
+  <radio value="Copy" label="Copy"/>
+  </radiogroup>
+  <textbox style="width:600px" type="autocomplete" id="folderselect" 
+           nostalgyfolderbox="SelectFolder();"/>
+  <button label="Create"  oncommand="SelectFolder();"/>
+  </hbox>
  </groupbox>
  </tabpanel>
  </tabpanels>

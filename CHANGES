@@ -1,3 +1,7 @@
+Since 0.2.9
+  - bug fix: custom shortcuts did not work in mode "restrict to current
+    server"
+
 0.2.9
   - the user can define custom shortcuts (Go/Save/Copy to some specific folder)
   - new "shift-G" shortcut (Go as suggested)

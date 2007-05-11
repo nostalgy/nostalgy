@@ -611,8 +611,8 @@ function onNostalgyKeyPress(ev) {
 
 function ParseCommand(k) {
   var spl = k.match(/(.*) -> (.*)/);
-  var folder = NostalgyResolveFolder(spl[2]);
-  if (!folder) { alert("Cannot find folder " + folder); return; }
+  var folder = FindFolderExact(spl[2]);
+  if (!folder) { alert("Cannot find folder " + spl[2]); return; }
   switch (spl[1]) {
    case "Go": ShowFolder(folder); break;
    case "Save": MoveToFolder(folder); break;

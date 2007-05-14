@@ -7,6 +7,8 @@ Since 0.2.9
     is not defined" messages in the Error Console
   - bug fix: "G"oing to a Virtual Folder did not work
   - bug fix: Virtual Folders could not be selected for custom shortcuts
+  - bug fix: customized keys for Save/Copy commands did not work
+    in stand-alone message windows 
 
 0.2.9
   - the user can define custom shortcuts (Go/Save/Copy to some specific folder)

@@ -1,4 +1,4 @@
-Since 0.2.9
+0.2.10
   - bug fix: custom shortcuts did not work in mode "restrict to current
     server"
   - bug fix: the folder cache was invalidated when messages were added to

@@ -344,7 +344,7 @@ var sorted_subfolders = new Array();
 
 // ugly: should be passed as argument to IterateFolders-like functions
 var nostalgy_search_folder_options = {
-   require_file: true,  // do we want only folder to which we can copy/move
+   require_file: false, // do we want only folder to which we can copy/move
                         // messages to? (excludes saved search folder)
    do_tags: false
 };

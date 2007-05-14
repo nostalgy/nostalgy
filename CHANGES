@@ -1,6 +1,12 @@
 Since 0.2.9
   - bug fix: custom shortcuts did not work in mode "restrict to current
     server"
+  - bug fix: the folder cache was invalidated when messages were added to
+    or deleted from an imap folder
+  - bug fix: the folder listener was not unloaded, causing "ClearNostalgyCache
+    is not defined" messages in the Error Console
+  - bug fix: "G"oing to a Virtual Folder did not work
+  - bug fix: Virtual Folders could not be selected for custom shortcuts
 
 0.2.9
   - the user can define custom shortcuts (Go/Save/Copy to some specific folder)

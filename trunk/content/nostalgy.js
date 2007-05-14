@@ -141,6 +141,7 @@ var NostalgyRules =
     var rules = this.rules;
     var i = 0;
     var current_folder = full_folder_name(gDBView.msgFolder);
+    var save_req = nostalgy_search_folder_options.require_file;
     nostalgy_search_folder_options.require_file = true;
     for (i = 0; (i < rules.length) && (!folder); i++) {
       var r = rules[i];
@@ -152,6 +153,7 @@ var NostalgyRules =
         folder = FindFolderExact(r.folder);
       }
     }
+    nostalgy_search_folder_options.require_file = save_req;
     return folder;
   }
 }
@@ -175,14 +177,27 @@ function onNostalgyResize() {
 }
 
 var NostalgyFolderListener = {
- OnItemAdded: function(parentItem, item) { ClearNostalgyCache(); },
- OnItemRemoved: function(parentItem, item) { ClearNostalgyCache(); },
+ OnItemAdded: function(parentItem, item) { 
+   try { var i = item.QueryInterface(Components.interfaces.nsIMsgFolder);
+   ClearNostalgyCache(); 
+ } catch (ex) { } },
+ OnItemRemoved: function(parentItem, item) { 
+   try { var i = item.QueryInterface(Components.interfaces.nsIMsgFolder);
+   ClearNostalgyCache(); 
+ } catch (ex) { } },
+
  OnItemPropertyChanged: function(item, property, oldValue, newValue) { },
  OnItemIntPropertyChanged: function(item, property, oldValue, newValue) { },
  OnItemBoolPropertyChanged: function(item, property, oldValue, newValue) { },
  OnItemUnicharPropertyChanged: function(item, property, oldValue, newValue){ },
  OnItemPropertyFlagChanged: function(item, property, oldFlag, newFlag) { },
  OnItemEvent: function(folder, event) { }
+}
+
+function NostalgyMailSession() {
+ var mSession = Components.classes[mailSessionContractID].getService();
+ if (!mSession) return mSessions;
+ return mSession.QueryInterface(Components.interfaces.nsIMsgMailSession);
 }
 
 function onNostalgyLoad() {
@@ -213,22 +228,16 @@ function onNostalgyLoad() {
  // Don't know why, but the blur event does not seem to be fired properly...
 
 
- var mSession = Components.classes[mailSessionContractID].getService(Components.interfaces.nsIMsgMailSession);
+ var mSession = NostalgyMailSession();
  var nsIFolderListener = Components.interfaces.nsIFolderListener;
- var notifyFlags = nsIFolderListener.added | nsIFolderListener.removed;
- mSession.AddFolderListener(NostalgyFolderListener, notifyFlags);
-
- // NostalgyKeys();
+ if (mSession) 
+   mSession.AddFolderListener(NostalgyFolderListener, 
+      nsIFolderListener.added | nsIFolderListener.removed);
 }
 
-function NostalgyKeys() {
-  var nodes = this.document.getElementsByTagName("key");
-  for (i = 0, l = nodes.length; i < l; i++) 
-   if (nodes[i].getAttribute("nostalgy_key")) {
-     alert(nodes[i].getAttribute("nostalgy_key") + " = " +
-           nodes[i].getAttribute("key"));
-     nodes[i].setAttribute("key","O");
-   }
+function onNostalgyUnload() {
+ var mSession = NostalgyMailSession();
+ if (mSession) mSession.RemoveFolderListener(NostalgyFolderListener);
 }
 
 function NostalgyHideIfBlurred() {
@@ -623,6 +632,7 @@ function ParseCommand(k) {
 
 window.addEventListener("load", onNostalgyLoad, false);
 window.addEventListener("resize", onNostalgyResize, false);
+window.addEventListener("unload", onNostalgyUnload, false);
 if (!in_message_window) {
   window.addEventListener("keypress", onNostalgyKeyPress, false);
 } 

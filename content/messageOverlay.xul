@@ -7,13 +7,13 @@
  <script src="nostalgy.js"/>
 
  <keyset id="mailKeys">
-  <key key="S" 
+  <key key="S" id = "nostalgy_key_save"
        oncommand="NostalgyCmd('&nostalgy.move-memo;', MoveToFolder, true);"/>
-  <key key="S" modifiers="shift" 
+  <key key="S" modifiers="shift" id = "nostalgy_key_save_suggest"
        oncommand="NostalgySuggested('&nostalgy.move-memo;',MoveToFolder);"/>
-  <key key="C" 
+  <key key="C" id = "nostalgy_key_copy"
        oncommand="NostalgyCmd('&nostalgy.copy-memo;', CopyToFolder, true);"/>
-  <key key="C" modifiers="shift" 
+  <key key="C" modifiers="shift" id = "nostalgy_key_copy_suggest"
        oncommand="NostalgySuggested('&nostalgy.copy-memo;',CopyToFolder);"/>
  </keyset>
 

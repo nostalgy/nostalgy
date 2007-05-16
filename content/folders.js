@@ -278,11 +278,14 @@ function FirstCompletion(uri) {
 function FindFolderExact(uri) {
  var ret = null;
  var u = mayLowerCase(uri);
+ var save_req = nostalgy_search_folder_options.require_file;
+ nostalgy_search_folder_options.require_file = false;
  try {
   IterateFoldersAllServers(function (folder) {
    if (mayLowerCase(full_folder_name(folder)) == u) { ret = folder; throw(0); }
   });
  } catch (ex) { }
+ nostalgy_search_folder_options.require_file = save_req;
  return ret;
 }
 

@@ -8,13 +8,13 @@
 
  <keyset id="mailKeys">
   <key key="S" id = "nostalgy_key_save"
-       oncommand="NostalgyCmd('&nostalgy.move-memo;', MoveToFolder, true);"/>
+       oncommand="NostalgyCmd('&nostalgy.move-memo;', NostalgyMoveToFolder, true);"/>
   <key key="S" modifiers="shift" id = "nostalgy_key_save_suggest"
-       oncommand="NostalgySuggested('&nostalgy.move-memo;',MoveToFolder);"/>
+       oncommand="NostalgySuggested('&nostalgy.move-memo;',NostalgyMoveToFolder);"/>
   <key key="C" id = "nostalgy_key_copy"
-       oncommand="NostalgyCmd('&nostalgy.copy-memo;', CopyToFolder, true);"/>
+       oncommand="NostalgyCmd('&nostalgy.copy-memo;', NostalgyCopyToFolder, true);"/>
   <key key="C" modifiers="shift" id = "nostalgy_key_copy_suggest"
-       oncommand="NostalgySuggested('&nostalgy.copy-memo;',CopyToFolder);"/>
+       oncommand="NostalgySuggested('&nostalgy.copy-memo;',NostalgyCopyToFolder);"/>
  </keyset>
 
  <commandset id="tasksCommands">

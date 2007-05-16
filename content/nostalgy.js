@@ -141,8 +141,6 @@ var NostalgyRules =
     var rules = this.rules;
     var i = 0;
     var current_folder = full_folder_name(gDBView.msgFolder);
-    var save_req = nostalgy_search_folder_options.require_file;
-    nostalgy_search_folder_options.require_file = true;
     for (i = 0; (i < rules.length) && (!folder); i++) {
       var r = rules[i];
       if (((r.subject && match_contains(subject,r.contains))
@@ -153,7 +151,6 @@ var NostalgyRules =
         folder = FindFolderExact(r.folder);
       }
     }
-    nostalgy_search_folder_options.require_file = save_req;
     return folder;
   }
 }
@@ -320,7 +317,7 @@ function NostalgyRunCommand() {
   NostalgyHide();
   var s = nostalgy_folderBox.value;
   var f = NostalgyResolveFolder(s);
-  if (f) nostalgy_command(f); 
+  if (f) { alert(f); alert(nostalgy_command); nostalgy_command(f); }
   else { 
     if (s.substr(0,1) == ":" && s != ":") {
       var name;
@@ -443,7 +440,7 @@ function NostalgySelectLastMsg() {
   }
 }
 
-function ShowFolder(folder) {
+function NostalgyShowFolder(folder) {
   if (folder.tag) {
     ViewChange(kViewTagMarker + folder.key, folder.tag);
     return;
@@ -489,14 +486,16 @@ function NostalgyToggleMessageTag(tag) {
   ToggleMessageTag(tag.key,addKey);
 }
 
-function MoveToFolder(folder) {
+function NostalgyMoveToFolder(folder) {
+ alert("xxx");
  register_folder(folder);
+ alert("yyy");
  if (folder.tag) NostalgyToggleMessageTag(folder);
  else gDBView.doCommandWithFolder(nsMsgViewCommandType.moveMessages,folder);
  SetNextMessageAfterDelete();
 }
 
-function CopyToFolder(folder) {
+function NostalgyCopyToFolder(folder) {
  register_folder(folder);
  if (folder.tag) NostalgyToggleMessageTag(folder);
  else gDBView.doCommandWithFolder(nsMsgViewCommandType.copyMessages,folder);
@@ -623,9 +622,9 @@ function ParseCommand(k) {
   var folder = FindFolderExact(spl[2]);
   if (!folder) { alert("Cannot find folder " + spl[2]); return; }
   switch (spl[1]) {
-   case "Go": ShowFolder(folder); break;
-   case "Save": MoveToFolder(folder); break;
-   case "Copy": CopyToFolder(folder); break;
+   case "Go": NostalgyShowFolder(folder); break;
+   case "Save": NostalgyMoveToFolder(folder); break;
+   case "Copy": NostalgyCopyToFolder(folder); break;
    default: alert("Unknown command " + spl[1]); return;
   }
 }

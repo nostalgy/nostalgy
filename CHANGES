@@ -1,3 +1,7 @@
+Since 0.2.10
+  - bug fix: Virtual Folder were not found under some circumstances
+  - bug fix: internal naming conflict with the Habu extension
+
 0.2.10
   - bug fix: custom shortcuts did not work in mode "restrict to current
     server"

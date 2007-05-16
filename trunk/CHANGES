@@ -1,4 +1,4 @@
-Since 0.2.10
+0.2.11
   - bug fix: Virtual Folder were not found under some circumstances
   - bug fix: internal naming conflict with the Habu extension
 

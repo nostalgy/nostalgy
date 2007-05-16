@@ -317,7 +317,7 @@ function NostalgyRunCommand() {
   NostalgyHide();
   var s = nostalgy_folderBox.value;
   var f = NostalgyResolveFolder(s);
-  if (f) { alert(f); alert(nostalgy_command); nostalgy_command(f); }
+  if (f) nostalgy_command(f);
   else { 
     if (s.substr(0,1) == ":" && s != ":") {
       var name;
@@ -487,9 +487,7 @@ function NostalgyToggleMessageTag(tag) {
 }
 
 function NostalgyMoveToFolder(folder) {
- alert("xxx");
  register_folder(folder);
- alert("yyy");
  if (folder.tag) NostalgyToggleMessageTag(folder);
  else gDBView.doCommandWithFolder(nsMsgViewCommandType.moveMessages,folder);
  SetNextMessageAfterDelete();

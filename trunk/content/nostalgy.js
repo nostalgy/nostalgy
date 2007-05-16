@@ -363,7 +363,15 @@ function MailRecipName()
 }
 
 function MailSubject() {
- return(gDBView.hdrForFirstSelectedMessage.subject.toLowerCase());
+ var s = gDBView.hdrForFirstSelectedMessage.mime2DecodedSubject.toLowerCase();
+ var old;
+
+ do { old = s; s = s.replace(/^\[fwd:|^fwd:|^fw:|^re:|^ |^e :|\]$/g, ""); } 
+ while (s != old);
+
+ do { old =s; s = s.replace(/^\[.*\]/g,""); } while (s != old);
+
+ return s;  
 }
 
 function register_folder(folder) {
@@ -630,6 +638,7 @@ function ParseCommand(k) {
 window.addEventListener("load", onNostalgyLoad, false);
 window.addEventListener("resize", onNostalgyResize, false);
 window.addEventListener("unload", onNostalgyUnload, false);
-if (!in_message_window) {
+
+if (!in_message_window) 
   window.addEventListener("keypress", onNostalgyKeyPress, false);
-} 
+

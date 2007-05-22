@@ -1,6 +1,6 @@
 0.2.12
   - bug fix: use the mime-decoded version for the subject (for matching
-    rules and searching messages with same subject); needed to solve
+    rules and searching messages with same subject); needed to deal
     with accents in subjects
   - remove re:/fwd:/[...] strings from subjects (for matching rules
     and searching messages with same subject)

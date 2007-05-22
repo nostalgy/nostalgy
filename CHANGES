@@ -1,4 +1,4 @@
-Since 0.2.11
+0.2.12
   - bug fix: use the mime-decoded version for the subject (for matching
     rules and searching messages with same subject); needed to solve
     with accents in subjects

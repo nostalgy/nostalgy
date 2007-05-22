@@ -5,7 +5,7 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="nostalgy@alain.frisch"
                    em:name="Nostalgy"
-                   em:version="0.2.11"
+                   em:version="0.2.12"
                    em:creator="Alain Frisch"
                    em:description="Adds shortcuts to change folder, move message, with folder completion"
                    em:homepageURL="http://alain.frisch.fr/soft_mozilla.html"

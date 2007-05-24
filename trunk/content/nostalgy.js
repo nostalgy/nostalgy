@@ -619,6 +619,7 @@ function onNostalgyKeyPress(ev) {
     ev.preventDefault();
     return;
   }
+  if (ev.originalTarget.localName == "input") return;
   var k = custom_keys[RecognizeKey(ev)];
   if (k) { ParseCommand(k); ev.preventDefault(); }
 }
@@ -639,6 +640,7 @@ window.addEventListener("load", onNostalgyLoad, false);
 window.addEventListener("resize", onNostalgyResize, false);
 window.addEventListener("unload", onNostalgyUnload, false);
 
-if (!in_message_window) 
+if (!in_message_window)
   window.addEventListener("keypress", onNostalgyKeyPress, false);
+
 

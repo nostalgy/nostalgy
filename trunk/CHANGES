@@ -1,3 +1,7 @@
+Since 0.2.13
+  - bug fix: custom shortcuts should not be recognized when typing
+    in a text box (QuickSearch or Nostalgy's completion box)
+
 0.2.12
   - bug fix: use the mime-decoded version for the subject (for matching
     rules and searching messages with same subject); needed to deal

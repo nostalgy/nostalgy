@@ -369,7 +369,7 @@ function MailSubject() {
  do { old = s; s = s.replace(/^\[fwd:|^fwd:|^fw:|^re:|^ |^e :|\]$/g, ""); } 
  while (s != old);
 
- do { old =s; s = s.replace(/^\[.*\]/g,""); } while (s != old);
+ // do { old =s; s = s.replace(/^\[.*\]/g,""); } while (s != old);
 
  return s;  
 }
@@ -606,6 +606,41 @@ function onNostalgyKeyPress(ev) {
     if (ev.charCode == 105) { // I
       GetSearchInput().focus();
       ev.preventDefault();
+    }
+    if (ev.charCode == 120) { // X
+      var gMsgCompose = 
+	Components.classes["@mozilla.org/messengercompose/compose;1"].
+	createInstance(Components.interfaces.nsIMsgCompose);
+      var sAccountManager = 
+	Components.classes["@mozilla.org/messenger/account-manager;1"].
+	getService(Components.interfaces.nsIMsgAccountManager);
+
+      var identity = 
+	sAccountManager.allIdentities.GetElementAt(0).
+	QueryInterface(Components.interfaces.nsIMsgIdentity);
+      alert(identity.fullName);
+      var account = 
+	sAccountManager.defaultAccount;
+      alert(account);
+      var deliverMode = Components.interfaces.nsIMsgCompDeliverMode;
+      alert(msgWindow);
+      var progress = 
+	Components.classes["@mozilla.org/messenger/progress;1"].
+	createInstance(Components.interfaces.nsIMsgProgress);
+      var gTempEditorWindow = 
+	window.open("chrome://nostalgy/content/QREditor.xul", "_blank", "chrome,extrachrome,dialog='no',width=80,height=80,centerscreen,alwaysRaised");
+      var params = 
+	Components.classes["@mozilla.org/messengercompose/composeparams;1"].
+	createInstance(Components.interfaces.nsIMsgComposeParams);
+
+      params.identity = identity;
+      params.composeFields = compfields;
+      params.format = 2;  // PlainText
+
+      gMsgCompose.Initialize(gTempEditorWindow, params );
+      msgWindow.SetDOMWindow(window);
+      gMsgCompose.SendMsg(deliverMode.Now, identity, account.key, 
+			  msgWindow, progress);
     }
     return;
   } 

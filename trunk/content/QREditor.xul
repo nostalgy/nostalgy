@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!-- This window is necessary because the mozilla sendmsg function needs to close a window for many reasons-->
+<window id="QREditor" 
+			xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+            title="Sending Message Now"
+            persist="sizemode">
+
+<hbox id="QREditorBox" persist="height width" height="10" width="10">
+    <editor type="content-primary" id="QRtemp-content-frame" src="about:blank" name="browser.message.body" width="2"/>
+</hbox>
+</window>

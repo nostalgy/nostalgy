@@ -633,6 +633,14 @@ function onNostalgyKeyPress(ev) {
 	Components.classes["@mozilla.org/messengercompose/composeparams;1"].
 	createInstance(Components.interfaces.nsIMsgComposeParams);
 
+      var compfields = 
+	Components.classes["@mozilla.org/messengercompose/composefields;1"].
+	createInstance(Components.interfaces.nsIMsgCompFields);
+      
+      compfields.to = "alain.frisch@inria.fr";
+      compfields.subject = "Coucou !";
+      compfields.body = "this is the body\n:-)\n";
+
       params.identity = identity;
       params.composeFields = compfields;
       params.format = 2;  // PlainText

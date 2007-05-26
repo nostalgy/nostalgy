@@ -55,6 +55,8 @@ shortcuts to move/copy the message to this folder.</label>
   <separator orient="vertical"/>
   <button label="Move up" oncommand="DoMoveUp();"/>
   <button label="Move down" oncommand="DoMoveDown();"/>
+  <separator orient="vertical"/>
+  <button label="Send rules by email" oncommand="NostalgySendRules();"/>
   </hbox>
  </vbox>
  </groupbox>

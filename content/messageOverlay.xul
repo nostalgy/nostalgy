@@ -50,4 +50,13 @@
   </statusbarpanel>
  </statusbar>
 
+ <hbox id="expandedHeaderView">
+   <vbox insertafter="editMessageBox" class="header-part1">
+    <spacer flex="1"/>
+    <button id="nostalgy_extract_rules_buttons"
+	label="Import Nostalgy rules" oncommand="NostalgyExtractRules();" hidden="true"/>
+    <spacer flex="1"/>
+   </vbox>
+ </hbox>
+
 </overlay>

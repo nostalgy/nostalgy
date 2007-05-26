@@ -1,4 +1,5 @@
 Since 0.2.13
+  - a system to export/import Nostalgy's rules (through e-mails)
   - bug fix: custom shortcuts should not be recognized when typing
     in a text box (QuickSearch or Nostalgy's completion box)
 

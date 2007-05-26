@@ -7,6 +7,7 @@ var nostalgy_statusBar = null;
 var nostalgy_label = null;
 var nostalgy_th_statusBar = null;
 var nostalgy_cmdLabel = null;
+var nostalgy_extracted_rules = "";
 var custom_keys = { };
 var timeout_regkey = 0;
 
@@ -157,6 +158,17 @@ var NostalgyRules =
 
 NostalgyRules.register();
 
+function NostalgyExtractRules() {
+  var s = nostalgy_extracted_rules;
+  if (s == "") return;
+  if (confirm(
+"Do you want to install the rules contained in this message?\n"+
+"This will overwrite your current set of rules.\n"+
+"IMPORTANT: do this only if you trust the sender of this e-mail.\n"
+)) 
+    NostalgyRules._branch.setCharPref("rules", s)
+}
+
 /** Driver **/
 
 var default_label = "";
@@ -230,11 +242,50 @@ function onNostalgyLoad() {
  if (mSession) 
    mSession.AddFolderListener(NostalgyFolderListener, 
       nsIFolderListener.added | nsIFolderListener.removed);
+
+ Components.classes["@mozilla.org/observer-service;1"].
+   getService(Components.interfaces.nsIObserverService).
+   addObserver(NostalgyObserver, "MsgMsgDisplayed", false);
+
 }
+
+var NostalgyObserver = {
+  observe: function (subject, topic, state) {
+    if (!state) return;
+
+    subject = subject.QueryInterface(Components.interfaces.nsIMsgHeaderSink);
+    if (subject != msgWindow.msgHeaderSink) return; // another window
+
+    if (nostalgy_extracted_rules != "") {
+      var button = gEBI("nostalgy_extract_rules_buttons");
+      nostalgy_extracted_rules = "";
+      button.hidden = true;
+    }
+    
+    var doc = document.getElementById('messagepane').contentDocument;
+    var content = doc.body.textContent;
+    var b = "BEGIN RULES\n";
+    var i = content.indexOf(b);
+    if (i < 0) return;
+    i += b.length;
+    var j = content.indexOf("END RULES\n", i);
+    if (j < 0) return;
+
+    nostalgy_extracted_rules = content.substr(i, j - i);
+    if (nostalgy_extracted_rules != "") {
+      var button = gEBI("nostalgy_extract_rules_buttons");
+      button.hidden = false;
+    }
+  }
+};
 
 function onNostalgyUnload() {
  var mSession = NostalgyMailSession();
  if (mSession) mSession.RemoveFolderListener(NostalgyFolderListener);
+
+ Components.classes["@mozilla.org/observer-service;1"].
+   getService(Components.interfaces.nsIObserverService).
+   removeObserver(NostalgyObserver, "MsgMsgDisplayed");
 }
 
 function NostalgyHideIfBlurred() {
@@ -606,49 +657,6 @@ function onNostalgyKeyPress(ev) {
     if (ev.charCode == 105) { // I
       GetSearchInput().focus();
       ev.preventDefault();
-    }
-    if (ev.charCode == 120) { // X
-      var gMsgCompose = 
-	Components.classes["@mozilla.org/messengercompose/compose;1"].
-	createInstance(Components.interfaces.nsIMsgCompose);
-      var sAccountManager = 
-	Components.classes["@mozilla.org/messenger/account-manager;1"].
-	getService(Components.interfaces.nsIMsgAccountManager);
-
-      var identity = 
-	sAccountManager.allIdentities.GetElementAt(0).
-	QueryInterface(Components.interfaces.nsIMsgIdentity);
-      alert(identity.fullName);
-      var account = 
-	sAccountManager.defaultAccount;
-      alert(account);
-      var deliverMode = Components.interfaces.nsIMsgCompDeliverMode;
-      alert(msgWindow);
-      var progress = 
-	Components.classes["@mozilla.org/messenger/progress;1"].
-	createInstance(Components.interfaces.nsIMsgProgress);
-      var gTempEditorWindow = 
-	window.open("chrome://nostalgy/content/QREditor.xul", "_blank", "chrome,extrachrome,dialog='no',width=80,height=80,centerscreen,alwaysRaised");
-      var params = 
-	Components.classes["@mozilla.org/messengercompose/composeparams;1"].
-	createInstance(Components.interfaces.nsIMsgComposeParams);
-
-      var compfields = 
-	Components.classes["@mozilla.org/messengercompose/composefields;1"].
-	createInstance(Components.interfaces.nsIMsgCompFields);
-      
-      compfields.to = "alain.frisch@inria.fr";
-      compfields.subject = "Coucou !";
-      compfields.body = "this is the body\n:-)\n";
-
-      params.identity = identity;
-      params.composeFields = compfields;
-      params.format = 2;  // PlainText
-
-      gMsgCompose.Initialize(gTempEditorWindow, params );
-      msgWindow.SetDOMWindow(window);
-      gMsgCompose.SendMsg(deliverMode.Now, identity, account.key, 
-			  msgWindow, progress);
     }
     return;
   } 

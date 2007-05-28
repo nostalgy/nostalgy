@@ -10,17 +10,6 @@ var kKeysPrefs = "extensions.nostalgy.keys.";
 var kCustomActionsPrefs = "extensions.nostalgy.actions.";
 var max_custom = (-1);
 
-var keys = [
- ["save","Save message","S"],
- ["save_suggest","Save as suggested","shift S"],
- ["copy","Copy message","C"],
- ["copy_suggest","Copy as suggested","shift C"],
- ["go","Go to folder","G"],
- ["go_suggest","Go as suggested","shift G"],
- ["hide_folders","Hide folder pane","L"],
- ["search_sender","Show messages with same sender/same subject","`"],
-];
-
 (function () {
    var m = {
             '\b': '\\b',
@@ -218,8 +207,9 @@ function onAcceptChanges() {
     prefs.setBoolPref("extensions.nostalgy."+n,	gEBI(n).checked);
  
   if (wait_key) { wait_key.value = wait_key_old; wait_key = null; }
-  for (var i in keys)
-    prefs.setCharPref(kKeysPrefs+keys[i][0],gEBI("key_" + keys[i][0]).value);
+  for (var i in nostalgy_keys)
+    prefs.setCharPref(kKeysPrefs+nostalgy_keys[i][0],
+    gEBI("key_" + nostalgy_keys[i][0]).value);
 
 
   var a = prefs.getChildList(kKeysPrefs, { });
@@ -316,12 +306,12 @@ function onNostalgyLoad() {
    gEBI(n).checked = getBoolPref(prefs, n);
 
  key_rows = gEBI("key_rows");
- for (var i = 0; i < keys.length; i++) {
-  var v = keys[i][2];
+ for (var i = 0; i < nostalgy_keys.length; i++) {
+  var v = nostalgy_keys[i][2];
   try {
-    v = prefs.getCharPref(kKeysPrefs + keys[i][0]);
+    v = prefs.getCharPref(kKeysPrefs + nostalgy_keys[i][0]);
   } catch (ex) { }
-  key_rows.appendChild(createKeyRow(keys[i][0],keys[i][1],v));
+  key_rows.appendChild(createKeyRow(nostalgy_keys[i][0],nostalgy_keys[i][1],v));
  }
 
  var a = prefs.getChildList(kKeysPrefs, { });

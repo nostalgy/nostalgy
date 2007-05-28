@@ -4,18 +4,8 @@
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
  <script src="folders.js"/>
+ <script src="nostalgy_keys.js"/>
  <script src="nostalgy.js"/>
-
- <keyset id="mailKeys">
-  <key key="S" id = "nostalgy_key_save"
-       oncommand="NostalgyCmd('&nostalgy.move-memo;', NostalgyMoveToFolder, true);"/>
-  <key key="S" modifiers="shift" id = "nostalgy_key_save_suggest"
-       oncommand="NostalgySuggested('&nostalgy.move-memo;',NostalgyMoveToFolder);"/>
-  <key key="C" id = "nostalgy_key_copy"
-       oncommand="NostalgyCmd('&nostalgy.copy-memo;', NostalgyCopyToFolder, true);"/>
-  <key key="C" modifiers="shift" id = "nostalgy_key_copy_suggest"
-       oncommand="NostalgySuggested('&nostalgy.copy-memo;',NostalgyCopyToFolder);"/>
- </keyset>
 
  <commandset id="tasksCommands">
    <command id="cmd_nostalgyconfig" label="Nostalgy..." 

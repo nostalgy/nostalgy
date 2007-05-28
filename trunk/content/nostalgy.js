@@ -178,7 +178,23 @@ var NostalgyFolderListener = {
  OnItemBoolPropertyChanged: function(item, property, oldValue, newValue) { },
  OnItemUnicharPropertyChanged: function(item, property, oldValue, newValue){ },
  OnItemPropertyFlagChanged: function(item, property, oldFlag, newFlag) { },
- OnItemEvent: function(folder, event) { }
+ OnItemEvent: function(folder, event) { 
+   var evt = event.toString();
+   if (evt == "FolderLoaded") setTimeout(NostalgySelectLastMsg,50);
+   NostalgyDebug(event.toString()); 
+ }
+}
+
+function NostalgySelectMessageByNavigationType(type)
+{
+  var resultId = new Object;
+  var resultIndex = new Object;
+  var threadIndex = new Object;
+
+  gDBView.viewNavigate(type, resultId, resultIndex, threadIndex, true);
+
+  if ((resultId.value != nsMsgKey_None) && (resultIndex.value != nsMsgKey_None))
+    gDBView.selectMsgByKey(resultId.value);
 }
 
 function NostalgyMailSession() {
@@ -219,51 +235,62 @@ function onNostalgyLoad() {
  var nsIFolderListener = Components.interfaces.nsIFolderListener;
  if (mSession) 
    mSession.AddFolderListener(NostalgyFolderListener, 
-      nsIFolderListener.added | nsIFolderListener.removed);
+      nsIFolderListener.added | nsIFolderListener.removed | nsIFolderListener.event);
 
+ /*
  Components.classes["@mozilla.org/observer-service;1"].
    getService(Components.interfaces.nsIObserverService).
    addObserver(NostalgyObserver, "MsgMsgDisplayed", false);
+ */
 
+
+ var old_OnMsgParsed = OnMsgParsed;
+ OnMsgParsed = function (url) { old_OnMsgParsed(url); NostalgyOnMsgParsed(); };
 }
 
+function NostalgyOnMsgParsed() {
+  if (nostalgy_extracted_rules != "") {
+    var button = gEBI("nostalgy_extract_rules_buttons");
+    nostalgy_extracted_rules = "";
+    button.hidden = true;
+  }
+  
+  var doc = document.getElementById('messagepane').contentDocument;
+  var content = doc.body.textContent;
+  var b = "BEGIN RULES\n";
+  var i = content.indexOf(b);
+  if (i < 0) return;
+  i += b.length;
+  var j = content.indexOf("END RULES\n", i);
+  if (j < 0) return;
+  
+  nostalgy_extracted_rules = content.substr(i, j - i);
+  if (nostalgy_extracted_rules != "") {
+    var button = gEBI("nostalgy_extract_rules_buttons");
+    button.hidden = false;
+  }
+}
+
+/*
 var NostalgyObserver = {
   observe: function (subject, topic, state) {
     if (!state) return;
-
     subject = subject.QueryInterface(Components.interfaces.nsIMsgHeaderSink);
     if (subject != msgWindow.msgHeaderSink) return; // another window
-
-    if (nostalgy_extracted_rules != "") {
-      var button = gEBI("nostalgy_extract_rules_buttons");
-      nostalgy_extracted_rules = "";
-      button.hidden = true;
-    }
-    
-    var doc = document.getElementById('messagepane').contentDocument;
-    var content = doc.body.textContent;
-    var b = "BEGIN RULES\n";
-    var i = content.indexOf(b);
-    if (i < 0) return;
-    i += b.length;
-    var j = content.indexOf("END RULES\n", i);
-    if (j < 0) return;
-
-    nostalgy_extracted_rules = content.substr(i, j - i);
-    if (nostalgy_extracted_rules != "") {
-      var button = gEBI("nostalgy_extract_rules_buttons");
-      button.hidden = false;
-    }
+    NostalgyOnMsgParsed();
   }
 };
+*/
 
 function onNostalgyUnload() {
  var mSession = NostalgyMailSession();
  if (mSession) mSession.RemoveFolderListener(NostalgyFolderListener);
 
+ /*
  Components.classes["@mozilla.org/observer-service;1"].
    getService(Components.interfaces.nsIObserverService).
    removeObserver(NostalgyObserver, "MsgMsgDisplayed");
+ */
 }
 
 function NostalgyHideIfBlurred() {
@@ -298,7 +325,7 @@ function NostalgyDefLabel() {
 
 function NostalgyCollapseFolderPane() {
  var fp = gEBI("folderPaneBox");
- fp.collapsed = !fp.collapsed;
+ if (fp) fp.collapsed = !fp.collapsed;
 }
 
 
@@ -471,9 +498,9 @@ function NostalgyEnsureFolderIndex(builder, msgFolder)
 }
 
 function NostalgySelectLastMsg() {
-  if (gDBView) {
-     if (gDBView.numSelected == 0)
-       gDBView.selectMsgByKey(gDBView.getKeyAt(0));
+  if (!gDBView) return;
+  try { gDBView.viewIndexForFirstSelectedMsg; } catch (ex) {
+    NostalgySelectMessageByNavigationType(nsMsgNavigationType.lastMessage);
   }
 }
 
@@ -560,7 +587,7 @@ var NostalgyEscapePressed = 0;
 
 function NostalgyFocusThreadPane() {
   SetFocusThreadPane();
-  NostalgySelectLastMsg();
+  // NostalgySelectLastMsg();
 }
 
 function NostalgyEscape(ev) {
@@ -593,6 +620,7 @@ var last_cycle_restrict_value = null;
 var last_cycle_restrict = 0;
 
 function NostalgySearchSender() {
+  if (!window.GetSearchInput) return;
   var input = GetSearchInput();
   try {
   var recips = gDBView.msgFolder.displayRecipients;

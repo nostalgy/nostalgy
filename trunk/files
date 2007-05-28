@@ -9,6 +9,7 @@ content/edit_rule.xul
 content/folders.js
 content/edit_rule.js
 content/composerOverlay.xul
+content/nostalgy_keys.js
 content/edit_prefs.js
 content/nostalgy.js
 locale/en-US/nostalgy.dtd

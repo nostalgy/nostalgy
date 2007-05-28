@@ -2,6 +2,7 @@ Since 0.2.13
   - a system to export/import Nostalgy's rules (through e-mails)
   - bug fix: custom shortcuts should not be recognized when typing
     in a text box (QuickSearch or Nostalgy's completion box)
+  - make it work with TB 3.0 (tested with 3.0a1pre 20070527)
 
 0.2.12
   - bug fix: use the mime-decoded version for the subject (for matching

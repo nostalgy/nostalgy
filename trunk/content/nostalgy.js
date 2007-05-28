@@ -8,27 +8,8 @@ var nostalgy_label = null;
 var nostalgy_th_statusBar = null;
 var nostalgy_cmdLabel = null;
 var nostalgy_extracted_rules = "";
-var custom_keys = { };
+var nostalgy_active_keys = { };
 var timeout_regkey = 0;
-
-/** Keys **/
-
-function NostalgySetKey(s,k) {
-  k.removeAttribute("modifiers");
-  k.removeAttribute("key");
-  k.removeAttribute("keycode");
-  k.removeAttribute("charcode");
-
-  if (s == "(disabled)") { k.setAttribute("keycode","VK_SHIFT"); return; }
-
-  var comps = s.split(/ /);
-  var mods = comps.slice(0,comps.length - 1).join(" ");
-  s = comps[comps.length-1];
-  
-  if (mods) k.setAttribute("modifiers",mods);
-  if (s.length == 1) k.setAttribute("key",s);
-  else k.setAttribute("keycode","VK_" + s);
-}
 
 /** Rules **/
 
@@ -63,26 +44,23 @@ var NostalgyRules =
   },
 
   register_keys: function() {
-    var keys = document.getElementsByTagName("key");
-    for (var i in keys) {
-      if (keys[i].id) {
-       var f = keys[i].id.match(/nostalgy_key_(.+)/);
-       if (f)
-       try {
-         var v = this._branch.getCharPref("keys." + f[1]);
-         NostalgySetKey(v,keys[i]);
-       } catch (ex) { }
-      }
+    nostalgy_active_keys = { };
+    for (var i in nostalgy_keys) {
+      var k = "";
+      try {
+	k = this._branch.getCharPref("keys." + nostalgy_keys[i][0]);
+      } catch (ex) { k = nostalgy_keys[i][2]; }
+      nostalgy_active_keys[k] = nostalgy_keys[i][3];
     }
+    
     var a = this._branch.getChildList("actions.", { });
-    custom_keys = { };
     var s = "";
     for (var i in a) {
       var id = a[i].substr(8);
       try {
         var key = this._branch.getCharPref("keys." + id);
         var cmd = this._branch.getCharPref("actions." + id);
-       custom_keys[key] = cmd;
+       nostalgy_active_keys[key] = cmd;
       } catch (ex) { }
     }
   },
@@ -558,14 +536,13 @@ function NostalgyCopyToFolder(folder) {
  else gDBView.doCommandWithFolder(nsMsgViewCommandType.copyMessages,folder);
 }
 
-function NostalgySuggested(lab,cmd) {
- if (gsuggest_folder) { cmd(gsuggest_folder); }
+function NostalgySuggested(cmd) {
+  if (gsuggest_folder) cmd(gsuggest_folder);
 }
 
 
 
 var NostalgyLastEscapeTimeStamp = 0;
-var NostalgyEscapeDown = false;
 
 function isThreadPaneFocused() { 
   return (WhichPaneHasFocus() == GetThreadTree()); 
@@ -646,15 +623,15 @@ function NostalgySearchSender() {
 
 function onNostalgyKeyPress(ev) {
   if (NostalgyEscapePressed >= 1) {
-    if (ev.charCode == 109) { // M
+    if (!in_message_window && ev.charCode == 109) { // M
       NostalgyFocusMessagePane();
       ev.preventDefault();
     } else
-    if (ev.charCode == 102) { // F
+    if (!in_message_window && ev.charCode == 102) { // F
       SetFocusFolderPane();
       ev.preventDefault();
     } else
-    if (ev.charCode == 105) { // I
+    if (!in_message_window && ev.charCode == 105) { // I
       GetSearchInput().focus();
       ev.preventDefault();
     }
@@ -671,11 +648,15 @@ function onNostalgyKeyPress(ev) {
     return;
   }
   if (ev.originalTarget.localName == "input") return;
-  var k = custom_keys[RecognizeKey(ev)];
+  var k = nostalgy_active_keys[RecognizeKey(ev)];
   if (k) { ParseCommand(k); ev.preventDefault(); }
 }
 
 function ParseCommand(k) {
+  if (k.indexOf("JS:") == 0) {
+    eval(k.substr(3,k.length - 3));
+    return;
+  }
   var spl = k.match(/(.*) -> (.*)/);
   var folder = FindFolderExact(spl[2]);
   if (!folder) { alert("Cannot find folder " + spl[2]); return; }
@@ -687,11 +668,14 @@ function ParseCommand(k) {
   }
 }
 
+function NostalgyGoCommand() {
+  if (!in_message_window) NostalgyCmd('Go to folder:', NostalgyShowFolder, false);
+}
+function NostalgyGoSuggestedCommand() {
+  if (!in_message_window) NostalgySuggested(NostalgyShowFolder);
+}
+
 window.addEventListener("load", onNostalgyLoad, false);
 window.addEventListener("resize", onNostalgyResize, false);
 window.addEventListener("unload", onNostalgyUnload, false);
-
-if (!in_message_window)
-  window.addEventListener("keypress", onNostalgyKeyPress, false);
-
-
+window.addEventListener("keypress", onNostalgyKeyPress, false);

@@ -12,6 +12,7 @@
         title="Nostalgy Preferences">
 
  <script src="folders.js"/>
+ <script src="nostalgy_keys.js"/>
  <script src="edit_prefs.js"/>
 
  <tabbox style="width:800px">

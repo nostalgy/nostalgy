@@ -4,6 +4,7 @@
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
  <script src="folders.js"/>
+ <script src="nostalgy_keys.js"/>
  <script src="nostalgy.js"/>
 
  <commandset id="tasksCommands">
@@ -18,31 +19,6 @@
 
 
  <keyset id="mailKeys">
-  <key id="nostalgy_key_go"
-       key="G" 
-       oncommand="NostalgyCmd('&nostalgy.go-memo;', NostalgyShowFolder, false);"/>
-  <key id="nostalgy_key_go_suggest"
-       key="G" modifiers="shift" 
-       oncommand="NostalgySuggested('&nostalgy.go-memo;', NostalgyShowFolder);"/>
-  <key id = "nostalgy_key_save"
-       key="S" 
-       oncommand="NostalgyCmd('&nostalgy.move-memo;', NostalgyMoveToFolder, true);"/>
-  <key id = "nostalgy_key_save_suggest"
-       key="S" modifiers="shift" 
-       oncommand="NostalgySuggested('&nostalgy.move-memo;',NostalgyMoveToFolder);"/>
-  <key id = "nostalgy_key_copy"
-       key="C" 
-       oncommand="NostalgyCmd('&nostalgy.copy-memo;', NostalgyCopyToFolder, true);"/>
-  <key id = "nostalgy_key_copy_suggest"
-       key="C" modifiers="shift" 
-       oncommand="NostalgySuggested('&nostalgy.copy-memo;',NostalgyCopyToFolder);"/>
-  <key id = "nostalgy_key_hide_folders"
-       key="L" 
-       oncommand="NostalgyCollapseFolderPane();"/>
-  <key id = "nostalgy_key_search_sender"
-       key="`" 
-       oncommand="NostalgySearchSender();"/>
-
   <key keycode="VK_LEFT" modifiers="control" 
        oncommand="NostalgyScrollMsg(-50);"/>
   <key keycode="VK_RIGHT" modifiers="control" 

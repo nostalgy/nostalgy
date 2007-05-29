@@ -337,13 +337,13 @@ function onKeyPress(ev) {
     ev.stopPropagation();
     wait_key.value = wait_key_old;
     wait_key = null;
-  } else if (wait_key && (ev.keyCode != 13 || ev.ctrlKey || ev.altKey)) {
+  } else if (wait_key) /* && (ev.keyCode != 13 || ev.ctrlKey || ev.altKey)) */ {
     Recognize(ev,wait_key);
     wait_key = null;
-  } else if (ev.keyCode == KeyEvent.DOM_VK_RETURN) {
+  } /* else if (ev.keyCode == KeyEvent.DOM_VK_RETURN) {
     ev.preventDefault();
     ev.stopPropagation();
-  }
+    } */
 }
 
 
@@ -391,4 +391,4 @@ function SelectFolder() {
 }
 
 window.addEventListener("load", onNostalgyLoad, false);
-window.addEventListener("keypress", onKeyPress, false);
+window.addEventListener("keypress", onKeyPress, true);

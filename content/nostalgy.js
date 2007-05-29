@@ -705,14 +705,15 @@ function NostalgySearchSender() {
   }
 }
 
-function NostalgySearchSelectAll() {
+function NostalgySearchSelectAll(select) {
   if (!gSearchInput || gSearchInput.value == "" 
       || gSearchInput.showingSearchCriteria) return;
 
   initializeSearchBar();
   nostalgy_on_search_done = function() {
     nostalgy_on_search_done = null;
-    gDBView.selection.selectAll();
+    if (select) gDBView.selection.selectAll();
+    else NostalgySelectLastMsg();
     SetFocusThreadPane();
   };
   onSearchInput(true);
@@ -792,15 +793,18 @@ function onNostalgyKeyPress(ev) {
     ev.preventDefault();
     return;
   }
-  if (kn == "ESCAPE" && nostalgy_search_focused) {
-    NostalgyFocusThreadPane();
+  if (ev.keyCode == KeyEvent.DOM_VK_ESCAPE && nostalgy_search_focused) {
+    Search(""); 
+    SetFocusThreadPane();
+    ev.stopPropagation();
     ev.preventDefault();
     return;
   }
-  if (ev.originalTarget.localName == "input" && !ev.ctrlKey && !ev.altKey) 
+  if (ev.charCode && ev.originalTarget.localName == "input" 
+      && !ev.ctrlKey && !ev.altKey) 
     return;
   var k = nostalgy_active_keys[kn];
-  if (k) { ParseCommand(k); ev.preventDefault();  ev.stopPropagation();}
+  if (k) { ParseCommand(k); ev.preventDefault(); ev.stopPropagation();}
 }
 
 function ParseCommand(k) {

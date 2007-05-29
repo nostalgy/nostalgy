@@ -1,18 +1,21 @@
 Since 0.2.13
-  - a system to export/import Nostalgy's rules (through e-mails)
-  - bug fix: custom shortcuts should not be recognized when typing
-    in a text box (QuickSearch or Nostalgy's completion box)
-  - make it work with TB 3.0 (tested with 3.0a1pre)
+  - a system to export and import Nostalgy's rules (through e-mails)
   - when showing a folder, if no message is currently selected,
     select the last one
-  - custom shortcuts are now working in stand-alone message windows
+  - change the behavior of the QuickSearch box: 
+    * always show the popup menu to select/show the current search criterion
+    * UP/DOWN: change the criterion (the view is automatically updated)
+    * RETURN (customizable): start the search, select the last result, 
+      focus thread pane
+    * CTRL-RETURN (customizable): same, but select all results
+    * ESCAPE: cancel search, focus thread pane
+
+  - make Nostalgy work with TB 3.0 (tested with 3.0a1pre)
   - Thunderbirds shortcuts that are hidden by Nostalgy can now
     be used (type "Escape" before)
-  - change the behavior of the QuickSearch box: always show the
-    popup menu to select/show the current search criterion; use UP/DOWN to
-    change the criterion (the view is automatically updated);
-    ESCAPE to focus the thread pane; Control+RETURN (customizable)
-    to start the search, select all results, and focus the thread pane
+  - bug fix: custom shortcuts are now working in stand-alone message windows
+  - bug fix: custom shortcuts with no modifier are not recognized when typing
+    in a text box (QuickSearch or Nostalgy's completion box)
 
 0.2.12
   - bug fix: use the mime-decoded version for the subject (for matching

@@ -706,8 +706,13 @@ function NostalgySearchSender() {
 }
 
 function NostalgySearchSelectAll(select) {
+  if (!nostalgy_search_focused) return false;
+
   if (!gSearchInput || gSearchInput.value == "" 
-      || gSearchInput.showingSearchCriteria) return;
+      || gSearchInput.showingSearchCriteria) {
+    SetFocusThreadPane();
+    return true;
+  }
 
   initializeSearchBar();
   nostalgy_on_search_done = function() {
@@ -717,10 +722,10 @@ function NostalgySearchSelectAll(select) {
     SetFocusThreadPane();
   };
   onSearchInput(true);
+  return true;
 }
 
 function NostalgyEnterSearch() {
-  NostalgyDebug("Enter");
   var o = gEBI("quick-search-menupopup");
   if (!o) return;
   InitQuickSearchPopup();
@@ -729,7 +734,6 @@ function NostalgyEnterSearch() {
   nostalgy_search_focused = true;
 }
 function NostalgyLeaveSearch(ev) {
-  NostalgyDebug("Leave");
   nostalgy_search_focused = false;
   var o = gEBI("quick-search-menupopup");
   if (!o) return;
@@ -804,14 +808,13 @@ function onNostalgyKeyPress(ev) {
       && !ev.ctrlKey && !ev.altKey) 
     return;
   var k = nostalgy_active_keys[kn];
-  if (k) { ParseCommand(k); ev.preventDefault(); ev.stopPropagation();}
+  if (k) { if (ParseCommand(k)) { ev.preventDefault(); ev.stopPropagation();}}
 }
 
 function ParseCommand(k) {
-  if (k.indexOf("JS:") == 0) {
-    eval(k.substr(3,k.length - 3));
-    return;
-  }
+  if (k.indexOf("JS:") == 0)
+    return eval(k.substr(3,k.length - 3));
+
   var spl = k.match(/(.*) -> (.*)/);
   var folder = FindFolderExact(spl[2]);
   if (!folder) { alert("Cannot find folder " + spl[2]); return; }

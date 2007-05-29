@@ -226,6 +226,10 @@ function NostalgyFolderSelectionBox(box) {
  box.addSession(new NostalgyAutocomplete(box));
  box.processInput = NostalgyProcessInput;  
  box.processKeyPress = NostalgyProcessKeyPress; 
+ box.addEventListener("blur",function(){ 
+	setTimeout(function() { 
+	if (!box.getAttribute("focused")) box.undoAutoComplete();  
+	}, 100); },true);
 }
 
 function NostalgyFolderSelectionBoxes() {

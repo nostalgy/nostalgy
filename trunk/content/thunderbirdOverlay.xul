@@ -28,7 +28,7 @@
   <key keycode="VK_RIGHT" modifiers="shift" 
        oncommand="NostalgyScrollMsg(50);"/>
 
-  <key keycode="VK_ESCAPE" oncommand="NostalgyEscape(event);"/>
+  <key keycode="VK_ESCAPE" oncommand="NostalgyEscape();"/>
  </keyset>
 
 

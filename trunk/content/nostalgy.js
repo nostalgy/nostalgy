@@ -10,6 +10,8 @@ var nostalgy_cmdLabel = null;
 var nostalgy_extracted_rules = "";
 var nostalgy_active_keys = { };
 var timeout_regkey = 0;
+var nostalgy_on_search_done = null;
+var nostalgy_search_focused = false;
 
 /** Rules **/
 
@@ -110,7 +112,7 @@ var NostalgyRules =
       if (timeout_regkey) return;
       timeout_regkey = 1;
       var r = this;
-      setTimeout(function() { timeout_regkey = 0; r.register_keys(); }, 1000);
+      setTimeout(function() { timeout_regkey = 0; r.register_keys(); }, 150);
     }
   },
 
@@ -181,7 +183,7 @@ var NostalgyFolderListener = {
  OnItemEvent: function(folder, event) { 
    var evt = event.toString();
    if (evt == "FolderLoaded") setTimeout(NostalgySelectLastMsg,50);
-   NostalgyDebug(event.toString()); 
+   // NostalgyDebug(event.toString()); 
  }
 }
 
@@ -193,8 +195,11 @@ function NostalgySelectMessageByNavigationType(type)
 
   gDBView.viewNavigate(type, resultId, resultIndex, threadIndex, true);
 
-  if ((resultId.value != nsMsgKey_None) && (resultIndex.value != nsMsgKey_None))
+  if ((resultId.value != nsMsgKey_None) && 
+      (resultIndex.value != nsMsgKey_None)) {
+    // gDBView.selection.currentIndex = resultIndex.value;
     gDBView.selectMsgByKey(resultId.value);
+  }
 }
 
 function NostalgyMailSession() {
@@ -245,7 +250,38 @@ function onNostalgyLoad() {
 
 
  var old_OnMsgParsed = OnMsgParsed;
- OnMsgParsed = function (url) { old_OnMsgParsed(url); NostalgyOnMsgParsed(); };
+ OnMsgParsed = function (url) { old_OnMsgParsed(url); 
+				setTimeout(NostalgyOnMsgParsed,100); };
+
+ if (window.gSearchNotificationListener) {
+   var old_f0 = gSearchNotificationListener.onSearchDone;
+   gSearchNotificationListener.onSearchDone = function(status) { 
+     if (nostalgy_on_search_done) nostalgy_on_search_done();
+     old_f0(status);
+   };
+ }
+
+ if (window.onSearchInputFocus) {
+   var old_f1 = onSearchInputFocus;
+   onSearchInputFocus = function(ev) {
+     old_f1(ev);
+     NostalgyEnterSearch();
+   };
+   onSearchInputBlur = NostalgyLeaveSearch;
+
+
+   gEBI("quick-search-menupopup").addEventListener
+     ("popupshowing",
+      function() { 
+       if (nostalgy_search_focused) setTimeout(NostalgyEnterSearch,0);
+     },
+      false);
+   gEBI("quick-search-menupopup").addEventListener
+     ("popuphiding",
+      function() { 
+       if (nostalgy_search_focused) setTimeout(NostalgyEnterSearch,0);
+     },
+      false); }
 }
 
 function NostalgyOnMsgParsed() {
@@ -590,16 +626,36 @@ function NostalgyFocusThreadPane() {
   // NostalgySelectLastMsg();
 }
 
-function NostalgyEscape(ev) {
+function NostalgySaveSelection() {
+  var o = { };
+  gDBView.getIndicesForSelection(o,{ });
+  o = o.value;
+  for (var j = 0; j < o.length; j++) o[j] = gDBView.getKeyAt(o[j]);
+  return o;
+}
+
+function NostalgyRestoreSelection(o) {
+  var s = gDBView.selection;
+  for (var j = 0; j < o.length; j++) {
+    var k = gDBView.findIndexFromKey(o[j],true);
+    if (!s.isSelected(k)) s.toggleSelect(k);
+  }
+}
+
+function NostalgyEscape() {
   NostalgyEscapePressed++;
   var i = NostalgyEscapePressed;
   setTimeout(
     function(){ if (NostalgyEscapePressed==i) NostalgyEscapePressed = 0; },
     300);
   if (NostalgyEscapePressed == 3) { 
+    // var o = NostalgySaveSelection();
+
     onClearSearch();
     ViewChange(kViewItemAll, "All");  // TODO: localized string
     setTimeout(NostalgyFocusThreadPane,100);
+
+    // setTimeout(function(){ NostalgyRestoreSelection(o); }, 0);
   }
   if (NostalgyEscapePressed == 2) NostalgyFocusThreadPane();
 }
@@ -649,7 +705,54 @@ function NostalgySearchSender() {
   }
 }
 
+function NostalgySearchSelectAll() {
+  if (!gSearchInput || gSearchInput.value == "" 
+      || gSearchInput.showingSearchCriteria) return;
+
+  initializeSearchBar();
+  nostalgy_on_search_done = function() {
+    nostalgy_on_search_done = null;
+    gDBView.selection.selectAll();
+    SetFocusThreadPane();
+  };
+  onSearchInput(true);
+}
+
+function NostalgyEnterSearch() {
+  NostalgyDebug("Enter");
+  var o = gEBI("quick-search-menupopup");
+  if (!o) return;
+  InitQuickSearchPopup();
+  nostalgy_search_focused = false;
+  o.showPopup(gEBI("searchInput"),-1,-1,"tooltip", "bottomright", "topright");
+  nostalgy_search_focused = true;
+}
+function NostalgyLeaveSearch(ev) {
+  NostalgyDebug("Leave");
+  nostalgy_search_focused = false;
+  var o = gEBI("quick-search-menupopup");
+  if (!o) return;
+  o.hidePopup();
+}
+
+function NostalgySearchMode(dir) {  
+  var input = GetSearchInput();
+  var popup = gEBI("quick-search-menupopup");
+  var oldmode = popup.getElementsByAttribute('value', input.searchMode)[0];
+  var newmode = dir > 0 ? oldmode.nextSibling : oldmode.previousSibling;
+  if (newmode && newmode.value) {
+    oldmode.removeAttribute('checked');
+    newmode.setAttribute('checked','true');
+    input.searchMode = newmode.value;
+    popup.setAttribute("value",newmode.value);
+    onEnterInSearchBar();
+  }
+}
+
 function onNostalgyKeyPress(ev) {
+  //  NostalgyDebug(RecognizeKey(ev) + "  " + nostalgy_search_focused);
+  // if (ev.keyCode == 27) NostalgyEscape();
+
   if (NostalgyEscapePressed >= 1) {
     if (!in_message_window && ev.charCode == 109) { // M
       NostalgyFocusMessagePane();
@@ -666,7 +769,8 @@ function onNostalgyKeyPress(ev) {
     return;
   } 
   if (!nostalgy_statusBar.hidden &&
-      document.commandDispatcher.focusedElement.nodeName != "html:input") {
+      document.commandDispatcher.focusedElement.nodeName != "html:input")
+    {
     // ugly hack: it takes some time for the folderBox to be focused
     if (ev.charCode) {
       nostalgy_folderBox.value =  nostalgy_folderBox.value + 
@@ -675,9 +779,28 @@ function onNostalgyKeyPress(ev) {
     ev.preventDefault();
     return;
   }
-  if (ev.originalTarget.localName == "input") return;
-  var k = nostalgy_active_keys[RecognizeKey(ev)];
-  if (k) { ParseCommand(k); ev.preventDefault(); }
+  var kn = RecognizeKey(ev);
+  if (ev.keyCode == KeyEvent.DOM_VK_DOWN && nostalgy_search_focused) {
+    NostalgySearchMode(1); 
+    ev.stopPropagation();
+    ev.preventDefault();
+    return;
+  }
+  if (ev.keyCode == KeyEvent.DOM_VK_UP && nostalgy_search_focused) {
+    NostalgySearchMode(-1);
+    ev.stopPropagation();
+    ev.preventDefault();
+    return;
+  }
+  if (kn == "ESCAPE" && nostalgy_search_focused) {
+    NostalgyFocusThreadPane();
+    ev.preventDefault();
+    return;
+  }
+  if (ev.originalTarget.localName == "input" && !ev.ctrlKey && !ev.altKey) 
+    return;
+  var k = nostalgy_active_keys[kn];
+  if (k) { ParseCommand(k); ev.preventDefault();  ev.stopPropagation();}
 }
 
 function ParseCommand(k) {
@@ -697,13 +820,15 @@ function ParseCommand(k) {
 }
 
 function NostalgyGoCommand() {
-  if (!in_message_window) NostalgyCmd('Go to folder:', NostalgyShowFolder, false);
+  if (!in_message_window) 
+    NostalgyCmd('Go to folder:', NostalgyShowFolder, false);
 }
 function NostalgyGoSuggestedCommand() {
-  if (!in_message_window) NostalgySuggested(NostalgyShowFolder);
+  if (!in_message_window) 
+    NostalgySuggested(NostalgyShowFolder);
 }
 
 window.addEventListener("load", onNostalgyLoad, false);
 window.addEventListener("resize", onNostalgyResize, false);
 window.addEventListener("unload", onNostalgyUnload, false);
-window.addEventListener("keypress", onNostalgyKeyPress, false);
+window.addEventListener("keypress", onNostalgyKeyPress, true);

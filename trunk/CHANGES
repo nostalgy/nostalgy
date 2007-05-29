@@ -6,6 +6,13 @@ Since 0.2.13
   - when showing a folder, if no message is currently selected,
     select the last one
   - custom shortcuts are now working in stand-alone message windows
+  - Thunderbirds shortcuts that are hidden by Nostalgy can now
+    be used (type "Escape" before)
+  - change the behavior of the QuickSearch box: always show the
+    popup menu to select/show the current search criterion; use UP/DOWN to
+    change the criterion (the view is automatically updated);
+    ESCAPE to focus the thread pane; Control+RETURN (customizable)
+    to start the search, select all results, and focus the thread pane
 
 0.2.12
   - bug fix: use the mime-decoded version for the subject (for matching

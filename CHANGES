@@ -16,6 +16,7 @@ Since 0.2.13
   - bug fix: custom shortcuts are now working in stand-alone message windows
   - bug fix: custom shortcuts with no modifier are not recognized when typing
     in a text box (QuickSearch or Nostalgy's completion box)
+  - bug fix: better detection of when Nostalgy's completion box loses focus
 
 0.2.12
   - bug fix: use the mime-decoded version for the subject (for matching

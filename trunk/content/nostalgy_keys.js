@@ -17,7 +17,10 @@ var nostalgy_keys = [
    "JS:NostalgySearchSender();"],
   ["select_all","Search, select all messages and focus the thread pane",
    "control RETURN",
-   "JS:NostalgySearchSelectAll();"]
+   "JS:NostalgySearchSelectAll(true);"],
+  ["select_search","Search, select last result and focus the thread pane",
+   "RETURN",
+   "JS:NostalgySearchSelectAll(false);"]
 ];
 
 

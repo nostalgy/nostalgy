@@ -14,6 +14,10 @@ var nostalgy_keys = [
   ["hide_folders","Hide folder pane","L",
    "JS:NostalgyCollapseFolderPane();"],
   ["search_sender","Show messages with same sender/same subject","`",
-   "JS:NostalgySearchSender();"]
+   "JS:NostalgySearchSender();"],
+  ["select_all","Search, select all messages and focus the thread pane",
+   "control RETURN",
+   "JS:NostalgySearchSelectAll();"]
 ];
+
 

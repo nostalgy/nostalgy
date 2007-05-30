@@ -10,29 +10,29 @@ var kKeysPrefs = "extensions.nostalgy.keys.";
 var kCustomActionsPrefs = "extensions.nostalgy.actions.";
 var max_custom = (-1);
 
-(function () {
-   var m = {
-            '\b': '\\b',
-            '\t': '\\t',
-            '\n': '\\n',
-            '\f': '\\f',
-            '\r': '\\r',
-            '"' : '\\"',
-            '\\': '\\\\'
-        };
-   String.prototype.quote = function () {
-     var x = this;
-     if (/["\\\x00-\x1f]/.test(this)) {
-      x = this.replace(/([\x00-\x1f\\"])/g, function(a, b) {
-      var c = m[b];
+var nost_js_quote = {
+  '\b': '\\b',
+  '\t': '\\t',
+  '\n': '\\n',
+  '\f': '\\f',
+  '\r': '\\r',
+  '"' : '\\"',
+  '\\': '\\\\'
+};
+
+String.prototype.quote = function () {
+  var x = this;
+  if (/["\\\x00-\x1f"]/.test(this)) {
+    x = this.replace(/(["\x00-\x1f\\"])/g, function(a, b) {
+      var c = nost_js_quote[b];
       if (c) { return c; }
       c = b.charCodeAt();
-      return '\\u00' + Math.floor(c / 16).toString(16) + (c % 16).toString(16);
-      });
-     }
-     return '"' + x + '"';
-   };
-})();
+      return '\\u00' + 
+	Math.floor(c / 16).toString(16) + (c % 16).toString(16);
+    });
+  }
+  return '"' + x + '"';
+};
 
 function NostalgySendRules() {
   var sAccountManager = 
@@ -340,10 +340,13 @@ function onKeyPress(ev) {
   } else if (wait_key) /* && (ev.keyCode != 13 || ev.ctrlKey || ev.altKey)) */ {
     Recognize(ev,wait_key);
     wait_key = null;
-  } /* else if (ev.keyCode == KeyEvent.DOM_VK_RETURN) {
-    ev.preventDefault();
-    ev.stopPropagation();
-    } */
+  } else if (ev.keyCode == KeyEvent.DOM_VK_ESCAPE) {
+    if 
+      (!confirm("Do you really want to cancel all your changes to the preferences?")) {
+      ev.preventDefault();
+      ev.stopPropagation();
+    }
+  }
 }
 
 

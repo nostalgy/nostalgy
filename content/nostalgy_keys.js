@@ -11,6 +11,12 @@ var nostalgy_keys = [
    "JS:NostalgyGoCommand();"],
   ["go_suggest","Go as suggested","shift G",
    "JS:NostalgyGoSuggestedCommand();"],
+  ["save_go","Save message and go there","control S",
+   "JS:NostalgySaveAndGo();"],
+  ["save_go_suggest","Save message as suggested and go there",
+   "control shift S",
+   "JS:NostalgySaveAndGoSuggested();"],
+
   ["hide_folders","Hide folder pane","L",
    "JS:NostalgyCollapseFolderPane();"],
   ["search_sender","Show messages with same sender/same subject","`",

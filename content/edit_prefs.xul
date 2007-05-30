@@ -32,7 +32,7 @@ is selected for a given message, Nostalgy informs you in the status line.
 You can then use the Shift-S/Shift-C
 shortcuts to move/copy the message to this folder.</label>
  <hbox flex="0">
- <listbox id="rules" flex="0">
+ <listbox id="rules" flex="0" style="width:400px">
   <listhead>
    <listheader label="Field"/>
    <listheader label="Contains"/>
@@ -41,7 +41,7 @@ shortcuts to move/copy the message to this folder.</label>
   </listhead>
   <listcols>
    <listcol width="80" maxwidth="80"/>
-   <listcol/>
+   <listcol width="150" maxwidth="150"/>
    <listcol width="150" maxwidth="150"/>
    <listcol width="450" maxwidth="450"/>
   </listcols>
@@ -92,6 +92,7 @@ shortcuts to move/copy the message to this folder.</label>
   <radio value="Go" label="Go" selected="true"/>
   <radio value="Save" label="Save"/>
   <radio value="Copy" label="Copy"/>
+  <radio value="SaveGo" label="Save+Go"/>
   </radiogroup>
   <textbox style="width:600px" type="autocomplete" id="folderselect" 
            nostalgyfolderbox="SelectFolder();"/>

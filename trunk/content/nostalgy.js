@@ -361,7 +361,8 @@ function NostalgyDefLabel() {
 
 function NostalgyCollapseFolderPane() {
  var fp = gEBI("folderPaneBox");
- if (fp) fp.collapsed = !fp.collapsed;
+ if (fp) { fp.collapsed = !fp.collapsed; return true; }
+ else return false;
 }
 
 
@@ -384,6 +385,7 @@ function NostalgyCmd(lab,cmd,require_file) {
  }, 0);
    // For some unknown reason, doing nostalgyBox.focus immediatly
    // sometimes does not work...
+ return true;
 }
 
 
@@ -601,6 +603,7 @@ function NostalgyCopyToFolder(folder) {
 
 function NostalgySuggested(cmd) {
   if (gsuggest_folder) cmd(gsuggest_folder);
+  return true;
 }
 
 
@@ -676,7 +679,7 @@ var last_cycle_restrict_value = null;
 var last_cycle_restrict = 0;
 
 function NostalgySearchSender() {
-  if (!window.GetSearchInput) return;
+  if (!window.GetSearchInput) return false;
   var input = GetSearchInput();
   try {
   var recips = gDBView.msgFolder.displayRecipients;
@@ -703,6 +706,7 @@ function NostalgySearchSender() {
    last_cycle_restrict = 0; input.value = "";  onEnterInSearchBar();
    SetFocusThreadPane();
   }
+  return true;
 }
 
 function NostalgySearchSelectAll(select) {
@@ -827,12 +831,16 @@ function ParseCommand(k) {
 }
 
 function NostalgyGoCommand() {
-  if (!in_message_window) 
+  if (!in_message_window)  {
     NostalgyCmd('Go to folder:', NostalgyShowFolder, false);
+    return true;
+  } else return false;
 }
 function NostalgyGoSuggestedCommand() {
-  if (!in_message_window) 
+  if (!in_message_window)  {
     NostalgySuggested(NostalgyShowFolder);
+    return true;
+  } else return false;
 }
 
 window.addEventListener("load", onNostalgyLoad, false);

@@ -7,12 +7,46 @@ var nostalgy_completion_options = {
   always_include_tags  : false
 };
 
-function NostalgyDebug(aText)
-{
-  var csClass = Components.classes['@mozilla.org/consoleservice;1'];
-  var cs = csClass.getService(Components.interfaces.nsIConsoleService);
-  cs.logStringMessage(aText);
+
+
+/** The set of "recent folder" for Nostalgy **/
+
+var nostalgy_recent_folders = [ ];
+var nostalgy_recent_folders_max_size = 5;
+// TODO: make that customizable
+
+function NostalgySaveRecentFolder(recent) {
+  NostalgyPrefService().
+    setCharPref("extensions.nostalgy.recent_folders",
+		recent.toSource());
 }
+
+function NostalgyInstallRecentFolders() {
+  var s = "";
+  try { s = NostalgyPrefService().
+	  getCharPref("extensions.nostalgy.recent_folders"); }
+  catch (ex) { return; }
+  var a = NostalgyJSONEval(s);
+  if (a) nostalgy_recent_folders = a;
+  else nostalgy_recent_folders = [ ];
+}
+
+function NostalgyRecordRecentFolder(folder) {
+  var recent = nostalgy_recent_folders;
+  var fname = folder_name(folder);
+  if (recent.indexOf(fname) >= 0)
+    recent = recent.filter(function (elt,idx,arr) {
+      return (elt != fname);
+    });
+
+  recent.push(fname);
+  while (recent.length >  nostalgy_recent_folders_max_size)  recent.shift();
+  NostalgySaveRecentFolder(recent);
+}
+
+
+/****/
+
 
 function NostalgyCrop(s) {
   var len = 120;
@@ -103,24 +137,31 @@ function(text, results, listener) {
  var nb = 0;
  items.Clear();
 
- var f = function (folder) {
+ var add_folder = function (fname) {
   var newitem = 
    Components.classes[
     "@mozilla.org/autocomplete/item;1"
    ].createInstance(Components.interfaces.nsIAutoCompleteItem);
-  newitem.value = NostalgyCrop(folder_name(folder));
+  newitem.value = NostalgyCrop(fname);
 
   items.AppendElement(newitem);
   nb++;
- }; 
-
- nostalgy_search_folder_options.do_tags = 
-   nostalgy_completion_options.always_include_tags || 
-   (text.substr(0,1) == ":");
- IterateMatches(text, this.box.shell_completion, f);
- if (nb == 0 && !nostalgy_search_folder_options.do_tags) {
-  nostalgy_search_folder_options.do_tags = true;
-  IterateMatches(text, this.box.shell_completion, f);
+ };
+ 
+ var f = function (folder) { add_folder(folder_name(folder)); }; 
+ 
+ if (text == "") {
+   for (var j = 0; j < nostalgy_recent_folders.length; j++) 
+     add_folder(nostalgy_recent_folders[j]);
+ } else {
+   nostalgy_search_folder_options.do_tags = 
+     nostalgy_completion_options.always_include_tags || 
+     (text.substr(0,1) == ":");
+   IterateMatches(text, this.box.shell_completion, f);
+   if (nb == 0 && !nostalgy_search_folder_options.do_tags) {
+     nostalgy_search_folder_options.do_tags = true;
+     IterateMatches(text, this.box.shell_completion, f);
+   }
  }
 
  this.xresults.searchString = text;

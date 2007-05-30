@@ -1,5 +1,3 @@
-function gEBI(s) { return document.getElementById(s); }
-
 var in_message_window = !window.SetFocusFolderPane;
 
 var nostalgy_folderBox = null;
@@ -32,9 +30,7 @@ var NostalgyRules =
 
   register: function()
   {
-    var prefService = Components.classes["@mozilla.org/preferences-service;1"]
-                            .getService(Components.interfaces.nsIPrefService);
-    this._branch = prefService.getBranch("extensions.nostalgy.");
+    this._branch = NostalgyPrefService().getBranch("extensions.nostalgy.");
     this._branch2 = 
         this._branch.QueryInterface(Components.interfaces.nsIPrefBranch2);
     this._branch2.addObserver("", this, false);
@@ -45,6 +41,7 @@ var NostalgyRules =
         nostalgy_completion_options[n] = this._branch.getBoolPref(n);
       } catch (ex) { }
     }
+    NostalgyInstallRecentFolders();
   },
 
   register_keys: function() {
@@ -78,7 +75,7 @@ var NostalgyRules =
   get_rules: function()
   {
     try {
-     var r = eval(this._branch.getCharPref("rules"));
+     var r = NostalgyJSONEval(this._branch.getCharPref("rules"));
      var i;
      for (i = 0; i < r.length; i++) {
        var rule = r[i];
@@ -100,6 +97,8 @@ var NostalgyRules =
   observe: function(aSubject, aTopic, aData)
   {
     if(aTopic != "nsPref:changed") return;
+    if (aData == "recent_folders") NostalgyInstallRecentFolders();
+
     if (aData == "rules") {
       this.get_rules();
       if (!in_message_window) NostalgyDefLabel();
@@ -143,10 +142,8 @@ NostalgyRules.register();
 function NostalgyExtractRules() {
   var s = nostalgy_extracted_rules;
   if (s == "") return;
-  // remove whitespaces. they should have been escaped as \u0020
-  NostalgyDebug("before whitespace removal:" + s);
-  s = s.replace(/([\x00-\x20])/g,function(a,b){ return "" });
-  NostalgyDebug("after whitespace removal:" + s);
+  // remove characters that should have been escaped
+  s = s.replace(/([\x00-\x20>])/g,function(a,b){ return "" });
   if (confirm(
 "Do you want to install the rules contained in this message?\n"+
 "This will overwrite your current set of rules.\n"+
@@ -421,7 +418,10 @@ function NostalgyRunCommand() {
   NostalgyHide();
   var s = nostalgy_folderBox.value;
   var f = NostalgyResolveFolder(s);
-  if (f) nostalgy_command(f);
+  if (f) {
+    NostalgyRecordRecentFolder(f);
+    nostalgy_command(f);
+  }
   else { 
     if (s.substr(0,1) == ":" && s != ":") {
       var name;

@@ -12,6 +12,8 @@ var nostalgy_active_keys = { };
 var timeout_regkey = 0;
 var nostalgy_on_search_done = null;
 var nostalgy_search_focused = false;
+var nostalgy_on_move_completed = null;
+var nostalgy_selection_saved = null;
 
 /** Rules **/
 
@@ -182,8 +184,12 @@ var NostalgyFolderListener = {
  OnItemPropertyFlagChanged: function(item, property, oldFlag, newFlag) { },
  OnItemEvent: function(folder, event) { 
    var evt = event.toString();
+   NostalgyDebug(evt + " folder:" + folder.prettyName);
    if (evt == "FolderLoaded") setTimeout(NostalgySelectLastMsg,50);
-   // NostalgyDebug(event.toString()); 
+   if (evt == "DeleteOrMoveMsgCompleted" && nostalgy_on_move_completed) {
+     nostalgy_on_move_completed();
+     nostalgy_on_move_completed = null;
+   }
  }
 }
 
@@ -537,6 +543,10 @@ function NostalgyEnsureFolderIndex(builder, msgFolder)
 
 function NostalgySelectLastMsg() {
   if (!gDBView) return;
+  if (nostalgy_selection_saved) {
+    NostalgyRestoreSelection(nostalgy_selection_saved);
+    nostalgy_selection_saved = null;
+  } else
   try { gDBView.viewIndexForFirstSelectedMsg; } catch (ex) {
     NostalgySelectMessageByNavigationType(nsMsgNavigationType.lastMessage);
   }
@@ -545,7 +555,7 @@ function NostalgySelectLastMsg() {
 function NostalgyShowFolder(folder) {
   if (folder.tag) {
     ViewChange(kViewTagMarker + folder.key, folder.tag);
-    return;
+    return true;
   }
 
   var folderTree = GetFolderTree();
@@ -575,6 +585,7 @@ function NostalgyShowFolder(folder) {
     input.value = search;
     setTimeout(function(){onEnterInSearchBar(true);}, 200);
   }
+  return true;
 }
 
 function NostalgyToggleMessageTag(tag) {
@@ -593,12 +604,28 @@ function NostalgyMoveToFolder(folder) {
  if (folder.tag) NostalgyToggleMessageTag(folder);
  else gDBView.doCommandWithFolder(nsMsgViewCommandType.moveMessages,folder);
  SetNextMessageAfterDelete();
+ return true;
+}
+
+function NostalgyMoveToFolderAndGo(folder) {
+ register_folder(folder);
+ var sel = NostalgySaveSelection();
+ if (folder.tag) NostalgyToggleMessageTag(folder);
+ else gDBView.doCommandWithFolder(nsMsgViewCommandType.moveMessages,folder);
+ NostalgyShowFolder(folder);
+ nostalgy_selection_saved = null;
+ nostalgy_on_move_completed = function() { nostalgy_selection_saved = sel; };
+ setTimeout(function () { 
+   if (!nostalgy_selection_saved) nostalgy_on_move_completed = null;
+ }, 1000);
+ return true;
 }
 
 function NostalgyCopyToFolder(folder) {
  register_folder(folder);
  if (folder.tag) NostalgyToggleMessageTag(folder);
  else gDBView.doCommandWithFolder(nsMsgViewCommandType.copyMessages,folder);
+ return true;
 }
 
 function NostalgySuggested(cmd) {
@@ -633,15 +660,25 @@ function NostalgySaveSelection() {
   var o = { };
   gDBView.getIndicesForSelection(o,{ });
   o = o.value;
-  for (var j = 0; j < o.length; j++) o[j] = gDBView.getKeyAt(o[j]);
-  return o;
+  var folder = gDBView.msgFolder;
+  var msgids = { };
+  for (var i = 0; i < o.length; i++) {
+    var id = folder.GetMessageHeader(gDBView.getKeyAt(o[i])).messageId;
+    msgids[id] = true;
+  }
+  return msgids;
 }
 
-function NostalgyRestoreSelection(o) {
-  var s = gDBView.selection;
-  for (var j = 0; j < o.length; j++) {
-    var k = gDBView.findIndexFromKey(o[j],true);
-    if (!s.isSelected(k)) s.toggleSelect(k);
+function NostalgyRestoreSelection(msgids) {
+  var msgs = gDBView.msgFolder.getMessages(msgWindow);
+  var selection = gDBView.selection;
+  selection.clearSelection();
+  while (msgs.hasMoreElements()) {
+    var m = msgs.getNext().QueryInterface(Components.interfaces.nsIMsgDBHdr);
+    if (msgids[m.messageId]) {
+      var idx = gDBView.findIndexFromKey(m.messageKey,true);
+      if (!selection.isSelected(idx)) selection.toggleSelect(idx);
+    }
   }
 }
 
@@ -823,10 +860,11 @@ function ParseCommand(k) {
   var folder = FindFolderExact(spl[2]);
   if (!folder) { alert("Cannot find folder " + spl[2]); return; }
   switch (spl[1]) {
-   case "Go": NostalgyShowFolder(folder); break;
-   case "Save": NostalgyMoveToFolder(folder); break;
-   case "Copy": NostalgyCopyToFolder(folder); break;
-   default: alert("Unknown command " + spl[1]); return;
+  case "Go": return NostalgyShowFolder(folder);
+  case "Save": return NostalgyMoveToFolder(folder);
+  case "Copy": return NostalgyCopyToFolder(folder);
+  case "SaveGo": return NostalgyMoveToFolderAndGo(folder);
+  default: alert("Unknown command " + spl[1]); return;
   }
 }
 
@@ -841,6 +879,18 @@ function NostalgyGoSuggestedCommand() {
     NostalgySuggested(NostalgyShowFolder);
     return true;
   } else return false;
+}
+
+function NostalgySaveAndGo() {
+  if (in_message_window) return false;
+  NostalgyCmd('Move messages and go to:', NostalgyMoveToFolderAndGo, true);
+  return true;
+}
+
+function NostalgySaveAndGoSuggested() {
+  if (in_message_window) return false;
+  NostalgySuggested(NostalgyMoveToFolderAndGo);
+  return true;
 }
 
 window.addEventListener("load", onNostalgyLoad, false);

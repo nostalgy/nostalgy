@@ -5,6 +5,11 @@ function NostalgyPrefService() {
     .getService(Components.interfaces.nsIPrefService);
 }
 
+function NostalgyPrefBranch() {
+  return Components.classes["@mozilla.org/preferences-service;1"]
+    .getService(Components.interfaces.nsIPrefBranch);
+}
+
 function NostalgyDebug(aText)
 {
   var csClass = Components.classes['@mozilla.org/consoleservice;1'];

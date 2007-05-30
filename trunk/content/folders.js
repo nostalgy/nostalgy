@@ -16,14 +16,14 @@ var nostalgy_recent_folders_max_size = 5;
 // TODO: make that customizable
 
 function NostalgySaveRecentFolder(recent) {
-  NostalgyPrefService().
+  NostalgyPrefBranch().
     setCharPref("extensions.nostalgy.recent_folders",
 		recent.toSource());
 }
 
 function NostalgyInstallRecentFolders() {
   var s = "";
-  try { s = NostalgyPrefService().
+  try { s = NostalgyPrefBranch().
 	  getCharPref("extensions.nostalgy.recent_folders"); }
   catch (ex) { return; }
   var a = NostalgyJSONEval(s);

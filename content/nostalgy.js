@@ -143,6 +143,10 @@ NostalgyRules.register();
 function NostalgyExtractRules() {
   var s = nostalgy_extracted_rules;
   if (s == "") return;
+  // remove whitespaces. they should have been escaped as \u0020
+  NostalgyDebug("before whitespace removal:" + s);
+  s = s.replace(/([\x00-\x20])/g,function(a,b){ return "" });
+  NostalgyDebug("after whitespace removal:" + s);
   if (confirm(
 "Do you want to install the rules contained in this message?\n"+
 "This will overwrite your current set of rules.\n"+
@@ -327,7 +331,7 @@ var NostalgyObserver = {
 function onNostalgyUnload() {
  var mSession = NostalgyMailSession();
  if (mSession) mSession.RemoveFolderListener(NostalgyFolderListener);
-
+ NostalgyRules.unregister();
  /*
  Components.classes["@mozilla.org/observer-service;1"].
    getService(Components.interfaces.nsIObserverService).

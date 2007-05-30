@@ -1,5 +1,3 @@
-function gEBI(id) { return (document.getElementById(id)); }
-
 var gFolderSelect = null;
 var gContainsSelect = null;
 var gUnderSelect = null;
@@ -25,13 +23,6 @@ function onNostalgyLoad() {
 }
 
 function onAcceptChanges() {
-/*
- var f = document.commandDispatcher.focusedElement;
- while (f && f.tagName != "textbox") f = f.parentNode;
- if (f && f.hasAttribute("nostalgyfolderbox"))
-   eval(f.getAttribute("nostalgyfolderbox"));
-*/
-
  var folder = FindFolderExact(gFolderSelect.value);
  if (!folder) {
    alert("Please choose an existing folder");

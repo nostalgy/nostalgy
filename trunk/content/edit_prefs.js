@@ -1,5 +1,3 @@
-function gEBI(s) { return document.getElementById(s); }
-
 var gList = null;
 
 var wait_key = null;
@@ -23,7 +21,7 @@ var nost_js_quote = {
 String.prototype.quote = function () {
   var x = this;
   if (/["\x00-\x20\\"]/.test(this)) {
-    x = this.replace(/(["\x00-\x20\\"])/g, function(a, b) {
+    x = this.replace(/(["\x00-\x20\\>"])/g, function(a, b) {
       var c = nost_js_quote[b];
       if (c) { return c; }
       c = b.charCodeAt();
@@ -217,8 +215,7 @@ function DoMoveDown(idx1,idx2) {
 }
 
 function onAcceptChanges() {
-  var prefs = Components.classes["@mozilla.org/preferences-service;1"].
-                         getService(Components.interfaces.nsIPrefBranch);
+  var prefs = NostalgyPrefService();
   prefs.setCharPref("extensions.nostalgy.rules", MkPrefStr());
 
   for (var n in nostalgy_completion_options)
@@ -311,11 +308,9 @@ function onNostalgyLoad() {
   gList = gEBI("rules");
   folder_select = gEBI("folderselect");
 
-  var prefs = Components.classes["@mozilla.org/preferences-service;1"].
-                         getService(Components.interfaces.nsIPrefBranch);
-
+  var prefs = NostalgyPrefService();
   try {
-   var r = eval(prefs.getCharPref("extensions.nostalgy.rules"));
+   var r = NostalgyJSONEval(prefs.getCharPref("extensions.nostalgy.rules"));
    var i;
    for (i = 0; i < r.length; i++) { CreateItem(r[i]); }
   } catch (ex) { }

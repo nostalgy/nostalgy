@@ -1,6 +1,7 @@
 content/about.xul
 content/edit_prefs.xul
 content/thunderbirdOverlay.xul
+content/misc.js
 content/dummy_window.xul
 content/composer.js
 content/messageOverlay.xul

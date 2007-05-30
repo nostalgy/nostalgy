@@ -10,6 +10,7 @@
 	ondialogaccept="return onAcceptChanges();"
 >
 
+ <script src="misc.js"/>
  <script src="folders.js"/>
  <script src="edit_rule.js"/>
 

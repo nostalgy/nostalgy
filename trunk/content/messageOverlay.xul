@@ -3,6 +3,7 @@
 <overlay id="nostalgy-message-overlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+ <script src="misc.js"/>
  <script src="folders.js"/>
  <script src="nostalgy_keys.js"/>
  <script src="nostalgy.js"/>

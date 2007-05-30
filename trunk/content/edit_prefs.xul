@@ -11,6 +11,7 @@
 	buttonlabelextra2="Nostalgy usage directions..."
         title="Nostalgy Preferences">
 
+ <script src="misc.js"/>
  <script src="folders.js"/>
  <script src="nostalgy_keys.js"/>
  <script src="edit_prefs.js"/>

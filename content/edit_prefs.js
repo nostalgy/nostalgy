@@ -215,7 +215,7 @@ function DoMoveDown(idx1,idx2) {
 }
 
 function onAcceptChanges() {
-  var prefs = NostalgyPrefService();
+  var prefs = NostalgyPrefBranch();
   prefs.setCharPref("extensions.nostalgy.rules", MkPrefStr());
 
   for (var n in nostalgy_completion_options)
@@ -308,7 +308,7 @@ function onNostalgyLoad() {
   gList = gEBI("rules");
   folder_select = gEBI("folderselect");
 
-  var prefs = NostalgyPrefService();
+  var prefs = NostalgyPrefBranch();
   try {
    var r = NostalgyJSONEval(prefs.getCharPref("extensions.nostalgy.rules"));
    var i;

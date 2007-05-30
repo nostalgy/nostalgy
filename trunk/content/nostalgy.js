@@ -205,7 +205,8 @@ function NostalgySelectMessageByNavigationType(type)
   if ((resultId.value != nsMsgKey_None) && 
       (resultIndex.value != nsMsgKey_None)) {
     // gDBView.selection.currentIndex = resultIndex.value;
-    gDBView.selectMsgByKey(resultId.value);
+    gDBView.selection.timedSelect(resultIndex.value, 500);
+    //gDBView.selectMsgByKey(resultId.value);
   }
 }
 

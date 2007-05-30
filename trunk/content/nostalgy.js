@@ -184,7 +184,7 @@ var NostalgyFolderListener = {
  OnItemPropertyFlagChanged: function(item, property, oldFlag, newFlag) { },
  OnItemEvent: function(folder, event) { 
    var evt = event.toString();
-   NostalgyDebug(evt + " folder:" + folder.prettyName);
+   // NostalgyDebug(evt + " folder:" + folder.prettyName);
    if (evt == "FolderLoaded") setTimeout(NostalgySelectLastMsg,50);
    if (evt == "DeleteOrMoveMsgCompleted" && nostalgy_on_move_completed) {
      nostalgy_on_move_completed();

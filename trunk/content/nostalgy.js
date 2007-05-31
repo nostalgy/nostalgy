@@ -384,7 +384,6 @@ function NostalgyCmd(lab,cmd,require_file) {
  nostalgy_command = cmd;
  nostalgy_th_statusBar.hidden = true;
  nostalgy_folderBox.shell_completion = false;
- NostalgyDebug("unhide nostalgy");
  nostalgy_statusBar.hidden = false;
  nostalgy_folderBox.value = "";
 
@@ -856,7 +855,6 @@ function onNostalgyKeyPress(ev) {
 }
 
 function ParseCommand(k) {
-  NostalgyDebug("parse command:" + k);
   if (k.indexOf("JS:") == 0)
     return eval(k.substr(3,k.length - 3));
 

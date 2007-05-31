@@ -384,15 +384,16 @@ function NostalgyCmd(lab,cmd,require_file) {
  nostalgy_command = cmd;
  nostalgy_th_statusBar.hidden = true;
  nostalgy_folderBox.shell_completion = false;
+ NostalgyDebug("unhide nostalgy");
  nostalgy_statusBar.hidden = false;
  nostalgy_folderBox.value = "";
 
  setTimeout(function() { 
-    nostalgy_folderBox.focus();  
-    nostalgy_folderBox.processInput(); 
+   nostalgy_folderBox.focus();  
+   nostalgy_folderBox.processInput(); 
  }, 0);
-   // For some unknown reason, doing nostalgyBox.focus immediatly
-   // sometimes does not work...
+ // For some unknown reason, doing nostalgyBox.focus immediatly
+ // sometimes does not work...
  return true;
 }
 
@@ -801,63 +802,61 @@ function NostalgySearchMode(dir) {
 }
 
 function onNostalgyKeyPress(ev) {
-  //  NostalgyDebug(RecognizeKey(ev) + "  " + nostalgy_search_focused);
-  // if (ev.keyCode == 27) NostalgyEscape();
+  var focused = "";
+  try { focused = document.commandDispatcher.focusedElement.nodeName; }
+  catch (ex) { }
 
   if (NostalgyEscapePressed >= 1) {
     if (!in_message_window && ev.charCode == 109) { // M
       NostalgyFocusMessagePane();
-      ev.preventDefault();
+      NostalgyStopEvent(ev);
     } else
     if (!in_message_window && ev.charCode == 102) { // F
       SetFocusFolderPane();
-      ev.preventDefault();
+      NostalgyStopEvent(ev);
     } else
     if (!in_message_window && ev.charCode == 105) { // I
       GetSearchInput().focus();
-      ev.preventDefault();
+      NostalgyStopEvent(ev);
     }
     return;
   } 
-  if (!nostalgy_statusBar.hidden &&
-      document.commandDispatcher.focusedElement.nodeName != "html:input")
+  if (!nostalgy_statusBar.hidden && focused != "html:input")
     {
     // ugly hack: it takes some time for the folderBox to be focused
     if (ev.charCode) {
       nostalgy_folderBox.value =  nostalgy_folderBox.value + 
           String.fromCharCode(ev.charCode);
     }
-    ev.preventDefault();
+    NostalgyStopEvent(ev);
     return;
   }
   var kn = RecognizeKey(ev);
   if (ev.keyCode == KeyEvent.DOM_VK_DOWN && nostalgy_search_focused) {
     NostalgySearchMode(1); 
-    ev.stopPropagation();
-    ev.preventDefault();
+    NostalgyStopEvent(ev);
     return;
   }
   if (ev.keyCode == KeyEvent.DOM_VK_UP && nostalgy_search_focused) {
     NostalgySearchMode(-1);
-    ev.stopPropagation();
-    ev.preventDefault();
+    NostalgyStopEvent(ev);
     return;
   }
   if (ev.keyCode == KeyEvent.DOM_VK_ESCAPE && nostalgy_search_focused) {
     Search(""); 
     SetFocusThreadPane();
-    ev.stopPropagation();
-    ev.preventDefault();
+    NostalgyStopEvent(ev);
     return;
   }
   if (ev.charCode && ev.originalTarget.localName == "input" 
       && !ev.ctrlKey && !ev.altKey) 
     return;
   var k = nostalgy_active_keys[kn];
-  if (k) { if (ParseCommand(k)) { ev.preventDefault(); ev.stopPropagation();}}
+  if (k && ParseCommand(k)) NostalgyStopEvent(ev);
 }
 
 function ParseCommand(k) {
+  NostalgyDebug("parse command:" + k);
   if (k.indexOf("JS:") == 0)
     return eval(k.substr(3,k.length - 3));
 

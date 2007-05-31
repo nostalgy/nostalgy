@@ -64,8 +64,7 @@ function ChooseUnder() {
 function OnKeyPressTxt(ev) {
   if (ev.keyCode==KeyEvent.DOM_VK_RETURN) {
    setTimeout(function(){gUnderSelect.focus();},30);
-   ev.preventDefault();
-   ev.stopPropagation();
+   NostalgyStopEvent(ev);
   }
 }
 

@@ -17,7 +17,7 @@ function nostalgy_awRecipientKeyPress(event, element) {
       element.value = u.substr(i,u.length - i);
       element.selectionStart = 0; element.selectionEnd = 0;
     }, 0);
-    event.stopPropagation();
+    NostalgyStopEvent(event);
     return;
   }
   }
@@ -40,7 +40,7 @@ function NostalgyKeyPress(ev) {
   else if (NostalgyEscapePressed >= 1) {
     if (ev.charCode == 97) { // A
       goDoCommand('cmd_attachFile');
-      ev.preventDefault();
+      NostalgyStopEvent(ev);
     }
   }
 }

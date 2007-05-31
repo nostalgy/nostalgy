@@ -341,16 +341,16 @@ function NostalgyHideIfBlurred() {
   setTimeout(function (){
     if ((!nostalgy_statusBar.hidden) && 
         (document.commandDispatcher.focusedElement != nostalgy_folderBox))
-    { NostalgyHide(); }
+    { NostalgyHide(false); }
   }, 500);
 }
 
-function NostalgyHide() {
+function NostalgyHide(restore) {
  nostalgy_statusBar.hidden = true;
  nostalgy_th_statusBar.hidden = false;
 
  if (focus_saved) {
-  focus_saved.focus ();
+  if (restore) focus_saved.focus ();
   focus_saved = null;
  }
  NostalgyDefLabel();
@@ -416,7 +416,7 @@ function NostalgyCreateTag(name) {
 }
 
 function NostalgyRunCommand() {
-  NostalgyHide();
+  NostalgyHide(true);
   var s = nostalgy_folderBox.value;
   var f = NostalgyResolveFolder(s);
   if (f) {

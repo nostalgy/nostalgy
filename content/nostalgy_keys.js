@@ -11,10 +11,10 @@ var nostalgy_keys = [
    "JS:NostalgyGoCommand();"],
   ["go_suggest","Go as suggested","shift G",
    "JS:NostalgyGoSuggestedCommand();"],
-  ["save_go","Save message and go there","control S",
+  ["save_go","Save message and go there","B",
    "JS:NostalgySaveAndGo();"],
   ["save_go_suggest","Save message as suggested and go there",
-   "control shift S",
+   "shift B",
    "JS:NostalgySaveAndGoSuggested();"],
 
   ["hide_folders","Hide folder pane","L",

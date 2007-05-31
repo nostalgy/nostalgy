@@ -17,9 +17,13 @@ function NostalgyDebug(aText)
   cs.logStringMessage(aText);
 }
 
+function NostalgyStopEvent(ev) {
+  ev.preventDefault();
+  // ev.stopPropagation();
+}
+
 function NostalgyJSONEval(s) {
-  if (/^("(\\.|[^"\\\n\r])*?"|[a-z]+:|[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t])+?$/. // "
-  test(s)) {
+  if (/^("(\\.|[^"\\\n\r"])*?"|[a-z]+:|[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t])+?$/.test(s)) {
     try {  
       return eval('(' + s + ')');
     } catch (e) {
@@ -31,3 +35,4 @@ function NostalgyJSONEval(s) {
     return null;
   }
 }
+

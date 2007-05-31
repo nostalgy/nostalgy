@@ -245,10 +245,7 @@ function NostalgyProcessKeyPress(aEvent) {
      }
      break;
   }
-  if (killEvent) {
-    aEvent.preventDefault();
-    aEvent.stopPropagation();
-  }
+  if (killEvent) NostalgyStopEvent(aEvent);
   return true;
 }
 

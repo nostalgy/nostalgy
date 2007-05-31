@@ -346,8 +346,7 @@ function onKeyPress(ev) {
   // should only to that in the relevant tab
 
   else if (wait_key && ev.keyCode == KeyEvent.DOM_VK_ESCAPE) {
-    ev.preventDefault();
-    ev.stopPropagation();
+    NostalgyStopEvent(ev);
     wait_key.value = wait_key_old;
     wait_key = null;
   } else if (wait_key) /* && (ev.keyCode != 13 || ev.ctrlKey || ev.altKey)) */ {
@@ -355,19 +354,17 @@ function onKeyPress(ev) {
     wait_key = null;
   } else if (ev.keyCode == KeyEvent.DOM_VK_ESCAPE) {
     if 
-      (!confirm("Do you really want to cancel all your changes to the preferences?")) {
-      ev.preventDefault();
-      ev.stopPropagation();
-    }
+      (!confirm
+       ("Do you really want to cancel all your changes to the preferences?")) 
+      NostalgyStopEvent(ev);
   }
 }
 
 
 function Recognize(ev, tgt) {
- ev.preventDefault();
- ev.stopPropagation();
- var k = RecognizeKey(ev);
- if (k) tgt.value = k;
+  NostalgyStopEvent(ev);
+  var k = RecognizeKey(ev);
+  if (k) tgt.value = k;
 }
 
 function WaitKey(tgt) {

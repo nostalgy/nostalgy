@@ -4,94 +4,141 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>Nostalgy</title>
-    <style>
-      html {
-        background-color: white;
-        font-size: small;
-      }
-
-      a {
-        color: blue;
-        text-decoration: underline;
-      }
-    </style>
+      <title>Nostalgy</title>
+      <style>
+        html {
+          background-color: white;
+        }	
+        a {
+          color: blue;
+          text-decoration: underline;
+        }
+      </style>
   </head>
   <body>
 
    <h2>Usage directions for Nostalgy</h2>
 
    <p>
-   Please visit
-   <a href="http://alain.frisch.fr/soft_mozilla.html">Nostalgy's
-   homepage</a>. It contains a copy of this page that might be
-   better read in your browser!
+      Please visit
+      <a href="http://alain.frisch.fr/soft_mozilla.html">Nostalgy's
+      homepage</a>. It contains a copy of this page that might be
+      better read in your browser! From there, you can also download
+      the latest development version.
    </p>
 
    <p>
-   Nostalgy adds several keyboard shortcuts to improve your
-   productivity with Thunderbird. A custom preference dialog 
-   for Nostalgy is available through the Tools menu. Below we
-   give default values for shortcuts (they can be changed from
-   the preference dialog).
+     Nostalgy adds several keyboard shortcuts to improve your
+     productivity with Thunderbird. A custom preference dialog for
+     Nostalgy is available through the Tools menu.
+   </p>
+   <p>
+     <b>Notes about shortcuts:</b>
+     <ul>
+     <li>We give here the default values for shortcuts. 
+     Most of them can be changed  from the preference dialog.</li>
+     <li>Even if the key shortcuts above are written in
+     uppercase, you must not press Shift.</li>
+     <li>The Esc-X shortcuts means: press and release Escape, and then
+     press X within 300ms (Esc-Esc is thus like a double click on
+     Escape).</li>
+     </ul>
    </p>
 
    <h3>Folder commands</h3>
 
-   <p>The following shortcuts are available from the main Thunderbird's window.
+   <p>
+     The following shortcuts are available from the main Thunderbird's
+     window. As a remainder and a sign of Nostalgy's presence, these shortcuts
+     are displayed in Thunderbird's status bar.
    </p>
 
    <table border="1">
     <tr><th>Shortcut</th><th>Description</th></tr>
     <tr><td>G</td><td>Open a specific folder</td></tr>
     <tr><td>S</td><td>Move the current message to a specific folder</td></tr>
+    <tr><td>B</td><td>Move the current message to a specific folder
+    and go there</td></tr>
     <tr><td>C</td><td>Copy the current message to a specific folder</td></tr>
    </table>
 
-   <p><b>Important:</b> even if the key shortcuts above are written in
-uppercase, you don't need to press Shift.</p>
-
-   <p>As a remainder and a sign of Nostalgy's presence, these shortcuts are 
-      displayed in Thunderbird's status bar.</p>
-
-   <p>The G, S and C commands open an auto-completion box 
-      (in place of the status bar) 
-      where you can select a folder by typing part of its name. 
-      Regular 
-      expressions are accepted as well (and .. is a short-hand for .*
-      meaning: any sequence of characters). You can choose the first
-      suggested completion with Return, or first choose another one with
-      the Up/Down keys. You can cancel the command with Escape.
-      The Tab key activates a shell-like autocompletion mode. In this mode,
-      the completed suggestions only mentions possible completions
-      one level down in the folder hierarchy, and the Tab key itself
-      automatically completes with the longest unambiguous fragment.</p>
-
-   <p>It is possible to restrict (see the preference dialog)
-   the completion to the folders on the
-   same server as the currently displayed folder.</p>
-
-   <p>The S and C commands also work in a standalone message window.</p>
-
-   <p>The G command also focuses the thread pane. If you were doing
-	a QuickSearch (that is, if you had typed some text in the search box),
-	the same search will be done in the new folder.
+   <p>
+     These commands open an folder completion box (in place of the
+     status bar) where you can select a folder by typing part of its
+     name. A popup displays the possible completions.
+     Regular expressions are accepted as well (and .. is a
+     short-hand for .* meaning: any sequence of characters). You can
+     choose the first suggested completion with Return, or select
+     another one in the popup with the Up/Down keys and then Return. 
+     You can cancel the command with Escape.
    </p>
+
+   <p>
+     Before you type anything in the folder completion box, the popup
+     displays the most recently selected folders. You can choose one
+     of them with the Up/Down keys.
+   </p>
+
+   <p>
+     In the folder completion box, the Tab key activates a shell-like
+     autocompletion mode (this feature must be enabled in Nostalgy's
+     preference dialog; otherwise, Tab cycles through the possible
+     completions). In this mode, the completed suggestions only
+     mentions possible completions one level down in the folder
+     hierarchy, and the Tab key itself automatically completes with
+     the longest unambiguous fragment.
+   </p>
+
+   <p>
+     It is possible to restrict (see the preference dialog) the
+     completion to the folders on the same server as the currently
+     displayed folder.
+   </p>
+
+   <p>
+     The S,B,C commands can be applied to one or many messages.
+   </p>
+
+   <p>
+     The S and C commands also work in a standalone message window.
+   </p>
+
+   <p>
+     The G command also focuses the thread pane. If you were doing a
+     QuickSearch (that is, if you had typed some text in the search
+     box), the same search carried over to the new folder.
+   </p>
+
+   <p>
+     The B command preserves the selection. The moved messages will
+     be selected again in the target folder.
+   </p>
+
+
+   <h3>Custom shortcuts</h3>
+
+   <p>
+     In the preference dialog, you can define any number of custom
+     keyboard shortcuts. A custom shortcut triggers a G, S, C or B
+     command to a specific folder.
+   </p>
+
 
    <h3>3-pane navigation</h3>
 
    <p>
-   Because of the G command,
-   the folder pane becomes thus much less useful, and it can be
-   hidden with the L shortcut.
+     Because of the G command, the folder pane becomes thus much less
+     useful, and it can be hidden with the L shortcut.
+     (Thunderbird already proposes a shortcut to show/hide
+     the message pane: F8).
    </p>
 
    <p>
-   Nostalgy also allows to scroll the message while the thread pane
-   is focused with the Ctrl-Left/Right keys. Because of that,
-   it is a good idea to leave the thread pane always focused.
-   Nostalgy still provides shortcuts to easily focus one of the three
-   panes.
+     Nostalgy also allows you to scroll the message while the thread
+     pane is focused with the Ctrl-Left/Right or Shift-Left/Right
+     keys.  Because of that, it is a good idea to leave the thread
+     pane always focused.  Nostalgy still provides shortcuts to easily
+     focus one of the three panes.
    </p>
 
    <table border="1">
@@ -101,92 +148,94 @@ uppercase, you don't need to press Shift.</p>
     <tr><td>Esc-M</td><td>Focus the message pane</td></tr>
     <tr><td>Esc-Esc</td><td>Focus the thread pane</td></tr>
     <tr><td>Esc-Esc-Esc</td><td>Focus the thread pane, clear quick search box, select the "All" view</td></tr>
-    <tr><td>Esc-I</td><td>Focus the quick search box</td></tr>
+    <tr><td>Esc-I</td><td>Focus the quick search box (same as Ctrl-K)</td></tr>
     <tr><td>Ctrl-Left/Right</td>
          <td>Scroll the message from the thread pane</td></tr>
    </table>
 
-   <p>The Esc-X shortcuts means: press and release Escape, and then
-   press X within 300ms (Esc-Esc is thus like a double click on Escape).</p>
-
-   <p>
-   When the thread pane is focused, you can scroll the currently
-   displayed message (up and down) by pressing Ctrl-Left/Ctrl-Right.
-   </p>
-
-   <h3>Custom shortcuts</h3>
-
-   <p>
-   In the preference dialog, you can define any number of custom
-   keyboard shortcuts. A custom shortcut triggers
-   a Go, a Save or a Copy command to a specific folder.
-   </p>
 
    <h3>Rules</h3>
 
-   <p>Nostalgy has a notion of rule. A rule associates a folder to a
-   message by looking for a substring of the From or To/Cc, or Subject 
-   headers (or a combination of them). 
-   A rule can be restricted to match messages only under
-   a given server/folder. When a rule selects a folder for a given message,
-    Nostalgy
-   informs you in the status line.  You can then use the Shift-S/Shift-C/Shift-G
-   shortcuts to move/copy/go directly to this folder.  
-   Nostalgy's rules can be edited from the preference dialog.</p>
-
    <p>
-   It is possible to match fields with a regexp instead of simply looking
-   for a substring. This is done by enclosing the corresponding field
-   with slashes. E.g. <tt>/^me@domain\.com$/</tt> will match the field
-   for an exact value (not a substring).
+     Nostalgy introduces a notion of rule. A rule associates a folder
+     to a message by looking for a substring of the From, To/Cc, or
+     Subject headers (or a combination of them).  A rule can be
+     restricted to match messages only under a given
+     server/folder. When a rule selects a folder for a given message,
+     Nostalgy informs you in the status line.  You can then use the
+     Shift-S/Shift-C/Shift-G/Shift-B shortcuts to move/copy/go directly to
+     this folder. Nostalgy's rules can be edited from the preference
+     dialog.
    </p>
 
    <p>
-   When no rule apply to a given message, Nostalgy proposes to re-use
-   (with Shift-S/Shift-C/Shift-G) the folder same as for the last move/copy 
-   operation folder. If the folder lookup has been restricted
-   to the current server (in the Nostalgy preference dialog), then
-   the last operation folder is attached to the current server. Otherwise,
-   it is global.
+     It is possible to match fields with a regexp instead of simply
+     looking for a substring. This is done by enclosing the
+     corresponding field with
+     slashes. E.g. <tt>/^me@domain\.com$/</tt> will match the field
+     for an exact value (not a substring).
+   </p>
+
+   <p>
+     When no rule apply to a given message, Nostalgy proposes to
+     re-use (with Shift-S/Shift-C/Shift-G/Shift-B) the same folder as for the
+     last operation. If the folder lookup has been
+     restricted to the current server (in the Nostalgy preference
+     dialog), then the last operation folder is attached to the
+     current server. Otherwise, it is global.
    </p>
 
    <h3>Exporting and importing rules</h3>
 
    <p>
-   Nostalgy comes with a backup system for rules. In the Preferences
-   dialog (tab "Rules"), there is a button "Send rules by email".
-   It allows you to send an e-mail to any address (your own address
-   by default). This special e-mail contains a copy of all your rules.
-   When you read such an e-mail, Thunderbird will show you
-   a button "Import Nostalgy rules", which will allow you to import
-   all the rules found in the message.
+     Nostalgy comes with a backup system for rules. In the Preferences
+     dialog (tab "Rules"), there is a button "Send rules by email".
+     It allows you to send an e-mail to any address (your own address
+     by default). This special e-mail contains a copy of all your
+     rules.  When you read such an e-mail, Thunderbird will show you a
+     button "Import Nostalgy rules" which lets you import
+     all the rules found in the message.
    </p>
 
    <p>
-   This import/export feature can be used as a backup mechanism, or to
-   exchange rules between various computer or Thunderbird profiles.
+     This import/export feature can be used as a backup mechanism, or
+     to exchange rules between various computer or Thunderbird
+     profiles.
    </p>
 
    <p>
-   <b>IMPORTANT:</b> importing rules from an e-email will destroy your
-   current rules. Use this feature with caution. Also, don't import
-   rules from an e-mail sent by a user you don't trust (this could
-   allow arbitration Javascript code execution).
+     <b>IMPORTANT:</b> importing rules from an e-email will destroy
+     your current rules. Use this feature with caution.
    </p>
    
 
    <h3>QuickSearch</h3>
 
-   <p>Nostalgy adds a few features to Thunderbird's QuickSearh features.</p>
+   <p>
+     Nostalgy changes the behavior of Thunderbird's QuickSearch
+     features.
+   </p>
 
    <ul>
-   <li>As said above, the G command (change current folder) does not destroy
+   <li>When the QuickSearch box is focused, the popup used to
+       select the search criterion is always displayed. You can
+       change the criterion with the Up/Down keys (the search is
+       automatically updated). The Return key performs the search
+       and put the focus on the thread pane. Ctrl-Return does
+       the same but select all the results. The Escape key cancels
+       the search and also put the focus on the thread pane.
+   </li>
+       
+
+   <li>The G command (change current folder) does not destroy
        the current search terms.</li>
-   <li>You can focus the QuickSearch input box with Esc-I.</li>
+   <li>You can focus the QuickSearch input box with
+       Esc-I. (Thunderbird recently introduced another shortcut with
+       the same effect: Ctrl-K.)
+   </li>
    <li>The combination Esc-Esc-Esc clears the QuickSearch input box.</li>
    <li>The key "`" (backquote) launches a QuickSearch for messages
 	from the same sender as the currently selected message.
-	This re-creates the famous Alt-Click behavior from Eudora.
 	If you press the same key again, messages with the same
         subject are searched. And if you press again,
         the QuickSearch is cancelled.
@@ -243,13 +292,12 @@ opens the file attachment dialog.</p>
    
    <p>The preference dialog for Nostalgy has several tabs.
    The first tab is the place where rules are
-   defined. The second tab has five switches to control the way the completion
+   defined. The second tab has several switches to control 
+   the way the completion
    box (where folder names are proposed) is populated (see below).
    The third pane allows you to configure Nostalgy's shortcuts
    (click on the key to change it), to disable some of them,
    or to manage custom shortcuts.
-   You might need to restart Thunderbird for changes to shortcuts
-   to take effect.
    </p>
 
    <p>Here is a description of the completion options:</p>

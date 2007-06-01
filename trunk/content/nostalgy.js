@@ -250,16 +250,18 @@ function onNostalgyLoad() {
    mSession.AddFolderListener(NostalgyFolderListener, 
       nsIFolderListener.added | nsIFolderListener.removed | nsIFolderListener.event);
 
- /*
  Components.classes["@mozilla.org/observer-service;1"].
    getService(Components.interfaces.nsIObserverService).
    addObserver(NostalgyObserver, "MsgMsgDisplayed", false);
- */
 
-
+ /*
  var old_OnMsgParsed = OnMsgParsed;
- OnMsgParsed = function (url) { old_OnMsgParsed(url); 
-				setTimeout(NostalgyOnMsgParsed,100); };
+ OnMsgParsed = function (url) {   
+   NostalgyDebug("OnMsgParsed");
+   old_OnMsgParsed(url); 
+   setTimeout(NostalgyOnMsgParsed,100); 
+ };
+ */
 
  if (window.gSearchNotificationListener) {
    var old_f0 = gSearchNotificationListener.onSearchDone;
@@ -315,26 +317,24 @@ function NostalgyOnMsgParsed() {
   }
 }
 
-/*
 var NostalgyObserver = {
   observe: function (subject, topic, state) {
     if (!state) return;
+    // NostalgyDebug("OnMsgParsed");
     subject = subject.QueryInterface(Components.interfaces.nsIMsgHeaderSink);
     if (subject != msgWindow.msgHeaderSink) return; // another window
     NostalgyOnMsgParsed();
   }
 };
-*/
 
 function onNostalgyUnload() {
  var mSession = NostalgyMailSession();
  if (mSession) mSession.RemoveFolderListener(NostalgyFolderListener);
  NostalgyRules.unregister();
- /*
+
  Components.classes["@mozilla.org/observer-service;1"].
    getService(Components.interfaces.nsIObserverService).
    removeObserver(NostalgyObserver, "MsgMsgDisplayed");
- */
 }
 
 function NostalgyHideIfBlurred() {

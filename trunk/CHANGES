@@ -9,6 +9,8 @@ Since 0.2.13
       focus thread pane
     * CTRL-RETURN (customizable): same, but select all results
     * ESCAPE: cancel search, focus thread pane
+  - before starting to type in the completion box, the popup lists
+    the 5 more recently selected folders (to be selected with up/down)
   - new "Save and Go" feature
 
   - make Nostalgy work with TB 3.0 (tested with 3.0a1pre)

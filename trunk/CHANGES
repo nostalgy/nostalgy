@@ -1,7 +1,7 @@
 Since 0.2.13
   - a system to export and import Nostalgy's rules (through e-mails)
   - when showing a folder, if no message is currently selected,
-    select the last one
+    select either the first unread one, if any, or the last message otherwise
   - change the behavior of the QuickSearch box: 
     * always show the popup menu to select/show the current search criterion
     * UP/DOWN: change the criterion (the view is automatically updated)

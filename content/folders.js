@@ -210,15 +210,17 @@ function NostalgyProcessKeyPress(aEvent) {
   var killEvent = false;
   switch (aEvent.keyCode) {
    case KeyEvent.DOM_VK_TAB:
-     if (nostalgy_completion_options.tab_shell_completion) {
+     if (this.getAttribute("normaltab") != "true") {
+      if (nostalgy_completion_options.tab_shell_completion) {
        this.shell_completion = true;
        this.value = NostalgyCompleteUnique(this.value); 
        this.processInput();
        killEvent = true;
-     }
-     else {
+      }
+      else {
        this.clearTimer();
        killEvent = this.keyNavigation(aEvent);
+      }
      }
      break;              
               

@@ -41,12 +41,14 @@
     <row>
       <label value="when message is under folder"/>
       <textbox type="autocomplete" id="underselect"
+               normaltab="true"
                nostalgyfolderbox="ChooseUnder();"/>
     </row>
 
     <row>
       <label value="then save to"/>
       <textbox type="autocomplete" id="folderselect"
+             normaltab="true"
              nostalgyfolderbox="ChooseFolder();"/>
     </row>
   </rows>

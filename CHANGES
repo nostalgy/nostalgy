@@ -14,6 +14,7 @@ Since 0.2.13
   - new "Save and Go" feature
 
   - double-clicking on a rule in the pref dialog to edit it
+  - in the rule edit dialog, don't let folder completion captures TAB
   - make Nostalgy work with TB 3.0 (tested with 3.0a1pre)
   - Thunderbirds shortcuts that are hidden by Nostalgy can now
     be used (type "Escape" before)

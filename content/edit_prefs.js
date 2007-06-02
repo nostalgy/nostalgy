@@ -32,23 +32,6 @@ String.prototype.quote = function () {
   return '"' + x + '"';
 };
 
-/*
-String.prototype.escape_spaces = function() {
-  return this.replace(/([\x20_])/g, function(a,b) {
-    if (b = " ") return "_";
-    else return "\\_"
-  });
-}
-
-String.prototype.unescape_spaces = function() {
-  return this.replace(/(_|\\_)/g, function(a,b) {
-    if (b = "_") return " ";
-    else return "_"
-  });
-}
-*/
-
-
 function NostalgySendRules() {
   var sAccountManager = 
     Components.classes["@mozilla.org/messenger/account-manager;1"].
@@ -135,6 +118,8 @@ function RuleOfItem(item) {
 
 function CreateItem(rule) {
   var item = document.createElement("listitem");
+
+  item.addEventListener("dblclick", function() { DoEditItem(item); }, false);
   item.appendChild(document.createElement("listcell"));
   item.appendChild(document.createElement("listcell"));
   item.appendChild(document.createElement("listcell"));
@@ -184,11 +169,14 @@ function EditRule(rule, accept) {
 	             rule,accept);
 }
 
-function DoEdit() {
-  var item = gList.selectedItem;
+function DoEditItem(item) {
   if (item) { 
     EditRule(RuleOfItem(item), function(rule) { SetItem(item,rule); });
   }
+}
+
+function DoEdit() {
+  DoEditItem(gList.selectedItem);
 }
 
 function SwapItems(idx1,idx2) {

@@ -13,6 +13,7 @@ Since 0.2.13
     the 5 more recently selected folders (to be selected with up/down)
   - new "Save and Go" feature
 
+  - double-clicking on a rule in the pref dialog to edit it
   - make Nostalgy work with TB 3.0 (tested with 3.0a1pre)
   - Thunderbirds shortcuts that are hidden by Nostalgy can now
     be used (type "Escape" before)

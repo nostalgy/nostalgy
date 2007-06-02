@@ -442,7 +442,7 @@ function MailRecipients() {
 }
 
 function MailAuthor() {
- return(gDBView.hdrForFirstSelectedMessage.author.toLowerCase());
+  return(gDBView.hdrForFirstSelectedMessage.author.toLowerCase());
 }
 
 function MailAuthorName()
@@ -468,6 +468,7 @@ function MailRecipName()
 }
 
 function MailSubject() {
+ try {
  var s = gDBView.hdrForFirstSelectedMessage.mime2DecodedSubject.toLowerCase();
  var old;
 
@@ -475,8 +476,8 @@ function MailSubject() {
  while (s != old);
 
  // do { old =s; s = s.replace(/^\[.*\]/g,""); } while (s != old);
-
- return s;  
+ return s;
+ } catch (ex) { return ""; }
 }
 
 function register_folder(folder) {
@@ -491,7 +492,7 @@ function NostalgySuggest() {
  try {
   r = NostalgyRules.apply(MailAuthor(), MailSubject(), MailRecipients());
   if (r) { return(r); }
- } catch (ex) { }
+ } catch (ex) { /* NostalgyDebug("ex:" + ex); */ }
 
 // r = last_folder_author[MailAuthor()];
 // if (r) { return(r); }

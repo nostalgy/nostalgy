@@ -283,7 +283,6 @@ function onNostalgyLoad() {
    };
    onSearchInputBlur = NostalgyLeaveSearch;
 
-
    gEBI("quick-search-menupopup").addEventListener
      ("popupshowing",
       function() { 
@@ -441,8 +440,10 @@ function NostalgyRunCommand() {
 }
 
 function MailRecipients() {
- var hdr = gDBView.hdrForFirstSelectedMessage;
- return((hdr.recipients + ", " + hdr.ccList).toLowerCase());
+ try {
+  var hdr = gDBView.hdrForFirstSelectedMessage;
+  return((hdr.recipients + ", " + hdr.ccList).toLowerCase());
+ } catch (ex) { return ""; }
 }
 
 function MailAuthor() {
@@ -904,7 +905,16 @@ function NostalgySaveAndGoSuggested() {
   return true;
 }
 
+function onNostalgyKeyDown(ev) {
+//  NostalgyDebug("keydown " + ev.keyCode);
+}
+function onNostalgyKeyUp(ev) {
+//  NostalgyDebug("keyup " + ev.keyCode);
+}
+
 window.addEventListener("load", onNostalgyLoad, false);
 window.addEventListener("resize", onNostalgyResize, false);
 window.addEventListener("unload", onNostalgyUnload, false);
 window.addEventListener("keypress", onNostalgyKeyPress, true);
+window.addEventListener("keydown", onNostalgyKeyDown, true);
+window.addEventListener("keyup", onNostalgyKeyUp, true);

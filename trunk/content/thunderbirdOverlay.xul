@@ -66,6 +66,8 @@
    </vbox>
  </hbox>
 
+<!-- <button id="quick-search-button" onclick="alert('x');"/> -->
+
 </overlay>
 
 

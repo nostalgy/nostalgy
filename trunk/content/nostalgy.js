@@ -446,7 +446,9 @@ function MailRecipients() {
 }
 
 function MailAuthor() {
-  return(gDBView.hdrForFirstSelectedMessage.author.toLowerCase());
+  try {
+   return(gDBView.hdrForFirstSelectedMessage.author.toLowerCase());
+  } catch (ex) { return ""; }
 }
 
 function MailAuthorName()
@@ -496,7 +498,7 @@ function NostalgySuggest() {
  try {
   r = NostalgyRules.apply(MailAuthor(), MailSubject(), MailRecipients());
   if (r) { return(r); }
- } catch (ex) { /* NostalgyDebug("ex:" + ex); */ }
+ } catch (ex) { NostalgyDebug("ex:" + ex);  }
 
 // r = last_folder_author[MailAuthor()];
 // if (r) { return(r); }

@@ -205,10 +205,10 @@ function NostalgySelectMessageByNavigationType(type)
   if ((resultId.value != nsMsgKey_None) && 
       (resultIndex.value != nsMsgKey_None)) {
 
-    //gDBView.selection.currentIndex = resultIndex.value;
-    gDBView.selection.timedSelect(resultIndex.value, 500);
-    //gDBView.selectMsgByKey(resultId.value);
     gEBI("threadTree").treeBoxObject.ensureRowIsVisible(resultIndex.value);
+    gDBView.selection.currentIndex = resultIndex.value;
+    //gDBView.selection.timedSelect(resultIndex.value, 500);
+    //gDBView.selectMsgByKey(resultId.value);
     return true;
   }
   return false;
@@ -561,9 +561,11 @@ function NostalgySelectLastMsg() {
     nostalgy_selection_saved = null;
   } else
   try { gDBView.viewIndexForFirstSelectedMsg; } catch (ex) {
+/*
     if (!NostalgySelectMessageByNavigationType(nsMsgNavigationType.firstUnreadMessage)) {
     NostalgySelectMessageByNavigationType(nsMsgNavigationType.lastMessage);
   }	
+*/
   }
 }
 

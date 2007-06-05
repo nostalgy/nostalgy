@@ -12,6 +12,12 @@ var nostalgy_on_search_done = null;
 var nostalgy_search_focused = false;
 var nostalgy_on_move_completed = null;
 var nostalgy_selection_saved = null;
+var nostalgy_always_show_mode = true;
+
+function NostalgyCurrentSearchMode() {
+  var input = GetSearchInput();
+  return input.searchMode;
+}
 
 /** Rules **/
 
@@ -280,21 +286,18 @@ function onNostalgyLoad() {
    onSearchInputFocus = function(ev) {
      old_f1(ev);
      NostalgyEnterSearch();
+     if (nostalgy_always_show_mode) NostalgyShowSearchMode();
    };
    onSearchInputBlur = NostalgyLeaveSearch;
 
-   gEBI("quick-search-menupopup").addEventListener
-     ("popupshowing",
-      function() { 
-       if (nostalgy_search_focused) setTimeout(NostalgyEnterSearch,0);
-     },
-      false);
-   gEBI("quick-search-menupopup").addEventListener
-     ("popuphiding",
-      function() { 
-       if (nostalgy_search_focused) setTimeout(NostalgyEnterSearch,0);
-     },
-      false); }
+   if (nostalgy_always_show_mode)
+     gEBI("quick-search-menupopup").addEventListener
+       ("popuphiding",
+	function() { 
+	  if (nostalgy_search_focused) setTimeout(NostalgyShowSearchMode,0);
+	},
+	false); 
+ }
 }
 
 function NostalgyOnMsgParsed() {
@@ -783,12 +786,19 @@ function NostalgySearchSelectAll(select) {
   return true;
 }
 
+function NostalgyShowSearchMode() {
+  var o = gEBI("quick-search-menupopup");
+  o.showPopup(gEBI("quick-search-button"),-1,-1,"tooltip", 
+	      "bottomleft", "topleft");  
+}
+
 function NostalgyEnterSearch() {
   var o = gEBI("quick-search-menupopup");
   if (!o) return;
   InitQuickSearchPopup();
-  nostalgy_search_focused = false;
+  /* nostalgy_search_focused = false;
   o.showPopup(gEBI("searchInput"),-1,-1,"tooltip", "bottomright", "topright");
+  */
   nostalgy_search_focused = true;
 }
 function NostalgyLeaveSearch(ev) {
@@ -798,18 +808,19 @@ function NostalgyLeaveSearch(ev) {
   o.hidePopup();
 }
 
-function NostalgySearchMode(dir) {  
+function NostalgySearchMode(current,dir) {  
   var input = GetSearchInput();
   var popup = gEBI("quick-search-menupopup");
-  var oldmode = popup.getElementsByAttribute('value', input.searchMode)[0];
+  if (!popup) return;
+  var oldmode = popup.getElementsByAttribute('value', current)[0];
+  if (!oldmode) oldmode = popup.firstChild;
   var newmode = dir > 0 ? oldmode.nextSibling : oldmode.previousSibling;
-  if (newmode && newmode.value) {
-    oldmode.removeAttribute('checked');
-    newmode.setAttribute('checked','true');
-    input.searchMode = newmode.value;
-    popup.setAttribute("value",newmode.value);
-    onEnterInSearchBar();
-  }
+  if (!newmode || !newmode.value) newmode = oldmode;
+  newmode.setAttribute('checked','true');
+  input.searchMode = newmode.value;
+  popup.setAttribute("value",newmode.value);
+  InitQuickSearchPopup();
+  onEnterInSearchBar();
 }
 
 function onNostalgyKeyPress(ev) {
@@ -844,12 +855,14 @@ function onNostalgyKeyPress(ev) {
   }
   var kn = RecognizeKey(ev);
   if (ev.keyCode == KeyEvent.DOM_VK_DOWN && nostalgy_search_focused) {
-    NostalgySearchMode(1); 
+    var i = NostalgyCurrentSearchMode();
+    setTimeout(function(){NostalgySearchMode(i,1);},0);
     NostalgyStopEvent(ev);
     return;
   }
   if (ev.keyCode == KeyEvent.DOM_VK_UP && nostalgy_search_focused) {
-    NostalgySearchMode(-1);
+    var i = NostalgyCurrentSearchMode();
+    setTimeout(function(){NostalgySearchMode(i,-1);},0);
     NostalgyStopEvent(ev);
     return;
   }
@@ -908,10 +921,18 @@ function NostalgySaveAndGoSuggested() {
 }
 
 function onNostalgyKeyDown(ev) {
-//  NostalgyDebug("keydown " + ev.keyCode);
+  if ((ev.keyCode == KeyEvent.DOM_VK_ALT || 
+       ev.keyCode == KeyEvent.DOM_VK_CONTROL)
+      && nostalgy_search_focused) NostalgyShowSearchMode();
 }
 function onNostalgyKeyUp(ev) {
-//  NostalgyDebug("keyup " + ev.keyCode);
+  if ((ev.keyCode == KeyEvent.DOM_VK_ALT || 
+       ev.keyCode == KeyEvent.DOM_VK_CONTROL)
+     && nostalgy_search_focused
+     && !nostalgy_always_show_mode) {
+    var o = gEBI("quick-search-menupopup");
+    o.hidePopup();
+  }
 }
 
 window.addEventListener("load", onNostalgyLoad, false);

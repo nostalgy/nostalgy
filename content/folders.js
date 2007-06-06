@@ -4,7 +4,10 @@ var nostalgy_completion_options = {
   sort_folders : false,
   match_case_sensitive : false,
   tab_shell_completion : false,
-  always_include_tags  : false
+  always_include_tags  : false,
+
+  /* not related to completion: should move to somewhere else */
+  always_show_search_mode : false
 };
 
 

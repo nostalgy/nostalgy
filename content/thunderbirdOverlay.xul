@@ -67,18 +67,6 @@
  </hbox>
 
  <menupopup id="quick-search-menupopup" ignorekeys="true"/>
- <statusbar id="statusTextBox">
-  <statusbarpanel insertbefore="statusText">
-  <button label="XXX" type="menu-button">
-      <menupopup popupalign="topleft" popupanchor="bottomleft">
-        <menuitem value="0" label="ABC" type="radio"/>
-        <menuitem value="0" label="DEF" type="radio"/>
-     </menupopup>
-   </button>
-   </statusbarpanel>
- </statusbar>
- <!-- <button id="quick-search-button" hidden="true"/> -->
-
 </overlay>
 
 

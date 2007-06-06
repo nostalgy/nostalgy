@@ -16,16 +16,17 @@
  <script src="nostalgy_keys.js"/>
  <script src="edit_prefs.js"/>
 
- <tabbox style="width:800px">
+ <tabbox flex="0" style="width:600px">
  <tabs>
  <tab label="Rules"/>
  <tab label="Completion"/>
+ <tab label="UI"/>
  <tab label="Keys"/>
  </tabs>
  <tabpanels>
 
  <tabpanel>
- <groupbox flex="0"  style="width:800px">
+ <groupbox flex="1">
  <label>Rules associate folders to messages by looking for a 
 substring of the Sender or Subject (or both) headers. A rule can be
 restricted to match messages under a given server/folder. When a folder
@@ -65,7 +66,7 @@ shortcuts to move/copy the message to this folder.</label>
  </tabpanel>
 
  <tabpanel>
- <groupbox>
+ <groupbox flex="1">
    <checkbox label="Restrict folder completion to the current server"
              id="restrict_to_current_server" accesskey="R"/>
    <checkbox label="Match only on folder name, not on the full path"
@@ -82,7 +83,15 @@ shortcuts to move/copy the message to this folder.</label>
  </tabpanel>
 
  <tabpanel>
- <groupbox style="width:800px">
+ <groupbox flex="1">
+   <checkbox label="Always show the criterion selection menu when Quick Search is focused"
+             id="always_show_search_mode"/>
+ </groupbox>
+ </tabpanel>
+
+
+ <tabpanel>
+ <groupbox flex="1">
    <grid style="overflow:auto; height:300px">
    <columns> <column/> <column width="150"/> <column/> </columns>
    <rows id="key_rows"/>

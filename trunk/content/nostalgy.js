@@ -12,7 +12,6 @@ var nostalgy_on_search_done = null;
 var nostalgy_search_focused = false;
 var nostalgy_on_move_completed = null;
 var nostalgy_selection_saved = null;
-var nostalgy_always_show_mode = true;
 
 function NostalgyCurrentSearchMode() {
   var input = GetSearchInput();
@@ -286,17 +285,21 @@ function onNostalgyLoad() {
    onSearchInputFocus = function(ev) {
      old_f1(ev);
      NostalgyEnterSearch();
-     if (nostalgy_always_show_mode) NostalgyShowSearchMode();
+     if (nostalgy_completion_options.always_show_search_mode) NostalgyShowSearchMode();
    };
-   onSearchInputBlur = NostalgyLeaveSearch;
+   var old_f2 = onSearchInputBlur;
+   onSearchInputBlur = function(ev) {
+     old_f2(ev);
+     NostalgyLeaveSearch();
+   };
 
-   if (nostalgy_always_show_mode)
-     gEBI("quick-search-menupopup").addEventListener
-       ("popuphiding",
-	function() { 
-	  if (nostalgy_search_focused) setTimeout(NostalgyShowSearchMode,0);
-	},
-	false); 
+   gEBI("quick-search-menupopup").addEventListener
+     ("popuphiding",
+      function() { 
+	if (nostalgy_completion_options.always_show_search_mode &&
+	    nostalgy_search_focused) setTimeout(NostalgyShowSearchMode,0);
+      },
+      false); 
  }
 }
 
@@ -778,7 +781,8 @@ function NostalgySearchSelectAll(select) {
   initializeSearchBar();
   nostalgy_on_search_done = function() {
     nostalgy_on_search_done = null;
-    if (select) gDBView.selection.selectAll();
+    if (select) setTimeout(gDBView.selection.selectAll,1000);
+    /* selectAll does not work? */
     else NostalgySelectLastMsg();
     SetFocusThreadPane();
   };
@@ -796,12 +800,9 @@ function NostalgyEnterSearch() {
   var o = gEBI("quick-search-menupopup");
   if (!o) return;
   InitQuickSearchPopup();
-  /* nostalgy_search_focused = false;
-  o.showPopup(gEBI("searchInput"),-1,-1,"tooltip", "bottomright", "topright");
-  */
   nostalgy_search_focused = true;
 }
-function NostalgyLeaveSearch(ev) {
+function NostalgyLeaveSearch() {
   nostalgy_search_focused = false;
   var o = gEBI("quick-search-menupopup");
   if (!o) return;
@@ -816,6 +817,7 @@ function NostalgySearchMode(current,dir) {
   if (!oldmode) oldmode = popup.firstChild;
   var newmode = dir > 0 ? oldmode.nextSibling : oldmode.previousSibling;
   if (!newmode || !newmode.value) newmode = oldmode;
+  oldmode.setAttribute('checked','false');
   newmode.setAttribute('checked','true');
   input.searchMode = newmode.value;
   popup.setAttribute("value",newmode.value);
@@ -868,7 +870,7 @@ function onNostalgyKeyPress(ev) {
   }
   if (ev.keyCode == KeyEvent.DOM_VK_ESCAPE && nostalgy_search_focused) {
     Search(""); 
-    SetFocusThreadPane();
+    setTimeout(SetFocusThreadPane,0);
     NostalgyStopEvent(ev);
     return;
   }
@@ -929,7 +931,7 @@ function onNostalgyKeyUp(ev) {
   if ((ev.keyCode == KeyEvent.DOM_VK_ALT || 
        ev.keyCode == KeyEvent.DOM_VK_CONTROL)
      && nostalgy_search_focused
-     && !nostalgy_always_show_mode) {
+     && !nostalgy_completion_options.always_show_search_mode) {
     var o = gEBI("quick-search-menupopup");
     o.hidePopup();
   }

@@ -1,10 +1,12 @@
 Since 0.2.13
   - a system to export and import Nostalgy's rules (through e-mails)
-  - when showing a folder, if no message is currently selected,
-    select either the first unread one, if any, or the last message otherwise
   - change the behavior of the QuickSearch box: 
-    * always show the popup menu to select/show the current search criterion
-    * UP/DOWN: change the criterion (the view is automatically updated)
+    * the search criterion can be changed with UP/DOWN and the view
+      is automatically updated
+    * the menu that shows the current search criterion is shown
+      when one of CONTROL or ALT is pressed (when the QuickSearch box
+      if focused); an option in the preference dialog will force
+      the menu to be always displayed when the QuickSearch box is focused
     * RETURN (customizable): start the search, select the last result, 
       focus thread pane
     * CTRL-RETURN (customizable): same, but select all results
@@ -24,6 +26,10 @@ Since 0.2.13
   - bug fix: custom shortcuts with no modifier are not recognized when typing
     in a text box (QuickSearch or Nostalgy's completion box)
   - bug fix: better detection of when Nostalgy's completion box loses focus
+  - (currently disabled:
+    when showing a folder, if no message is currently selected,
+    select either the first unread one, if any, or the last message otherwise
+    )
 
 0.2.12
   - bug fix: use the mime-decoded version for the subject (for matching

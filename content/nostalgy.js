@@ -781,8 +781,7 @@ function NostalgySearchSelectAll(select) {
   initializeSearchBar();
   nostalgy_on_search_done = function() {
     nostalgy_on_search_done = null;
-    if (select) setTimeout(gDBView.selection.selectAll,1000);
-    /* selectAll does not work? */
+    if (select) setTimeout(function(){ gDBView.selection.selectAll(); },0); 
     else NostalgySelectLastMsg();
     SetFocusThreadPane();
   };

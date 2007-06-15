@@ -824,11 +824,44 @@ function NostalgySearchMode(current,dir) {
   onEnterInSearchBar();
 }
 
-function onNostalgyKeyPress(ev) {
+function onNostalgyKeyPressCapture(ev) {
   var focused = "";
   try { focused = document.commandDispatcher.focusedElement.nodeName; }
   catch (ex) { }
+  if (!nostalgy_statusBar.hidden && focused != "html:input")
+    {
+    // ugly hack: it takes some time for the folderBox to be focused
+    if (ev.charCode) {
+      nostalgy_folderBox.value =  nostalgy_folderBox.value + 
+          String.fromCharCode(ev.charCode);
+    }
+    NostalgyStopEvent(ev);
+    return;
+  }
+  if (nostalgy_search_focused) {
+    if (ev.keyCode == KeyEvent.DOM_VK_DOWN) {
+      var i = NostalgyCurrentSearchMode();
+      setTimeout(function(){NostalgySearchMode(i,1);},0);
+      NostalgyStopEvent(ev);
+      return;
+    }
+    if (ev.keyCode == KeyEvent.DOM_VK_UP) {
+      var i = NostalgyCurrentSearchMode();
+      setTimeout(function(){NostalgySearchMode(i,-1);},0);
+      NostalgyStopEvent(ev);
+      return;
+    }
+    if (ev.keyCode == KeyEvent.DOM_VK_ESCAPE) {
+      Search(""); 
+      setTimeout(SetFocusThreadPane,0);
+      NostalgyStopEvent(ev);
+      return;
+    }
+  }
+}
 
+
+function onNostalgyKeyPress(ev) {
   if (NostalgyEscapePressed >= 1) {
     if (!in_message_window && ev.charCode == 109) { // M
       NostalgyFocusMessagePane();
@@ -844,35 +877,8 @@ function onNostalgyKeyPress(ev) {
     }
     return;
   } 
-  if (!nostalgy_statusBar.hidden && focused != "html:input")
-    {
-    // ugly hack: it takes some time for the folderBox to be focused
-    if (ev.charCode) {
-      nostalgy_folderBox.value =  nostalgy_folderBox.value + 
-          String.fromCharCode(ev.charCode);
-    }
-    NostalgyStopEvent(ev);
-    return;
-  }
+
   var kn = RecognizeKey(ev);
-  if (ev.keyCode == KeyEvent.DOM_VK_DOWN && nostalgy_search_focused) {
-    var i = NostalgyCurrentSearchMode();
-    setTimeout(function(){NostalgySearchMode(i,1);},0);
-    NostalgyStopEvent(ev);
-    return;
-  }
-  if (ev.keyCode == KeyEvent.DOM_VK_UP && nostalgy_search_focused) {
-    var i = NostalgyCurrentSearchMode();
-    setTimeout(function(){NostalgySearchMode(i,-1);},0);
-    NostalgyStopEvent(ev);
-    return;
-  }
-  if (ev.keyCode == KeyEvent.DOM_VK_ESCAPE && nostalgy_search_focused) {
-    Search(""); 
-    setTimeout(SetFocusThreadPane,0);
-    NostalgyStopEvent(ev);
-    return;
-  }
   if (ev.charCode && ev.originalTarget.localName == "input" 
       && !ev.ctrlKey && !ev.altKey) 
     return;
@@ -939,6 +945,7 @@ function onNostalgyKeyUp(ev) {
 window.addEventListener("load", onNostalgyLoad, false);
 window.addEventListener("resize", onNostalgyResize, false);
 window.addEventListener("unload", onNostalgyUnload, false);
-window.addEventListener("keypress", onNostalgyKeyPress, true);
+window.addEventListener("keypress", onNostalgyKeyPress, false);
+window.addEventListener("keypress", onNostalgyKeyPressCapture, true);
 window.addEventListener("keydown", onNostalgyKeyDown, true);
 window.addEventListener("keyup", onNostalgyKeyUp, true);

@@ -785,7 +785,11 @@ function NostalgySearchSelectAll(select) {
     else NostalgySelectLastMsg();
     SetFocusThreadPane();
   };
-  onSearchInput(true);
+  if (gSearchTimer) {
+    clearTimeout(gSearchTimer);
+    gSearchTimer = null;
+  }
+  gSearchTimer = setTimeout("onEnterInSearchBar();", 0);
   return true;
 }
 

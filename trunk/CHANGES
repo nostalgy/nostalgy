@@ -1,3 +1,7 @@
+Since 0.2.13
+  - don't capture keys when another widgets want them (e.g. a menu popup)
+
+
 0.2.13
   - a system to export and import Nostalgy's rules (through e-mails)
   - change the behavior of the QuickSearch box: 

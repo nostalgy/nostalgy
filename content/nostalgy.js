@@ -737,6 +737,7 @@ function NostalgyFocusMessagePane() {
 
 var last_cycle_restrict_value = null;
 var last_cycle_restrict = 0;
+var last_cycle_saved_searchMode = 0;
 
 function NostalgySearchSender() {
   if (!window.GetSearchInput) return false;
@@ -749,14 +750,19 @@ function NostalgySearchSender() {
   input.clearButtonHidden = false;
   var name = (recips ? MailRecipName() : MailAuthorName());
   var subj = MailSubject();
-  if (input.value != last_cycle_restrict_value) last_cycle_restrict = 0;
+  if (input.value != last_cycle_restrict_value) {
+    last_cycle_restrict = 0;
+    last_cycle_saved_searchMode = input.searchMode;
+  }
   last_cycle_restrict++;
   if (last_cycle_restrict == 1)
   { input.value = name; input.searchMode = kQuickSearchSender; }
   else if (last_cycle_restrict == 2)
   { input.value = subj; input.searchMode = kQuickSearchSubject; }
   else
-  { last_cycle_restrict = 0; input.value = ""; }
+  { last_cycle_restrict = 0; input.value = "";
+    input.searchMode = last_cycle_saved_searchMode;
+  }
   last_cycle_restrict_value = input.value;
   onEnterInSearchBar();
   SetFocusThreadPane();

@@ -735,7 +735,7 @@ function NostalgyFocusMessagePane() {
   }
 }
 
-var last_cycle_restrict_value = null;
+var last_cycle_restrict_value = "";
 var last_cycle_restrict = 0;
 var last_cycle_saved_searchMode = 0;
 
@@ -750,13 +750,11 @@ function NostalgySearchSender() {
   input.clearButtonHidden = false;
   var name = (recips ? MailRecipName() : MailAuthorName());
   var subj = MailSubject();
-  if (input.value != last_cycle_restrict_value) {
-    last_cycle_restrict = 0;
-    last_cycle_saved_searchMode = input.searchMode;
-  }
+  if (input.value != last_cycle_restrict_value) last_cycle_restrict = 0;
   last_cycle_restrict++;
   if (last_cycle_restrict == 1)
-  { input.value = name; input.searchMode = kQuickSearchSender; }
+  { last_cycle_saved_searchMode = input.searchMode;
+    input.value = name; input.searchMode = kQuickSearchSender; }
   else if (last_cycle_restrict == 2)
   { input.value = subj; input.searchMode = kQuickSearchSubject; }
   else

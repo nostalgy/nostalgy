@@ -1,7 +1,8 @@
-Since 0.2.13
-  - don't capture keys when another widgets want them (e.g. a menu popup)
+0.2.14
+  - don't capture keys when another widget want them (e.g. a menu popup)
   - moving dev repository from CVS to SVN with public access
   - when cycling with "`" is over, restore the last search mode
+  - fix a bug that closed the Nostalgy completion box in wrong cases
 
 0.2.13
   - a system to export and import Nostalgy's rules (through e-mails)

@@ -342,15 +342,17 @@ function onNostalgyUnload() {
  NostalgyRules.unregister();
 
  Components.classes["@mozilla.org/observer-service;1"].
-   getService(Components.interfaces.nsIObserverService).
+   getService(Components.interfaces.nsIObserverService)
    removeObserver(NostalgyObserver, "MsgMsgDisplayed");
 }
 
 function NostalgyHideIfBlurred() {
   setTimeout(function (){
+      var focused = document.commandDispatcher.focusedElement;
     if ((!nostalgy_statusBar.hidden) && 
-        (document.commandDispatcher.focusedElement != nostalgy_folderBox))
-    { NostalgyHide(false); }
+        (focused != nostalgy_folderBox) &&
+	(focused != nostalgy_folderBox.inputField))
+      { NostalgyHide(false); }
   }, 500);
 }
 

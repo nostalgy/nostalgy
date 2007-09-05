@@ -1,3 +1,10 @@
+0.2.15
+  - bug fix: the G command did not work when QuickSearch is not shown in 
+    the toolbar
+  - bug fix: in some situations, some keys were lost just after
+    the Nostalgy box was opened
+  - remove some harmless errors in the Error Console
+
 0.2.14
   - don't capture keys when another widget want them (e.g. a menu popup)
   - moving dev repository from CVS to SVN with public access

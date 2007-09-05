@@ -293,13 +293,15 @@ function onNostalgyLoad() {
      NostalgyLeaveSearch();
    };
 
-   gEBI("quick-search-menupopup").addEventListener
-     ("popuphiding",
-      function() { 
-	if (nostalgy_completion_options.always_show_search_mode &&
-	    nostalgy_search_focused) setTimeout(NostalgyShowSearchMode,0);
-      },
-      false); 
+   var search = gEBI("quick-search-menupopup");
+   if (search)
+       search.addEventListener
+	 ("popuphiding",
+	  function() { 
+	   if (nostalgy_completion_options.always_show_search_mode &&
+	       nostalgy_search_focused) setTimeout(NostalgyShowSearchMode,0);
+	 },
+	  false); 
  }
 }
 
@@ -342,7 +344,7 @@ function onNostalgyUnload() {
  NostalgyRules.unregister();
 
  Components.classes["@mozilla.org/observer-service;1"].
-   getService(Components.interfaces.nsIObserverService)
+   getService(Components.interfaces.nsIObserverService).
    removeObserver(NostalgyObserver, "MsgMsgDisplayed");
 }
 
@@ -590,9 +592,9 @@ function NostalgyShowFolder(folder) {
     totry = kNumFolderViews;
     savedFolderView = gCurrentFolderView;
   }
+  var search = "";
   var input = GetSearchInput();
-  var search = input.value;
-  if (input.showingSearchCriteria) search = "";
+  if (input && !input.showingSearchCriteria) search = input.value;
   while (totry > 0) {
     try {
       var idx = NostalgyEnsureFolderIndex(folderTree.builderView, folder);
@@ -744,6 +746,7 @@ var last_cycle_saved_searchMode = 0;
 function NostalgySearchSender() {
   if (!window.GetSearchInput) return false;
   var input = GetSearchInput();
+  if (!input) { alert("Nostalgy error:\nCannot perform this action when Quick Search is not enabled"); return false; }
   try {
   var recips = gDBView.msgFolder.displayRecipients;
   var key = gDBView.hdrForFirstSelectedMessage.messageKey;
@@ -872,6 +875,8 @@ function onNostalgyKeyPressCapture(ev) {
 
 
 function onNostalgyKeyPress(ev) {
+  if (!nostalgy_statusBar.hidden) return;
+
   if (NostalgyEscapePressed >= 1) {
     if (!in_message_window && ev.charCode == 109) { // M
       NostalgyFocusMessagePane();
@@ -882,7 +887,8 @@ function onNostalgyKeyPress(ev) {
       NostalgyStopEvent(ev);
     } else
     if (!in_message_window && ev.charCode == 105) { // I
-      GetSearchInput().focus();
+      var search = GetSearchInput();
+      if (search) search.focus();
       NostalgyStopEvent(ev);
     }
     return;

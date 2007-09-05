@@ -3,5 +3,6 @@
 <overlay id="nostalgy-compose-overlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+ <script src="misc.js"/>
  <script src="composer.js"/>
 </overlay>

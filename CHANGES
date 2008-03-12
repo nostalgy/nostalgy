@@ -1,3 +1,6 @@
+Since 0.2.15
+  - added an explicit license file (zlib/libpng-like)
+
 0.2.15
   - bug fix: the G command did not work when QuickSearch is not shown in 
     the toolbar

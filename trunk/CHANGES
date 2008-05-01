@@ -1,6 +1,8 @@
-
-Since 0.2.15
+0.2.16
+  - allow it to run with TB 3.0
   - added an explicit license file (zlib/libpng-like)
+  - bug fix: RETURN did not work in QuickSearch when searching in message bodies
+  - suggest to create a folder when it does not exist (for Go/Copy/Move operations)
 
 0.2.15
   - bug fix: the G command did not work when QuickSearch is not shown in 

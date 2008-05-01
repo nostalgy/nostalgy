@@ -64,9 +64,9 @@ function NostalgyMakeRegexp(s) {
 }
 
 function mayLowerCase(s) {
-  if (!nostalgy_completion_options.match_case_sensitive) 
+  if (!nostalgy_completion_options.match_case_sensitive)
     return (s.toLowerCase());
-  else 
+  else
     return s;
 }
 
@@ -128,20 +128,20 @@ function NostalgyFolderMatch(f,reg) {
 
 function NostalgyAutocomplete(box) {
  this.box = box;
- this.xresults = 
+ this.xresults =
   Components.classes[
    "@mozilla.org/autocomplete/results;1"
   ].getService(Components.interfaces.nsIAutoCompleteResults);
 }
 
-NostalgyAutocomplete.prototype.onStartLookup = 
+NostalgyAutocomplete.prototype.onStartLookup =
 function(text, results, listener) {
  var items = this.xresults.items;
  var nb = 0;
  items.Clear();
 
  var add_folder = function (fname) {
-  var newitem = 
+  var newitem =
    Components.classes[
     "@mozilla.org/autocomplete/item;1"
    ].createInstance(Components.interfaces.nsIAutoCompleteItem);
@@ -150,15 +150,15 @@ function(text, results, listener) {
   items.AppendElement(newitem);
   nb++;
  };
- 
- var f = function (folder) { add_folder(folder_name(folder)); }; 
- 
+
+ var f = function (folder) { add_folder(folder_name(folder)); };
+
  if (text == "") {
-   for (var j = 0; j < nostalgy_recent_folders.length; j++) 
+   for (var j = 0; j < nostalgy_recent_folders.length; j++)
      add_folder(nostalgy_recent_folders[j]);
  } else {
-   nostalgy_search_folder_options.do_tags = 
-     nostalgy_completion_options.always_include_tags || 
+   nostalgy_search_folder_options.do_tags =
+     nostalgy_completion_options.always_include_tags ||
      (text.substr(0,1) == ":");
    IterateMatches(text, this.box.shell_completion, f);
    if (nb == 0 && !nostalgy_search_folder_options.do_tags) {
@@ -172,12 +172,12 @@ function(text, results, listener) {
  listener.onAutoComplete(this.xresults, 1);
 }
 
-NostalgyAutocomplete.prototype.onStopLookup = 
+NostalgyAutocomplete.prototype.onStopLookup =
   function() {  }
-NostalgyAutocomplete.prototype.onAutoComplete = 
+NostalgyAutocomplete.prototype.onAutoComplete =
   function(text, results, listener){ }
 
-NostalgyAutocomplete.prototype.QueryInterface = 
+NostalgyAutocomplete.prototype.QueryInterface =
 function(iid) {
  if (iid.equals(Components.interfaces.nsIAutoCompleteSession)) return this;
  throw Components.results.NS_NOINTERFACE;
@@ -188,14 +188,14 @@ function NostalgyProcessResults(aSessionName, aResults, aStatus) {
  this.clearResults(false); // clear results, but don't repaint yet
  this.mLastResults[aSessionName] = aResults;
  this.autoFillInput(aSessionName, aResults, false);
- this.addResultElements(aSessionName, aResults);      
+ this.addResultElements(aSessionName, aResults);
  this.openResultPopup();
 }
 
 function NostalgyProcessInput() {
  if (this.ignoreInputEvent)
    return;
- 
+
  this.userAction = "typing";
  this.mNeedToFinish = true;
  this.mTransientValue = false;
@@ -204,7 +204,7 @@ function NostalgyProcessInput() {
  this.resultsPopup.selectedIndex = null;
  this.removeAttribute("noMatchesFound");
 
- this.mAutoCompleteTimer = 
+ this.mAutoCompleteTimer =
    setTimeout(this.callListener, this.timeout, this, "startLookup");
 }
 
@@ -216,7 +216,7 @@ function NostalgyProcessKeyPress(aEvent) {
      if (this.getAttribute("normaltab") != "true") {
       if (nostalgy_completion_options.tab_shell_completion) {
        this.shell_completion = true;
-       this.value = NostalgyCompleteUnique(this.value); 
+       this.value = NostalgyCompleteUnique(this.value);
        this.processInput();
        killEvent = true;
       }
@@ -225,8 +225,8 @@ function NostalgyProcessKeyPress(aEvent) {
        killEvent = this.keyNavigation(aEvent);
       }
      }
-     break;              
-              
+     break;
+
    case KeyEvent.DOM_VK_RETURN:
      killEvent = this.mMenuOpen;
      this.finishAutoComplete(true, true, aEvent);
@@ -239,7 +239,7 @@ function NostalgyProcessKeyPress(aEvent) {
      this.undoAutoComplete();
      this.closeResultPopup();
      break;
-  
+
    case KeyEvent.DOM_VK_PAGE_UP:
    case KeyEvent.DOM_VK_DOWN:
    case KeyEvent.DOM_VK_PAGE_DOWN:
@@ -267,8 +267,8 @@ function NostalgyFolderSelectionBox(box) {
 
  box.shell_completion = false;
  box.addSession(new NostalgyAutocomplete(box));
- box.processInput = NostalgyProcessInput;  
- box.processKeyPress = NostalgyProcessKeyPress; 
+ box.processInput = NostalgyProcessInput;
+ box.processKeyPress = NostalgyProcessKeyPress;
 }
 
 function NostalgyFolderSelectionBoxes() {
@@ -287,16 +287,16 @@ function NostalgyCompleteUnique(s) {
   var rexp = NostalgyMakeRegexp(mayLowerCase(s));
   IterateFolders(function (f) {
    var n = mayLowerCase(folder_name(f));
-   if (n.search(rexp) == 0) { 
+   if (n.search(rexp) == 0) {
      nb++;
      if (nb == 1) { ret = n; } else { ret = LongestCommonPrefix(ret,n); }
    }
   });
-  if (ret) { 
+  if (ret) {
     var f = FindFolderCompleted(ret);
     if (f) {
      if (f.hasSubFolders) { return (folder_name(f) + "/"); }
-     else return (folder_name(f)); 
+     else return (folder_name(f));
     }
     else { return(ret); }
   } else { return s;  }
@@ -358,7 +358,7 @@ function FindFolderCropped(uri) {
 function IterateFoldersAllServers(f) {
  IterateTags(f);
 
- var amService = 
+ var amService =
     Components.classes["@mozilla.org/messenger/account-manager;1"]
               .getService(Components.interfaces.nsIMsgAccountManager);
 
@@ -380,7 +380,7 @@ function IterateFoldersAllServers(f) {
  }
 }
 
-function CompareFolderNames(a,b) { 
+function CompareFolderNames(a,b) {
   var an = a.prettyName;
   var bn = b.prettyName;
   return ((an < bn) ? -1 : ((an > bn) ? 1 : 0));
@@ -400,40 +400,55 @@ function ClearNostalgyCache() {
 }
 
 function IterateSubfolders(folder,f) {
- if ((!folder.isServer || 
+ if ((!folder.isServer ||
       !nostalgy_completion_options.restrict_to_current_server)
-     && (folder.canFileMessages || 
+     && (folder.canFileMessages ||
          !nostalgy_search_folder_options.require_file))
- { 
+ {
   try { f(folder); }
   catch (ex) { if (ex == 1) { return; } else { throw ex; } }
  }
- var arr;
- if (folder.hasSubFolders) {
-  if (nostalgy_completion_options.sort_folders) {
-    arr = sorted_subfolders[full_folder_name(folder)];
-    if (arr) { for (var n in arr) { IterateSubfolders(arr[n],f); }
-                return; }
-  }
+ if (!folder.hasSubFolders) return;
 
-  var subfolders = folder.GetSubFolders();
-  var arr = new Array();
-  var done = false;
-  while (!done) {
-   var subfolder = subfolders.currentItem().
-                   QueryInterface(Components.interfaces.nsIMsgFolder);
-   if (nostalgy_completion_options.sort_folders) { arr.push(subfolder); } 
-   else { IterateSubfolders(subfolder,f); }
-   try {subfolders.next();}
-   catch(e) {done = true;}
-  }
-  if (nostalgy_completion_options.sort_folders) {
-    arr.sort(CompareFolderNames);
-    sorted_subfolders[full_folder_name(folder)] = arr;
-    for (var n in arr) { IterateSubfolders(arr[n],f); }
-  }
+ var arr;
+ if (nostalgy_completion_options.sort_folders) {
+   arr = sorted_subfolders[full_folder_name(folder)];
+   if (arr) {
+       for (var n in arr) IterateSubfolders(arr[n],f);
+       return;
+   }
  }
-}  
+
+ if (folder.subFolders) {
+     // TB >= 3.0
+     var subfolders = folder.subFolders;
+     arr = new Array();
+     while (subfolders.hasMoreElements()) {
+         var subfolder = subfolders.getNext().
+             QueryInterface(Components.interfaces.nsIMsgFolder);
+         if (nostalgy_completion_options.sort_folders) { arr.push(subfolder); }
+         else { IterateSubfolders(subfolder,f); }
+     }
+ } else {
+     // TB < 3.0
+     var subfolders = folder.GetSubFolders();
+     arr = new Array();
+     var done = false;
+     while (!done) {
+         var subfolder = subfolders.currentItem().
+             QueryInterface(Components.interfaces.nsIMsgFolder);
+         if (nostalgy_completion_options.sort_folders) { arr.push(subfolder); }
+         else { IterateSubfolders(subfolder,f); }
+         try {subfolders.next();}
+         catch(e) {done = true;}
+     }
+ }
+ if (nostalgy_completion_options.sort_folders) {
+     arr.sort(CompareFolderNames);
+     sorted_subfolders[full_folder_name(folder)] = arr;
+     for (var n in arr) IterateSubfolders(arr[n],f);
+ }
+}
 
 function IterateFoldersCurrentServer(f) {
  IterateTags(f);
@@ -444,7 +459,7 @@ function IterateFoldersCurrentServer(f) {
 function IterateTags(f) {
  if (!nostalgy_search_folder_options.do_tags) return;
  try {
- var tagService = 
+ var tagService =
   Components.classes["@mozilla.org/messenger/tagservice;1"]
             .getService(Components.interfaces.nsIMsgTagService);
  var tagArray = tagService.getAllTags({});
@@ -453,7 +468,7 @@ function IterateTags(f) {
 }
 
 function IterateFolders(f) {
- if (nostalgy_completion_options.restrict_to_current_server) 
+ if (nostalgy_completion_options.restrict_to_current_server)
    IterateFoldersCurrentServer(f);
  else IterateFoldersAllServers(f);
 }

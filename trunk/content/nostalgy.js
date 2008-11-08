@@ -790,7 +790,10 @@ function NostalgySearchSender() {
   last_cycle_restrict++;
   if (last_cycle_restrict == 1)
   { last_cycle_saved_searchMode = input.searchMode;
-    input.value = name; input.searchMode = kQuickSearchSender; }
+    input.value = name;
+    try { input.searchMode = kQuickSearchSender; }
+    catch (ex) { input.searchMode = kQuickSearchFrom; }
+  }
   else if (last_cycle_restrict == 2)
   { input.value = subj; input.searchMode = kQuickSearchSubject; }
   else

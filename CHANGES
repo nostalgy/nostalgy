@@ -1,3 +1,8 @@
+Since 0.2.16
+  - allow it to run with TB 3.0a3
+  - restore the filtering on "same subject/same sender" feature
+    (cycling with `) for TB 3
+
 0.2.16
   - allow it to run with TB 3.0
   - added an explicit license file (zlib/libpng-like)

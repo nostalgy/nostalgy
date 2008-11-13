@@ -220,7 +220,7 @@ function NostalgySelectMessageByNavigationType(type)
 }
 
 function NostalgyMailSession() {
- var mSession = Components.classes[mailSessionContractID].getService();
+ var mSession = Components.classes["@mozilla.org/messenger/services/session;1"].getService();
  if (!mSession) return mSessions;
  return mSession.QueryInterface(Components.interfaces.nsIMsgMailSession);
 }
@@ -978,18 +978,20 @@ function NostalgySaveAndGoSuggested() {
 }
 
 function onNostalgyKeyDown(ev) {
-  if ((ev.keyCode == KeyEvent.DOM_VK_ALT ||
-       ev.keyCode == KeyEvent.DOM_VK_CONTROL)
-      && nostalgy_search_focused) NostalgyShowSearchMode();
+    if (nostalgy_search_focused && gSearchInput.showingSearchCriteria)
+        gSearchInput.showingSearchCriteria = false;
+    if ((ev.keyCode == KeyEvent.DOM_VK_ALT ||
+         ev.keyCode == KeyEvent.DOM_VK_CONTROL)
+        && nostalgy_search_focused) NostalgyShowSearchMode();
 }
 function onNostalgyKeyUp(ev) {
-  if ((ev.keyCode == KeyEvent.DOM_VK_ALT ||
-       ev.keyCode == KeyEvent.DOM_VK_CONTROL)
-     && nostalgy_search_focused
-     && !nostalgy_completion_options.always_show_search_mode) {
-    var o = gEBI("quick-search-menupopup");
-    o.hidePopup();
-  }
+    if ((ev.keyCode == KeyEvent.DOM_VK_ALT ||
+         ev.keyCode == KeyEvent.DOM_VK_CONTROL)
+        && nostalgy_search_focused
+        && !nostalgy_completion_options.always_show_search_mode) {
+        var o = gEBI("quick-search-menupopup");
+        o.hidePopup();
+    }
 }
 
 window.addEventListener("load", onNostalgyLoad, false);

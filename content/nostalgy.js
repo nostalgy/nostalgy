@@ -616,28 +616,43 @@ function NostalgyShowFolder(folder) {
     return true;
   }
 
-  var folderTree = GetFolderTree();
+  var folderTree = document.getElementById("folderTree");
   var totry = 1;
   var savedFolderView;
   if (window.CycleFolderView) {
-    totry = kNumFolderViews;
-    savedFolderView = gCurrentFolderView;
+      totry = kNumFolderViews;
+      savedFolderView = gCurrentFolderView;
+  } else if (window.gFolderTreeView) {
+      totry = window.gFolderTreeView.modeNames.length;
+      savedFolderView = window.gFolderTreeView.modeNames.indexOf(window.gFolderTreeView.mode);
   }
   var search = "";
   var input = GetSearchInput();
   if (input && !input.showingSearchCriteria) search = input.value;
-  while (totry > 0) {
-    try {
-      var idx = NostalgyEnsureFolderIndex(folderTree.builderView, folder);
-      ChangeSelection(folderTree, idx);
-      setTimeout(function() { SetFocusThreadPane();
-        var s = GetThreadTree().view.selection;
-	if (s.count == 0) { s.select(s.currentIndex); }
-      }, 400);
-      totry = 0;
-    } catch (ex) { totry--; CycleFolderView(true); }
+  if (window.gFolderTreeView) {
+      var saved_mode = window.gFolderTreeView.mode;
+      while (totry > 0) {
+          try {
+              window.gFolderTreeView.selectFolder(folder);
+              totry = 0;
+          } catch (ex) { totry--; window.gFolderTreeView.cycleMode(true); }
+      }
+      window.gFolderTreeView.mode = saved_mode;
+  } else {
+      while (totry > 0) {
+          try {
+              var idx = NostalgyEnsureFolderIndex(folderTree.builderView, folder);
+              ChangeSelection(folderTree, idx);
+              totry = 0;
+          } catch (ex) { totry--; CycleFolderView(true); }
+      }
+      if (window.CycleFolderView) { loadFolderView(savedFolderView); }
   }
-  if (window.CycleFolderView) { loadFolderView(savedFolderView); }
+  setTimeout(function() {
+          SetFocusThreadPane();
+          var s = GetThreadTree().view.selection;
+          if (s.count == 0) { s.select(s.currentIndex); }
+      }, 400);
   if (search != "") {
     input.focus();
     input.value = search;
@@ -917,7 +932,7 @@ function onNostalgyKeyPress(ev) {
       NostalgyStopEvent(ev);
     } else
     if (!in_message_window && ev.charCode == 102) { // F
-      GetFolderTree().focus();
+      document.getElementById("folderTree").focus();
       NostalgyStopEvent(ev);
     } else
     if (!in_message_window && ev.charCode == 105) { // I

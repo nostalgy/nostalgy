@@ -9,7 +9,7 @@
  <script src="nostalgy.js"/>
 
  <commandset id="tasksCommands">
-   <command id="cmd_nostalgyconfig" label="Nostalgy..." 
+   <command id="cmd_nostalgyconfig" label="Nostalgy..."
      oncommand="openDialog('chrome://nostalgy/content/edit_prefs.xul', 'nostalgy', 'resizable');"/>
   </commandset>
 
@@ -20,13 +20,13 @@
 
 
  <keyset id="mailKeys">
-  <key keycode="VK_LEFT" modifiers="control" 
+  <key keycode="VK_LEFT" modifiers="control"
        oncommand="NostalgyScrollMsg(-50);"/>
-  <key keycode="VK_RIGHT" modifiers="control" 
+  <key keycode="VK_RIGHT" modifiers="control"
        oncommand="NostalgyScrollMsg(50);"/>
-  <key keycode="VK_LEFT" modifiers="shift" 
+  <key keycode="VK_LEFT" modifiers="shift"
        oncommand="NostalgyScrollMsg(-50);"/>
-  <key keycode="VK_RIGHT" modifiers="shift" 
+  <key keycode="VK_RIGHT" modifiers="shift"
        oncommand="NostalgyScrollMsg(50);"/>
 
   <key keycode="VK_ESCAPE" oncommand="NostalgyEscape();"/>
@@ -38,8 +38,8 @@
   <statusbarpanel flex="1">
    <label id="nostalgy-command-label"/>
    <textbox id="nostalgy-folderbox" type="autocomplete" tabScrolling="true"
-	   ontextentered="NostalgyRunCommand();" 
-	   ontextcommand="NostalgyRunCommand();" 
+	   ontextentered="NostalgyRunCommand();"
+	   ontextcommand="NostalgyRunCommand();"
 	   ontextreverted="NostalgyHide(true);"
 	   ontextrevert="NostalgyHide(true);"
 	   flex="1"
@@ -49,7 +49,7 @@
   </statusbar>
  </window>
 
-      
+
  <statusbar id="statusTextBox">
   <statusbarpanel insertbefore="statusText">
   <label id="statusbar-nostalgy-label" crop="center" flex="1"

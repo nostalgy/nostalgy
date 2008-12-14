@@ -651,8 +651,6 @@ function NostalgyShowFolder(folder) {
   }
   setTimeout(function() {
           SetFocusThreadPane();
-          var s = GetThreadTree().view.selection;
-          if (s.count == 0) { s.select(s.currentIndex); }
       }, 400);
   if (search != "") {
     input.focus();

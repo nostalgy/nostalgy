@@ -1,6 +1,7 @@
 var nostalgy_completion_options = {
   restrict_to_current_server : false,
   match_only_folder_name : false,
+  match_only_prefix : false,
   sort_folders : false,
   match_case_sensitive : false,
   tab_shell_completion : false,
@@ -70,6 +71,13 @@ function mayLowerCase(s) {
     return s;
 }
 
+function mayMatchOnlyPrefix(s, reg) {
+     if (nostalgy_completion_options.match_only_prefix)
+          return mayLowerCase(s).search(reg) == 0;
+     else
+          return mayLowerCase(s).match(reg);
+}
+
 function full_folder_name(folder) {
   if (folder.tag) return (":" + folder.tag);
   var uri = folder.prettyName;
@@ -119,10 +127,10 @@ function LongestCommonPrefix(s1,s2) {
 
 function NostalgyFolderMatch(f,reg) {
   if (nostalgy_completion_options.match_only_folder_name) {
-    return (mayLowerCase(nostalgy_prettyName(f)).match(reg) ||
+    return (mayMatchOnlyPrefix(nostalgy_prettyName(f), reg) ||
             mayLowerCase(folder_name(f)).search(reg) == 0);
   } else {
-    return (mayLowerCase(folder_name(f)).match(reg));
+    return mayMatchOnlyPrefix(folder_name(f), reg);
   }
 }
 

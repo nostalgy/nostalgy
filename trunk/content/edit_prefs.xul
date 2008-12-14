@@ -71,6 +71,8 @@ shortcuts to move/copy the message to this folder.</label>
              id="restrict_to_current_server" accesskey="R"/>
    <checkbox label="Match only on folder name, not on the full path"
              id="match_only_folder_name" accesskey="P"/>
+   <checkbox label="Match only the prefix of folder path or name, not any substring"
+             id="match_only_prefix" accesskey="B"/>
    <checkbox label="Sort folders alphabetically"
              id="sort_folders" accesskey="S"/>
    <checkbox label="Match folder names in a case sensitive way"

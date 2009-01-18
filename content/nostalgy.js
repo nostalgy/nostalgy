@@ -624,8 +624,13 @@ function NostalgyShowFolder(folder) {
       totry = kNumFolderViews;
       savedFolderView = gCurrentFolderView;
   } else if (window.gFolderTreeView) {
-      totry = window.gFolderTreeView.modeNames.length;
-      savedFolderView = window.gFolderTreeView.modeNames.indexOf(window.gFolderTreeView.mode);
+      try {
+        totry = window.gFolderTreeView.modeNames.length;
+        savedFolderView = window.gFolderTreeView.modeNames.indexOf(window.gFolderTreeView.mode);
+      } catch (ex) {
+        totry = window.gFolderTreeView._modeNames.length;
+        savedFolderView = window.gFolderTreeView._modeNames.indexOf(window.gFolderTreeView.mode);
+      }
   }
   var search = "";
   var input = GetSearchInput();
@@ -635,6 +640,8 @@ function NostalgyShowFolder(folder) {
       while (totry > 0) {
           try {
               window.gFolderTreeView.selectFolder(folder);
+              if (!window.gFolderTreeView.getIndexOfFolder(folder))
+                  throw("XXX");
               totry = 0;
           } catch (ex) { totry--; window.gFolderTreeView.cycleMode(true); }
       }

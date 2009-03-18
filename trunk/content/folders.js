@@ -194,12 +194,15 @@ function(iid) {
 function NostalgyStartLookup() {
     // Copy from autocomplete.xml, but does not exit early if box is empty
     var str = this.currentSearchString;
+    try{
 
     this.isSearching = true;
     this.mFirstReturn = true;
     this.mSessionReturns = this.sessionCount;
+    this.mFailureCount = 0; // For TB 2.0
     this.mFailureItems = 0;
     this.mDefaultMatchFilled = false; // clear out our prefill state.
+    this.removeAttribute("noMatchesFound"); // For TB 2.0
 
     // tell each session to start searching...
     for (var name in this.mSessions)
@@ -209,6 +212,7 @@ function NostalgyStartLookup() {
             --this.mSessionReturns;
             this.searchFailed();
         }
+    } catch (e) { NostalgyDebug("ERR" + e); }
 }
 
 function NostalgyProcessResults(aSessionName, aResults, aStatus) {

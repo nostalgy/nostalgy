@@ -1,6 +1,6 @@
 Since 0.2.16
   - fix bugs with TB 3
-  - allow it to run with TB 3.0b1
+  - allow it to run with TB 3.0b3
   - new completion mode "Match only the prefix of folder path or name, not any substring" (patch from Laurent Regnier)
   - fix bug when cancelling the creation of an empty tag
 

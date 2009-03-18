@@ -3,6 +3,8 @@ content/about.xul
 content/composer.js
 content/composerOverlay.xul
 content/dummy_window.xul
+content/edit_exceptions.js
+content/edit_exceptions.xul
 content/edit_prefs.js
 content/edit_prefs.xul
 content/edit_rule.js
@@ -11,6 +13,7 @@ content/folders.js
 content/messageOverlay.xul
 content/misc.js
 content/nostalgy.js
+content/nostalgy.js.orig
 content/nostalgy_keys.js
 content/thunderbirdOverlay.xul
 locale/en-US/nostalgy.dtd

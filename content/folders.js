@@ -160,7 +160,7 @@ function(text, results, listener) {
  };
 
  var f = function (folder) { add_folder(folder_name(folder)); };
-
+ 
  if (text == "") {
    for (var j = 0; j < nostalgy_recent_folders.length; j++)
      add_folder(nostalgy_recent_folders[j]);
@@ -191,6 +191,25 @@ function(iid) {
  throw Components.results.NS_NOINTERFACE;
 }
 
+function NostalgyStartLookup() {
+    // Copy from autocomplete.xml, but does not exit early if box is empty
+    var str = this.currentSearchString;
+
+    this.isSearching = true;
+    this.mFirstReturn = true;
+    this.mSessionReturns = this.sessionCount;
+    this.mFailureItems = 0;
+    this.mDefaultMatchFilled = false; // clear out our prefill state.
+
+    // tell each session to start searching...
+    for (var name in this.mSessions)
+        try {
+            this.mSessions[name].onStartLookup(str, this.mLastResults[name], this.mListeners[name]);
+        } catch (e) {
+            --this.mSessionReturns;
+            this.searchFailed();
+        }
+}
 
 function NostalgyProcessResults(aSessionName, aResults, aStatus) {
  this.clearResults(false); // clear results, but don't repaint yet
@@ -277,6 +296,7 @@ function NostalgyFolderSelectionBox(box) {
  box.addSession(new NostalgyAutocomplete(box));
  box.processInput = NostalgyProcessInput;
  box.processKeyPress = NostalgyProcessKeyPress;
+ box.startLookup = NostalgyStartLookup;
 }
 
 function NostalgyFolderSelectionBoxes() {

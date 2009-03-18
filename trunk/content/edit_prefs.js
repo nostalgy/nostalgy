@@ -136,8 +136,6 @@ function CreateItem(rule) {
   SetItem(item,rule);
   gList.appendChild(item);
   gList.selectedItem = item;
-  NostalgyDebug("Visible Rows: " + gList.getNumberOfVisibleRows());
-  NostalgyDebug("Row Count: " + gList.getRowCount());
 }
 
 

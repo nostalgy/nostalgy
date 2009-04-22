@@ -135,7 +135,6 @@ function CreateItem(rule) {
 
   SetItem(item,rule);
   gList.appendChild(item);
-  gList.selectedItem = item;
 }
 
 

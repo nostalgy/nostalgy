@@ -3,6 +3,8 @@ Since 0.2.16
   - allow it to run with TB 3.0b3
   - new completion mode "Match only the prefix of folder path or name, not any substring" (patch from Laurent Regnier)
   - fix bug when cancelling the creation of an empty tag
+  - avoid XUL bug that prevents rule selection to be highlighted in the
+    preference dialog
 
 0.2.16
   - allow it to run with TB 3.0

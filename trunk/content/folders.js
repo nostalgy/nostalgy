@@ -6,6 +6,7 @@ var nostalgy_completion_options = {
   match_case_sensitive : false,
   tab_shell_completion : false,
   always_include_tags  : false,
+  use_statistical_prediction: false,
 
   /* not related to completion: should move to somewhere else */
   always_show_search_mode : false
@@ -162,8 +163,33 @@ function(text, results, listener) {
  var f = function (folder) { add_folder(folder_name(folder)); };
  
  if (text == "") {
-   for (var j = 0; j < nostalgy_recent_folders.length; j++)
-     add_folder(nostalgy_recent_folders[j]);
+	 var added_count=0;
+	if ( nostalgy_completion_options.use_statistical_prediction )
+	{
+		var predictedFolders = null;
+		try { predictedFolders = NostalgyPredict.predict_folder(nostalgy_recent_folders_max_size); }
+		catch (ex) { }
+		if( predictedFolders != null && predictedFolders.length > 0 )
+			for( var j = 0; j < predictedFolders.length; j++ )
+				if ( added_count < nostalgy_recent_folders_max_size )
+				{
+					f(predictedFolders[j]);
+					added_count++;
+				}
+	}
+	for ( j = 0; j < nostalgy_recent_folders.length; j++)
+	{
+		var found=0;
+		if ( nostalgy_completion_options.use_statistical_prediction && predictedFolders != null && predictedFolders.length > 0)
+			for( var i=0; i < predictedFolders.length; i++ )
+				if (folder_name(predictedFolders[i]) == nostalgy_recent_folders[j] )
+					found=1;
+		if ( found==0 && added_count < nostalgy_recent_folders_max_size )
+		{
+			add_folder(nostalgy_recent_folders[j]);
+			added_count++;
+		}
+	}
  } else {
    nostalgy_search_folder_options.do_tags =
      nostalgy_completion_options.always_include_tags ||

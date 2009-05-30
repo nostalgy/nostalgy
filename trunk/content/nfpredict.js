@@ -100,24 +100,12 @@ var NostalgyPredict =
                 }
                 NostalgyDebug("addrs = " + addrs);
                 try {
-                    /*
-                    var myArray1 = $sqlite.select(this.getDBFile(),myCountsQueryAll);
-                    NostalgyDebug("length: "+myArray1.length);
-                    for(var i = 0; i < myArray1.length; i++ ) {
-                        NostalgyDebug("i = " + i);
-                        for (var k in myArray1[i]) {
-                            NostalgyDebug("row[" + k + "] = " + myArray1[i][k]);
-                        }
-                    }
-                    */
-
                     var myArray1 = $sqlite.select(this.getDBFile(),myPredictQueryA+addrs+myPredictQueryB+numPredictions+';');
                     NostalgyDebug(myPredictQueryA+addrs+myPredictQueryB);
                     NostalgyDebug("myArray1.length: "+myArray1.length);
                     if ( myArray1.length > 0 ) {
-                        //NostalgyDebug(myArray1[0]['folder'] +": "+myArray1[0]['prob']);
                         for( i = 0; i < myArray1.length; i++ ) {
-                            NostalgyDebug(myArray1[i]['folder'] +": "+myArray1[i]['prob']);
+                            // NostalgyDebug(myArray1[i]['folder'] +": "+myArray1[i]['prob']);
                             if ( parseFloat(myArray1[i]['prob']) > 0.5 ) {
                                 var uri = myArray1[i]['folder'];
 

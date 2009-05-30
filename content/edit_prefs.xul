@@ -80,7 +80,9 @@ shortcuts to move/copy the message to this folder.</label>
    <checkbox label="Tab triggers shell-like completion (otherwise, cycle through suggestions)"
              id="tab_shell_completion" accesskey="T"/>
    <checkbox label="Always include tags"
-             id="always_include_tags"/> 
+             id="always_include_tags"/>
+   <checkbox label="Use Statistical Prediction"
+             id="use_statistical_prediction"/>
  </groupbox>
  </tabpanel>
 

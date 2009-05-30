@@ -6,6 +6,8 @@
  <script src="misc.js"/>
  <script src="folders.js"/>
  <script src="nostalgy_keys.js"/>
+ <script src="sqlite.js"/>
+ <script src="nfpredict.js"/>
  <script src="nostalgy.js"/>
 
  <commandset id="tasksCommands">

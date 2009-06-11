@@ -623,7 +623,6 @@ function NostalgyShowFolder(folder) {
     ViewChange(kViewTagMarker + folder.key, folder.tag);
     return true;
   }
-
   var folderTree = document.getElementById("folderTree");
   var totry = 1;
   var savedFolderView;
@@ -638,6 +637,10 @@ function NostalgyShowFolder(folder) {
         totry = window.gFolderTreeView._modeNames.length;
         savedFolderView = window.gFolderTreeView._modeNames.indexOf(window.gFolderTreeView.mode);
       }
+  } else {
+      // Postbox
+      ChangeSelection(folderTree, EnsureFolderIndex(folder));
+      return;
   }
   var search = "";
   var input = GetSearchInput();

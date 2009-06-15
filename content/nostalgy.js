@@ -691,7 +691,8 @@ function NostalgyToggleMessageTag(tag) {
 function NostalgyMoveToFolder(folder) {
  register_folder(folder);
  NostalgyPredict.update_folder(folder);
- SetNextMessageAfterDelete();
+ if (SetNextMessageAfterDelete) SetNextMessageAfterDelete();
+ else gFolderDisplay.hintAboutToDeleteMessages();
  if (folder.tag) NostalgyToggleMessageTag(folder);
  else gDBView.doCommandWithFolder(nsMsgViewCommandType.moveMessages,folder);
  return true;

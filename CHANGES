@@ -1,5 +1,6 @@
 Since 0.2.17
   - integrate support for predicting target folder given the email addresses (contributed by John Gray)
+  - fix a bug with recent TB builds
 
 
 0.2.17

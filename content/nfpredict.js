@@ -98,11 +98,11 @@ var NostalgyPredict =
                         addrs = addrs + "\'" + aAdresses[i] +  "\'";
                     }
                 }
-                NostalgyDebug("addrs = " + addrs);
+                //                NostalgyDebug("addrs = " + addrs);
                 try {
                     var myArray1 = $sqlite.select(this.getDBFile(),myPredictQueryA+addrs+myPredictQueryB+numPredictions+';');
-                    NostalgyDebug(myPredictQueryA+addrs+myPredictQueryB);
-                    NostalgyDebug("myArray1.length: "+myArray1.length);
+                    //                    NostalgyDebug(myPredictQueryA+addrs+myPredictQueryB);
+                    //                    NostalgyDebug("myArray1.length: "+myArray1.length);
                     if ( myArray1.length > 0 ) {
                         for( i = 0; i < myArray1.length; i++ ) {
                             // NostalgyDebug(myArray1[i]['folder'] +": "+myArray1[i]['prob']);

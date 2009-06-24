@@ -1,7 +1,7 @@
-Since 0.2.17
+0.2.18
   - integrate support for predicting target folder given the email addresses (contributed by John Gray)
   - fix a bug with recent TB builds
-
+  - some fixes for Postbox
 
 0.2.17
   - fix bugs with TB 3

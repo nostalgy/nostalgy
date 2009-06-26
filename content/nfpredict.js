@@ -143,13 +143,12 @@ var NostalgyPredict =
     },
 
     find_generic_id: function (value,insertQ,selectQ) {
-        while ( true ) {
-            var myArray1 = $sqlite.select(this.getDBFile(),selectQ,value);
-            if ( myArray1.length >= 1 )
-                return myArray1[0]['id'];
-            else
-                $sqlite.cmd(this.getDBFile(),insertQ,value);
-        }
+        var myArray1 = $sqlite.select(this.getDBFile(),selectQ,value);
+        if ( myArray1.length >= 1 ) return myArray1[0]['id'];
+        $sqlite.cmd(this.getDBFile(),insertQ,value);
+        myArray1 = $sqlite.select(this.getDBFile(),selectQ,value);
+        if ( myArray1.length >= 1 ) return myArray1[0]['id'];
+        throw "find_generic_id: failure";
     },
 
     find_folder_id: function find_folder_id(folder) {
@@ -180,7 +179,6 @@ var NostalgyPredict =
 
         var hdr = gDBView.hdrForFirstSelectedMessage;
         var addresses = (hdr.author + " " + hdr.recipients + " " + hdr.ccList).toLowerCase();
-
 
         var folder_id=this.find_folder_id(folder);
 

@@ -690,20 +690,24 @@ function NostalgyToggleMessageTag(tag) {
 
 function NostalgyMoveToFolder(folder) {
  register_folder(folder);
- NostalgyPredict.update_folder(folder);
  if (window.SetNextMessageAfterDelete) SetNextMessageAfterDelete();
  else gFolderDisplay.hintAboutToDeleteMessages();
  if (folder.tag) NostalgyToggleMessageTag(folder);
- else gDBView.doCommandWithFolder(nsMsgViewCommandType.moveMessages,folder);
+ else {
+     NostalgyPredict.update_folder(folder);
+     gDBView.doCommandWithFolder(nsMsgViewCommandType.moveMessages,folder);
+ }
  return true;
 }
 
 function NostalgyMoveToFolderAndGo(folder) {
  register_folder(folder);
- NostalgyPredict.update_folder(folder);
  var sel = NostalgySaveSelection();
  if (folder.tag) NostalgyToggleMessageTag(folder);
- else gDBView.doCommandWithFolder(nsMsgViewCommandType.moveMessages,folder);
+ else {
+     NostalgyPredict.update_folder(folder);
+     gDBView.doCommandWithFolder(nsMsgViewCommandType.moveMessages,folder);
+ }
  NostalgyShowFolder(folder);
  nostalgy_selection_saved = null;
  nostalgy_on_move_completed = function() { nostalgy_selection_saved = sel; };
@@ -715,9 +719,11 @@ function NostalgyMoveToFolderAndGo(folder) {
 
 function NostalgyCopyToFolder(folder) {
  register_folder(folder);
- NostalgyPredict.update_folder(folder);
  if (folder.tag) NostalgyToggleMessageTag(folder);
- else gDBView.doCommandWithFolder(nsMsgViewCommandType.copyMessages,folder);
+ else {
+     NostalgyPredict.update_folder(folder);
+     gDBView.doCommandWithFolder(nsMsgViewCommandType.copyMessages,folder);
+ }
  return true;
 }
 

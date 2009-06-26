@@ -1,3 +1,6 @@
+Since 0.2.18
+  - fix a bug that causes infinite loop when using statistical prediction with tags
+
 0.2.18
   - integrate support for predicting target folder given the email addresses (contributed by John Gray)
   - fix a bug with recent TB builds

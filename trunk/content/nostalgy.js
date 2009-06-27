@@ -494,26 +494,12 @@ function MailAuthor() {
   } catch (ex) { return ""; }
 }
 
-function MailAuthorName()
-{
-  var msgHdr = gDBView.hdrForFirstSelectedMessage;
-  var headerParser =
- Components.classes["@mozilla.org/messenger/headerparser;1"].
-   getService(Components.interfaces.nsIMsgHeaderParser);
- var emailAddress = headerParser.extractHeaderAddressMailboxes(null, msgHdr.author);
-  return emailAddress;
+function MailAuthorName() {
+    return NostalgyHeaderParser.get_address(gDBView.hdrForFirstSelectedMessage.author);
 }
 
-function MailRecipName()
-{
-  var msgHdr = gDBView.hdrForFirstSelectedMessage;
-  var headerParser =
- Components.classes["@mozilla.org/messenger/headerparser;1"].
-   getService(Components.interfaces.nsIMsgHeaderParser);
- var emailAddress = headerParser.extractHeaderAddressMailboxes(null, msgHdr.recipients);
-  var i = emailAddress.indexOf(" ",0);
-  if (i > 0) emailAddress = emailAddress.substr(0,i-1);
-  return emailAddress;
+function MailRecipName() {
+    return NostalgyHeaderParser.get_address(gDBView.hdrForFirstSelectedMessage.recipients);
 }
 
 function MailSubject() {
@@ -694,7 +680,7 @@ function NostalgyMoveToFolder(folder) {
  else gFolderDisplay.hintAboutToDeleteMessages();
  if (folder.tag) NostalgyToggleMessageTag(folder);
  else {
-     NostalgyPredict.update_folder(folder);
+     gNostalgyPredict.update_folder(folder);
      gDBView.doCommandWithFolder(nsMsgViewCommandType.moveMessages,folder);
  }
  return true;
@@ -816,7 +802,7 @@ var last_cycle_restrict = 0;
 var last_cycle_saved_searchMode = 0;
 
 function NostalgySearchSender() {
-  if (!window.GetSearchInput) return false;
+    if (!window.GetSearchInput) { alert("Cannot find Quick Search box"); } return false;
   var input = GetSearchInput();
   if (!input) { alert("Nostalgy error:\nCannot perform this action when Quick Search is not enabled"); return false; }
   try {
@@ -829,11 +815,18 @@ function NostalgySearchSender() {
   var subj = MailSubject();
   if (input.value != last_cycle_restrict_value) last_cycle_restrict = 0;
   last_cycle_restrict++;
+  NostalgyDebug(last_cycle_restrict);
   if (last_cycle_restrict == 1)
   { last_cycle_saved_searchMode = input.searchMode;
     input.value = name;
-    try { input.searchMode = kQuickSearchSender; }
-    catch (ex) { input.searchMode = kQuickSearchFrom; }
+    if (recips && window.kQuickSearchRecipient)
+        input.searchMode = kQuickSearchRecipient;
+    else if (window.kQuickSearchSender)
+        input.searchMode = kQuickSearchSender;
+    else if (window.kQuickSearchFrom)
+        input.searchMode = kQuickSearchFrom;
+    else
+        alert("Nostalgy error: don't know which QuickSearch criterion to use");
   }
   else if (last_cycle_restrict == 2)
   { input.value = subj; input.searchMode = kQuickSearchSubject; }

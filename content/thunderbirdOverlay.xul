@@ -9,6 +9,7 @@
  <script src="sqlite.js"/>
  <script src="nfpredict.js"/>
  <script src="nostalgy.js"/>
+ <script src="header_parser.js"/>
 
  <commandset id="tasksCommands">
    <command id="cmd_nostalgyconfig" label="Nostalgy..."

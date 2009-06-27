@@ -1,4 +1,4 @@
-Since 0.2.18
+0.2.19
   - fix a bug that causes infinite loop when using statistical prediction with tags
   - fix the "`" thing for TB 3
 

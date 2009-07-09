@@ -802,7 +802,7 @@ var last_cycle_restrict = 0;
 var last_cycle_saved_searchMode = 0;
 
 function NostalgySearchSender() {
-    if (!window.GetSearchInput) { alert("Cannot find Quick Search box"); } return false;
+  if (!window.GetSearchInput) { alert("Cannot find Quick Search box"); return false; }
   var input = GetSearchInput();
   if (!input) { alert("Nostalgy error:\nCannot perform this action when Quick Search is not enabled"); return false; }
   try {
@@ -815,7 +815,6 @@ function NostalgySearchSender() {
   var subj = MailSubject();
   if (input.value != last_cycle_restrict_value) last_cycle_restrict = 0;
   last_cycle_restrict++;
-  NostalgyDebug(last_cycle_restrict);
   if (last_cycle_restrict == 1)
   { last_cycle_saved_searchMode = input.searchMode;
     input.value = name;

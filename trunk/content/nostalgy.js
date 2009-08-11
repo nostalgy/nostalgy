@@ -962,7 +962,7 @@ function onNostalgyKeyPress(ev) {
   }
 
   var kn = RecognizeKey(ev);
-  if (ev.charCode && ev.originalTarget.localName == "input"
+  if (ev.charCode && ev.originalTarget.localName.toLowerCase() == "input"
       && !ev.ctrlKey && !ev.altKey)
     return;
   var k = nostalgy_active_keys[kn];

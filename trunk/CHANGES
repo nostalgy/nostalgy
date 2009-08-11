@@ -1,3 +1,6 @@
+Since 0.2.20
+  - improve the test to avoid capturing keys when an input field is focused
+
 0.2.20
   - repair the "`" thing
 

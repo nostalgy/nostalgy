@@ -280,6 +280,20 @@ function onNostalgyLoad() {
    };
  }
 
+ var search_input = gEBI("searchInput");
+ search_input.addEventListener("focus",
+                               function() {
+                                   NostalgyEnterSearch();
+                               },
+                               false);
+ search_input.addEventListener("blur",
+                               function() {
+                                   NostalgyLeaveSearch();
+                               },
+                               false);
+
+
+ NostalgyDebug("window.onSearchInputFocus " + window.onSearchInputFocus);
  if (window.onSearchInputFocus) {
    var old_f1 = onSearchInputFocus;
    onSearchInputFocus = function(ev) {
@@ -293,7 +307,7 @@ function onNostalgyLoad() {
      NostalgyLeaveSearch();
    };
 
-   var search = gEBI("quick-search-menupopup");
+   var search = NostalgyQuickSearch();
    if (search)
        search.addEventListener
 	 ("popuphiding",
@@ -848,8 +862,8 @@ function NostalgySearchSender() {
 function NostalgySearchSelectAll(select) {
   if (!nostalgy_search_focused) return false;
 
-  if (!gSearchInput || gSearchInput.value == ""
-      || gSearchInput.showingSearchCriteria) {
+  if (!gEBI("searchInput") || gEBI("searchInput").value == ""
+      || gEBI("searchInput").showingSearchCriteria) {
     SetFocusThreadPane();
     return true;
   }
@@ -870,27 +884,33 @@ function NostalgySearchSelectAll(select) {
 }
 
 function NostalgyShowSearchMode() {
+    var o = NostalgyQuickSearch();
+    o.showPopup(gEBI("quick-search-button"),-1,-1,"tooltip",
+                "bottomleft", "topleft");
+}
+
+function NostalgyQuickSearch() {
   var o = gEBI("quick-search-menupopup");
-  o.showPopup(gEBI("quick-search-button"),-1,-1,"tooltip",
-	      "bottomleft", "topleft");
+  if (!o)
+      o = document.getAnonymousElementByAttribute(gEBI("searchInput"), "anonid", "quick-search-menupopup");
+  return o;
 }
 
 function NostalgyEnterSearch() {
-  var o = gEBI("quick-search-menupopup");
-  if (!o) return;
-  InitQuickSearchPopup();
+  if (window.InitQuickSearchPopup)
+      InitQuickSearchPopup();
   nostalgy_search_focused = true;
 }
 function NostalgyLeaveSearch() {
   nostalgy_search_focused = false;
-  var o = gEBI("quick-search-menupopup");
+  var o = NostalgyQuickSearch();
   if (!o) return;
   o.hidePopup();
 }
 
 function NostalgySearchMode(current,dir) {
   var input = GetSearchInput();
-  var popup = gEBI("quick-search-menupopup");
+  var popup = NostalgyQuickSearch();
   if (!popup) return;
   var oldmode = popup.getElementsByAttribute('value', current)[0];
   if (!oldmode) oldmode = popup.firstChild;
@@ -900,7 +920,8 @@ function NostalgySearchMode(current,dir) {
   newmode.setAttribute('checked','true');
   input.searchMode = newmode.value;
   popup.setAttribute("value",newmode.value);
-  InitQuickSearchPopup();
+  if (window.InitQuickSearchPopup)
+      InitQuickSearchPopup();
   onEnterInSearchBar();
 }
 
@@ -918,6 +939,7 @@ function onNostalgyKeyPressCapture(ev) {
     NostalgyStopEvent(ev);
     return;
   }
+  NostalgyDebug("nostalgy_search_focused " + nostalgy_search_focused);
   if (nostalgy_search_focused) {
     if (ev.keyCode == KeyEvent.DOM_VK_DOWN) {
       var i = NostalgyCurrentSearchMode();
@@ -1011,8 +1033,8 @@ function NostalgySaveAndGoSuggested() {
 }
 
 function onNostalgyKeyDown(ev) {
-    if (nostalgy_search_focused && gSearchInput.showingSearchCriteria)
-        gSearchInput.showingSearchCriteria = false;
+    if (nostalgy_search_focused && gEBI("searchInput").showingSearchCriteria)
+        gEBI("searchInput").showingSearchCriteria = false;
     if ((ev.keyCode == KeyEvent.DOM_VK_ALT ||
          ev.keyCode == KeyEvent.DOM_VK_CONTROL)
         && nostalgy_search_focused) NostalgyShowSearchMode();
@@ -1022,7 +1044,7 @@ function onNostalgyKeyUp(ev) {
          ev.keyCode == KeyEvent.DOM_VK_CONTROL)
         && nostalgy_search_focused
         && !nostalgy_completion_options.always_show_search_mode) {
-        var o = gEBI("quick-search-menupopup");
+        var o = NostalgyQuickSearch();
         o.hidePopup();
     }
 }

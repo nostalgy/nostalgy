@@ -13,6 +13,10 @@ var nostalgy_search_focused = false;
 var nostalgy_on_move_completed = null;
 var nostalgy_selection_saved = null;
 
+function NostalgyIsDefined(s) {
+    return (typeof(window[s]) != "undefined");
+}
+
 function NostalgySearch() {
     if (window.onEnterInSearchBar) {
         onEnterInSearchBar();
@@ -859,7 +863,7 @@ function NostalgySearchSender() {
   }
   else if (last_cycle_restrict == 2) {
       input.value = subj;
-      if (window.kQuickSearchSubject)
+      if (NostalgyIsDefined(kQuickSearchSubject))
           input.searchMode = kQuickSearchSubject;
       else if (window.QuickSearchConstants)
           input.searchMode = QuickSearchConstants.kQuickSearchSubject;

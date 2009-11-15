@@ -415,8 +415,13 @@ function NostalgyDefLabel() {
 
 function NostalgyCollapseFolderPane() {
  var fp = gEBI("folderPaneBox");
- if (fp) { fp.collapsed = !fp.collapsed; return true; }
- else return false;
+ if (window.MsgToggleFolderPane)
+   { MsgToggleFolderPane(true); return true; }
+ else if (window.MsgToggleSplitter)
+   { MsgToggleSplitter("gray_vertical_splitter"); return true; }
+ else if (fp)
+   { fp.collapsed = !fp.collapsed; return true; }
+ return false;
 }
 
 
@@ -656,7 +661,7 @@ function NostalgyShowFolder(folder) {
         totry = window.gFolderTreeView._modeNames.length;
         savedFolderView = window.gFolderTreeView._modeNames.indexOf(window.gFolderTreeView.mode);
       }
-  } else {
+  } else if (EnsureFolderIndex.length < 2) {
       // Postbox
       ChangeSelection(folderTree, EnsureFolderIndex(folder));
       return;
@@ -788,7 +793,12 @@ function NostalgySaveSelection() {
 }
 
 function NostalgyRestoreSelection(msgids) {
-  var msgs = gDBView.msgFolder.getMessages(msgWindow);
+  var msgs;
+  if (gDBView.msgFolder.getMessages)
+    msgs = gDBView.msgFolder.getMessages(msgWindow);
+  else if (gDBView.msgFolder.msgDatabase)
+    msgs = gDBView.msgFolder.msgDatabase.EnumerateMessages();
+
   var selection = gDBView.selection;
   selection.clearSelection();
   while (msgs.hasMoreElements()) {

@@ -53,11 +53,13 @@
  </window>
 
 
- <statusbar id="statusTextBox">
-  <statusbarpanel insertbefore="statusText">
-  <label id="statusbar-nostalgy-label" crop="center" flex="1"
-         value="&nostalgy.memo;"/>
-  </statusbarpanel>
+ <statusbar id="status-bar">
+  <hbox id="statusTextBox" insertbefore="statusText">
+   <statusbarpanel insertbefore="statusText">
+    <label id="statusbar-nostalgy-label" crop="center" flex="1"
+           value="&nostalgy.memo;"/>
+   </statusbarpanel>
+  </hbox>
  </statusbar>
 
  <hbox id="expandedHeaderView">

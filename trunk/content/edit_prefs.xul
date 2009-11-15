@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<!DOCTYPE window>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!DOCTYPE window>
 
 <dialog
         xmlns:html="http://www.w3.org/1999/xhtml"
@@ -27,7 +27,7 @@
 
  <tabpanel>
  <groupbox flex="1">
- <label>Rules associate folders to messages by looking for a 
+ <label>Rules associate folders to messages by looking for a
 substring of the Sender or Subject (or both) headers. A rule can be
 restricted to match messages under a given server/folder. When a folder
 is selected for a given message, Nostalgy informs you in the status line.
@@ -76,7 +76,7 @@ shortcuts to move/copy the message to this folder.</label>
    <checkbox label="Sort folders alphabetically"
              id="sort_folders" accesskey="S"/>
    <checkbox label="Match folder names in a case sensitive way"
-             id="match_case_sensitive" accesskey="C"/>   
+             id="match_case_sensitive" accesskey="C"/>
    <checkbox label="Tab triggers shell-like completion (otherwise, cycle through suggestions)"
              id="tab_shell_completion" accesskey="T"/>
    <checkbox label="Always include tags"
@@ -108,7 +108,7 @@ shortcuts to move/copy the message to this folder.</label>
   <radio value="Copy" label="Copy"/>
   <radio value="SaveGo" label="Save+Go"/>
   </radiogroup>
-  <textbox style="width:600px" type="autocomplete" id="folderselect" 
+  <textbox style="width:600px" type="autocomplete" id="folderselect"
            nostalgyfolderbox="SelectFolder();"/>
   <button label="Create"  oncommand="SelectFolder();"/>
   </hbox>

@@ -1,7 +1,7 @@
 0.2.21
   - improve the test to avoid capturing keys when an input field is focused
   - various fixes for TB 3
-  - allow to install on Postbox 1.1, TB 3.0pre, SeanMonkey 2.0
+  - allow to install on Postbox 1.1, TB 3.0pre, SeaMonkey 2.0
 
 0.2.20
   - repair the "`" thing

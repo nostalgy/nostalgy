@@ -873,7 +873,7 @@ function NostalgySearchSender() {
   }
   else if (last_cycle_restrict == 2) {
       input.value = subj;
-      if (NostalgyIsDefined(kQuickSearchSubject))
+      if (NostalgyIsDefined("kQuickSearchSubject"))
           input.searchMode = kQuickSearchSubject;
       else if (window.QuickSearchConstants)
           input.searchMode = QuickSearchConstants.kQuickSearchSubject;

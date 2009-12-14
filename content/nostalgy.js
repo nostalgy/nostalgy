@@ -966,6 +966,9 @@ function NostalgySearchMode(current,dir) {
 }
 
 function onNostalgyKeyPressCapture(ev) {
+    if (ev.keyCode == KeyEvent.DOM_VK_ESCAPE)
+        NostalgyEscape();
+
   var focused = "";
   try { focused = document.commandDispatcher.focusedElement.nodeName; }
   catch (ex) { }

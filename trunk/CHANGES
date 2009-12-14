@@ -1,3 +1,6 @@
+Since 0.2.21
+  - fix more issues with TB3
+
 0.2.21
   - improve the test to avoid capturing keys when an input field is focused
   - various fixes for TB 3

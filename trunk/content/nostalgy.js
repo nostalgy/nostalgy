@@ -671,15 +671,17 @@ function NostalgyShowFolder(folder) {
   if (input && !input.showingSearchCriteria) search = input.value;
   if (window.gFolderTreeView) {
       var saved_mode = window.gFolderTreeView.mode;
-      while (totry > 0) {
-          try {
+      try {
+          while (totry > 0)  {
               window.gFolderTreeView.selectFolder(folder);
-              if (!window.gFolderTreeView.getIndexOfFolder(folder))
-                  throw("XXX");
-              totry = 0;
-          } catch (ex) { totry--; window.gFolderTreeView.cycleMode(true); }
-      }
-      window.gFolderTreeView.mode = saved_mode;
+              if (window.gFolderTreeView.getIndexOfFolder(folder))
+                  totry = 0;
+              else {
+                  totry--;
+                  window.gFolderTreeView.cycleMode(true);
+              }
+          }
+      } catch (ex) { NostalgyDebug("Ex: " + ex); }
   } else {
       while (totry > 0) {
           try {

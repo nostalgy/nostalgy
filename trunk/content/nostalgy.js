@@ -562,18 +562,19 @@ function register_folder(folder) {
 
 function NostalgySuggest() {
  var r = null;
+ if (!gDBView) return;
  try {
-  r = NostalgyRules.apply(MailAuthor(), MailSubject(), MailRecipients());
-  if (r) { return(r); }
- } catch (ex) { NostalgyDebug("ex:" + ex);  }
+     r = NostalgyRules.apply(MailAuthor(), MailSubject(), MailRecipients());
+     if (r) { return(r); }
+ } catch (ex) { NostalgyDebug("ex1:" + ex);  }
 
-if ( nostalgy_completion_options.use_statistical_prediction )
-{
- try {
-  r = NostalgyPredict.predict_folder(1);
-  if (r) { return(r); }
- } catch (ex) { NostalgyDebug("ex:" + ex);  }
-}
+ if ( nostalgy_completion_options.use_statistical_prediction )
+     {
+         try {
+             r = NostalgyPredict.predict_folder(1);
+             if (r) { return(r); }
+         } catch (ex) { NostalgyDebug("ex2:" + ex);  }
+     }
 // r = last_folder_author[MailAuthor()];
 // if (r) { return(r); }
 
@@ -581,9 +582,9 @@ if ( nostalgy_completion_options.use_statistical_prediction )
 // if (r) { return(r); }
 
  if (nostalgy_completion_options.restrict_to_current_server) {
-   return(last_folder_server[gDBView.msgFolder.server.key]);
+     return(last_folder_server[gDBView.msgFolder.server.key]);
  } else {
-   return(last_folder);
+     return(last_folder);
  }
 }
 

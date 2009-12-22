@@ -9,6 +9,8 @@
 	ondialogaccept="return onAcceptChanges();"
 	ondialogextra2="openDialog('chrome://nostalgy/content/about.xul', 'about_nostalgy', 'resizable');"
 	buttonlabelextra2="Nostalgy usage directions..."
+        width="900"
+        height="500"
         title="Nostalgy Preferences">
 
  <script src="misc.js"/>

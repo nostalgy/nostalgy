@@ -8,7 +8,7 @@
       <style>
         html {
           background-color: white;
-        }	
+        }
         a {
           color: blue;
           text-decoration: underline;
@@ -35,7 +35,7 @@
    <p>
      <b>Notes about shortcuts:</b>
      <ul>
-     <li>We give here the default values for shortcuts. 
+     <li>We give here the default values for shortcuts.
      Most of them can be changed  from the preference dialog.</li>
      <li>Even if the key shortcuts above are written in
      uppercase, you must not press Shift.</li>
@@ -69,7 +69,7 @@
      Regular expressions are accepted as well (and .. is a
      short-hand for .* meaning: any sequence of characters). You can
      choose the first suggested completion with RETURN, or select
-     another one in the popup with the UP/DOWN keys and then RETURN. 
+     another one in the popup with the UP/DOWN keys and then RETURN.
      You can cancel the command with ESCAPE.
    </p>
 
@@ -148,9 +148,7 @@
     <tr><td>ESC-M</td><td>Focus the message pane</td></tr>
     <tr><td>ESC-ESC</td><td>Focus the thread pane</td></tr>
     <tr><td>ESC-ESC-ESC</td><td>Focus the thread pane, clear quick search box, select the "All" view</td></tr>
-    <tr><td>ESC-I</td><td>Focus the quick search box (same as Ctrl-K)</td></tr>
-    <tr><td>Ctrl-Left/Right</td>
-         <td>Scroll the message from the thread pane</td></tr>
+    <tr><td>Ctrl-Left/Right</td><td>Scroll the message from the thread pane</td></tr>
    </table>
 
 
@@ -207,48 +205,19 @@
      <b>IMPORTANT:</b> importing rules from an e-email will destroy
      your current rules. Use this feature with caution.
    </p>
-   
 
-   <h3>QuickSearch</h3>
+
+   <h3>Looking for messages with same sender / subject</h3>
 
    <p>
-     Nostalgy changes the behavior of Thunderbird's QuickSearch
-     features.
+     The key "`" (backquote) launches a QuickSearch for messages
+     from the same sender as the currently selected message.
+     If you press the same key again, messages with the same
+     subject are searched. And if you press again,
+     the QuickSearch is cancelled.
+     In the Sent folder, the search is done on the first recipient (To:
+     header) instead of the sender.
    </p>
-
-   <ul>
-   <li>
-   When the QuickSearch box is focused, you can use the UP/DOWN keys
-   to change the search criterion (the view is automatically updated).
-   If you hold ALT or CONTROL, the menu with the list of criterion
-   pops up, so that you can see the current search criterion (and
-   change it with UP/DOWN). An option in the preference dialog changes
-   this behavior so that this menu is always displayed when the
-   QuickSearch box is focused.  </li>
-
-   <li>
-   In the QuickSearch box, you can press RETURN (customizable) to
-   perform to search and put the focus on the thread pane. CONTROL
-   RETURN does the same but also selects all the results.  ESCAPE
-   cancels the search and also put the focus on the thread pane.
-   </li>
-
-   <li>The G command (change current folder) does not destroy the
-       current search terms.</li>
-
-   <li>You can focus the QuickSearch input box with
-       ESC-I. (Thunderbird recently introduced another shortcut with
-       the same effect: Ctrl-K.)
-   </li>
-   <li>The combination ESC-ESC-ESC clears the QuickSearch input box.</li>
-   <li>The key "`" (backquote) launches a QuickSearch for messages
-	from the same sender as the currently selected message.
-	If you press the same key again, messages with the same
-        subject are searched. And if you press again,
-        the QuickSearch is cancelled.
-	In the Sent folder, the search is done on the first recipient (To:
-	header)	instead of the sender.</li>
-   </ul>
 
 <h3>Tags</h3>
 
@@ -296,20 +265,19 @@ without the quotes).</p>
 opens the file attachment dialog.</p>
 
    <h3>Preferences</h3>
-   
+
    <p>The preference dialog for Nostalgy has several tabs.
    The first tab is the place where rules are
-   defined. The second tab has several switches to control 
+   defined. The second tab has several switches to control
    the way the completion
    box (where folder names are proposed) is populated (see below).
-   The third pane controls some behavior of Thunderbird's user interface.
-   The fourthd pane allows you to configure Nostalgy's shortcuts
+   The third pane allows you to configure Nostalgy's shortcuts
    (click on the key to change it), to disable some of them,
    or to manage custom shortcuts.
    </p>
 
    <p>Here is a description of the completion options:</p>
- 
+
    <ul>
    <li><b>Restrict folder completion to the current server:</b>
    limit lookup to folders on the same
@@ -319,15 +287,15 @@ opens the file attachment dialog.</p>
 
    <li><b>Match only on folder name, not on the full path:</b>
       force Nostalgy to interpret differently what
-      is typed in the text. Normally, when the option is disabled, 
+      is typed in the text. Normally, when the option is disabled,
       it is interpreted as a regexp which can match an arbitrary substring
-      of the complete folder name (including the account name and 
+      of the complete folder name (including the account name and
       the name of parent folders). When the option is enabled,
       the regexp must match either a substring of the local folder name
       (not the full name) or a prefix of the full folder name.</li>
 
    <li><b>Sort folders alphabetically</b>.</li>
-  
+
    <li><b>Match folder names in a case sensitive way</b>.</li>
 
 
@@ -344,7 +312,7 @@ the input box starts with a colon character, or if no folder matches.
    <p>The Nostalgy extension has been written by Alain Frisch (<a
   href="mailto:alain@frisch.fr">alain@frisch.fr</a>). Comments and
   suggestions are welcome!  You can join the <a href="http://frisch.fr/cgi-bin/mailman/listinfo/nostalgy">Nostalgy mailing list.</a>
-  Donations can be sent to the Paypal 
+  Donations can be sent to the Paypal
   account <tt>alain@frisch.fr</tt>.</p>
   </body>
 </html>

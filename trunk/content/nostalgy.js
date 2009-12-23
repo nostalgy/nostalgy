@@ -8,8 +8,6 @@ var nostalgy_cmdLabel = null;
 var nostalgy_extracted_rules = "";
 var nostalgy_active_keys = { };
 var timeout_regkey = 0;
-var nostalgy_on_search_done = null;
-var nostalgy_search_focused = false;
 var nostalgy_on_move_completed = null;
 var nostalgy_selection_saved = null;
 
@@ -17,24 +15,12 @@ function NostalgyIsDefined(s) {
     return (typeof(window[s]) != "undefined");
 }
 
-function NostalgySearch() {
-    if (window.onEnterInSearchBar) {
-        onEnterInSearchBar();
-        return;
-    }
-    var search = gEBI("searchInput");
-    search.doSearch();
-}
-
 function NostalgyDoSearch(str) {
     var search = gEBI("searchInput");
-    search.value = str;
-    search.doSearch();
-}
-
-function NostalgyCurrentSearchMode() {
-    var input = gEBI("searchInput");
-    return input.searchMode;
+    if (search.value != str) {
+        search.value = str;
+        search.doSearch();
+    }
 }
 
 /** Rules **/
@@ -210,32 +196,11 @@ var NostalgyFolderListener = {
  OnItemEvent: function(folder, event) {
    var evt = event.toString();
    // NostalgyDebug(evt + " folder:" + folder.prettyName);
-   if (evt == "FolderLoaded") setTimeout(NostalgySelectLastMsg,50);
    if (evt == "DeleteOrMoveMsgCompleted" && nostalgy_on_move_completed) {
      nostalgy_on_move_completed();
      nostalgy_on_move_completed = null;
    }
  }
-}
-
-function NostalgySelectMessageByNavigationType(type)
-{
-  var resultId = new Object;
-  var resultIndex = new Object;
-  var threadIndex = new Object;
-
-  gDBView.viewNavigate(type, resultId, resultIndex, threadIndex, true);
-
-  if ((resultId.value != nsMsgKey_None) &&
-      (resultIndex.value != nsMsgKey_None)) {
-
-    gEBI("threadTree").treeBoxObject.ensureRowIsVisible(resultIndex.value);
-    gDBView.selection.currentIndex = resultIndex.value;
-    //gDBView.selection.timedSelect(resultIndex.value, 500);
-    //gDBView.selectMsgByKey(resultId.value);
-    return true;
-  }
-  return false;
 }
 
 function NostalgyMailSession() {
@@ -259,7 +224,6 @@ function onNostalgyLoad() {
 
  if (!in_message_window) {
    gEBI("threadTree").addEventListener("select", NostalgyDefLabel, false);
-   onSearchKeyPress = function() { };
  } else {
    // find a better way to be notified when the displayed message changes
    var old = UpdateStandAloneMessageCounts;
@@ -281,50 +245,6 @@ function onNostalgyLoad() {
  Components.classes["@mozilla.org/observer-service;1"].
    getService(Components.interfaces.nsIObserverService).
    addObserver(NostalgyObserver, "MsgMsgDisplayed", false);
-
- /*
- var old_OnMsgParsed = OnMsgParsed;
- OnMsgParsed = function (url) {
-   NostalgyDebug("OnMsgParsed");
-   old_OnMsgParsed(url);
-   setTimeout(NostalgyOnMsgParsed,100);
- };
- */
-
- if (window.gSearchNotificationListener) {
-   var old_f0 = gSearchNotificationListener.onSearchDone;
-   gSearchNotificationListener.onSearchDone = function(status) {
-     if (nostalgy_on_search_done) nostalgy_on_search_done();
-     old_f0(status);
-   };
- }
-
- var search_input = gEBI("searchInput");
- search_input.addEventListener("focus",
-                               function() {
-                                   NostalgyEnterSearch();
-                               },
-                               false);
- search_input.addEventListener("blur",
-                               function() {
-                                   NostalgyLeaveSearch();
-                               },
-                               false);
-
-
- NostalgyDebug("window.onSearchInputFocus " + window.onSearchInputFocus);
- if (window.onSearchInputFocus) {
-   var old_f1 = onSearchInputFocus;
-   onSearchInputFocus = function(ev) {
-     old_f1(ev);
-     NostalgyEnterSearch();
-   };
-   var old_f2 = onSearchInputBlur;
-   onSearchInputBlur = function(ev) {
-     old_f2(ev);
-     NostalgyLeaveSearch();
-   };
- }
 }
 
 function NostalgyOnMsgParsed() {
@@ -617,21 +537,6 @@ function NostalgyEnsureFolderIndex(builder, msgFolder)
   return index;
 }
 
-function NostalgySelectLastMsg() {
-  if (!gDBView) return;
-  if (nostalgy_selection_saved) {
-    NostalgyRestoreSelection(nostalgy_selection_saved);
-    nostalgy_selection_saved = null;
-  } else
-  try { gDBView.viewIndexForFirstSelectedMsg; } catch (ex) {
-/*
-    if (!NostalgySelectMessageByNavigationType(nsMsgNavigationType.firstUnreadMessage)) {
-    NostalgySelectMessageByNavigationType(nsMsgNavigationType.lastMessage);
-  }
-*/
-  }
-}
-
 function NostalgyShowFolder(folder) {
   if (folder.tag) {
     ViewChange(kViewTagMarker + folder.key, folder.tag);
@@ -656,9 +561,6 @@ function NostalgyShowFolder(folder) {
       ChangeSelection(folderTree, EnsureFolderIndex(folder));
       return;
   }
-  var search = "";
-  var input = gEBI("searchInput");
-  if (input && !input.showingSearchCriteria) search = input.value;
   if (window.gFolderTreeView) {
       var saved_mode = window.gFolderTreeView.mode;
       try {
@@ -684,12 +586,8 @@ function NostalgyShowFolder(folder) {
   }
   setTimeout(function() {
           SetFocusThreadPane();
+          NostalgyDoSearch("");
       }, 400);
-  if (search != "") {
-    input.focus();
-    input.value = search;
-    setTimeout(function(){onEnterInSearchBar(true);}, 200);
-  }
   return true;
 }
 
@@ -718,18 +616,12 @@ function NostalgyMoveToFolder(folder) {
 
 function NostalgyMoveToFolderAndGo(folder) {
  register_folder(folder);
- var sel = NostalgySaveSelection();
  if (folder.tag) NostalgyToggleMessageTag(folder);
  else {
      NostalgyPredict.update_folder(folder);
      gDBView.doCommandWithFolder(nsMsgViewCommandType.moveMessages,folder);
  }
  NostalgyShowFolder(folder);
- nostalgy_selection_saved = null;
- nostalgy_on_move_completed = function() { nostalgy_selection_saved = sel; };
- setTimeout(function () {
-   if (!nostalgy_selection_saved) nostalgy_on_move_completed = null;
- }, 1000);
  return true;
 }
 
@@ -768,38 +660,6 @@ var NostalgyEscapePressed = 0;
 
 function NostalgyFocusThreadPane() {
   SetFocusThreadPane();
-  NostalgySelectLastMsg();
-}
-
-function NostalgySaveSelection() {
-  var o = { };
-  gDBView.getIndicesForSelection(o,{ });
-  o = o.value;
-  var folder = gDBView.msgFolder;
-  var msgids = { };
-  for (var i = 0; i < o.length; i++) {
-    var id = folder.GetMessageHeader(gDBView.getKeyAt(o[i])).messageId;
-    msgids[id] = true;
-  }
-  return msgids;
-}
-
-function NostalgyRestoreSelection(msgids) {
-  var msgs;
-  if (gDBView.msgFolder.getMessages)
-    msgs = gDBView.msgFolder.getMessages(msgWindow);
-  else if (gDBView.msgFolder.msgDatabase)
-    msgs = gDBView.msgFolder.msgDatabase.EnumerateMessages();
-
-  var selection = gDBView.selection;
-  selection.clearSelection();
-  while (msgs.hasMoreElements()) {
-    var m = msgs.getNext().QueryInterface(Components.interfaces.nsIMsgDBHdr);
-    if (msgids[m.messageId]) {
-      var idx = gDBView.findIndexFromKey(m.messageKey,true);
-      if (!selection.isSelected(idx)) selection.toggleSelect(idx);
-    }
-  }
 }
 
 function NostalgyEscape() {
@@ -809,13 +669,9 @@ function NostalgyEscape() {
     function(){ if (NostalgyEscapePressed==i) NostalgyEscapePressed = 0; },
     300);
   if (NostalgyEscapePressed == 3) {
-    // var o = NostalgySaveSelection();
-
-    onClearSearch();
-    ViewChange(kViewItemAll, "All");  // TODO: localized string
-    setTimeout(NostalgyFocusThreadPane,100);
-
-    // setTimeout(function(){ NostalgyRestoreSelection(o); }, 0);
+      NostalgyDoSearch("");
+      ViewChange(kViewItemAll, "All");  // TODO: localized string
+      setTimeout(NostalgyFocusThreadPane,100);
   }
   if (NostalgyEscapePressed == 2) NostalgyFocusThreadPane();
 }
@@ -849,9 +705,10 @@ function NostalgySearchSender() {
   var subj = MailSubject();
   if (input.value != last_cycle_restrict_value) last_cycle_restrict = 0;
   last_cycle_restrict++;
+  var to_search = "";
   if (last_cycle_restrict == 1) {
       last_cycle_saved_searchMode = input.searchMode;
-      input.value = name;
+      to_search = name;
       if (recips && window.kQuickSearchRecipient)
           input.searchMode = kQuickSearchRecipient;
       else if (window.kQuickSearchSender)
@@ -864,7 +721,7 @@ function NostalgySearchSender() {
           alert("Nostalgy error: don't know which QuickSearch criterion to use");
   }
   else if (last_cycle_restrict == 2) {
-      input.value = subj;
+      to_search = subj;
       if (NostalgyIsDefined("kQuickSearchSubject"))
           input.searchMode = kQuickSearchSubject;
       else if (window.QuickSearchConstants)
@@ -873,11 +730,11 @@ function NostalgySearchSender() {
           alert("Nostalgy error: don't know which QuickSearch criterion to use");
   }
   else
-  { last_cycle_restrict = 0; input.value = "";
+  { last_cycle_restrict = 0; to_search = "";
     input.searchMode = last_cycle_saved_searchMode;
   }
-  last_cycle_restrict_value = input.value;
-  NostalgySearch();
+  last_cycle_restrict_value = to_search;
+  NostalgyDoSearch(to_search);
   SetFocusThreadPane();
   gDBView.selectMsgByKey(key);
   } catch (ex) {
@@ -887,72 +744,6 @@ function NostalgySearchSender() {
    SetFocusThreadPane();
   }
   return true;
-}
-
-function NostalgySearchSelectAll(select) {
-  if (!nostalgy_search_focused) return false;
-
-  if (!gEBI("searchInput") || gEBI("searchInput").value == ""
-      || gEBI("searchInput").showingSearchCriteria) {
-    SetFocusThreadPane();
-    return true;
-  }
-
-  initializeSearchBar();
-  nostalgy_on_search_done = function() {
-    nostalgy_on_search_done = null;
-    if (select) setTimeout(function(){ gDBView.selection.selectAll(); },0);
-    else NostalgySelectLastMsg();
-    SetFocusThreadPane();
-  };
-  if (gSearchTimer) {
-    clearTimeout(gSearchTimer);
-    gSearchTimer = null;
-  }
-  gSearchTimer = setTimeout("NostalgySearch();", 0);
-  return true;
-}
-
-function NostalgyShowSearchMode() {
-    var o = NostalgyQuickSearch();
-    o.showPopup(gEBI("quick-search-button"),-1,-1,"tooltip",
-                "bottomleft", "topleft");
-}
-
-function NostalgyQuickSearch() {
-  var o = gEBI("quick-search-menupopup");
-  if (!o)
-      o = document.getAnonymousElementByAttribute(gEBI("searchInput"), "anonid", "quick-search-menupopup");
-  return o;
-}
-
-function NostalgyEnterSearch() {
-  if (window.InitQuickSearchPopup)
-      InitQuickSearchPopup();
-  nostalgy_search_focused = true;
-}
-function NostalgyLeaveSearch() {
-  nostalgy_search_focused = false;
-  var o = NostalgyQuickSearch();
-  if (!o) return;
-  o.hidePopup();
-}
-
-function NostalgySearchMode(current,dir) {
-    var input = gEBI("searchInput");
-  var popup = NostalgyQuickSearch();
-  if (!popup) return;
-  var oldmode = popup.getElementsByAttribute('value', current)[0];
-  if (!oldmode) oldmode = popup.firstChild;
-  var newmode = dir > 0 ? oldmode.nextSibling : oldmode.previousSibling;
-  if (!newmode || !newmode.value) newmode = oldmode;
-  oldmode.setAttribute('checked','false');
-  newmode.setAttribute('checked','true');
-  input.searchMode = newmode.value;
-  popup.setAttribute("value",newmode.value);
-  if (window.InitQuickSearchPopup)
-      InitQuickSearchPopup();
-  NostalgySearch();
 }
 
 function onNostalgyKeyPressCapture(ev) {
@@ -972,27 +763,6 @@ function onNostalgyKeyPressCapture(ev) {
     NostalgyStopEvent(ev);
     return;
   }
-  //NostalgyDebug("nostalgy_search_focused " + nostalgy_search_focused);
-  if (nostalgy_search_focused) {
-    if (ev.keyCode == KeyEvent.DOM_VK_DOWN) {
-      var i = NostalgyCurrentSearchMode();
-      setTimeout(function(){NostalgySearchMode(i,1);},0);
-      NostalgyStopEvent(ev);
-      return;
-    }
-    if (ev.keyCode == KeyEvent.DOM_VK_UP) {
-      var i = NostalgyCurrentSearchMode();
-      setTimeout(function(){NostalgySearchMode(i,-1);},0);
-      NostalgyStopEvent(ev);
-      return;
-    }
-    if (ev.keyCode == KeyEvent.DOM_VK_ESCAPE) {
-        NostalgyDoSearch("");
-        setTimeout(SetFocusThreadPane,0);
-        NostalgyStopEvent(ev);
-        return;
-    }
-  }
 }
 
 
@@ -1006,11 +776,6 @@ function onNostalgyKeyPress(ev) {
     } else
     if (!in_message_window && ev.charCode == 102) { // F
       document.getElementById("folderTree").focus();
-      NostalgyStopEvent(ev);
-    } else
-    if (!in_message_window && ev.charCode == 105) { // I
-      var search = GetSearchInput();
-      if (search) search.focus();
       NostalgyStopEvent(ev);
     }
     return;
@@ -1065,26 +830,8 @@ function NostalgySaveAndGoSuggested() {
   return true;
 }
 
-function onNostalgyKeyDown(ev) {
-    if (nostalgy_search_focused && gEBI("searchInput").showingSearchCriteria)
-        gEBI("searchInput").showingSearchCriteria = false;
-    if ((ev.keyCode == KeyEvent.DOM_VK_ALT ||
-         ev.keyCode == KeyEvent.DOM_VK_CONTROL)
-        && nostalgy_search_focused) NostalgyShowSearchMode();
-}
-function onNostalgyKeyUp(ev) {
-    if ((ev.keyCode == KeyEvent.DOM_VK_ALT ||
-         ev.keyCode == KeyEvent.DOM_VK_CONTROL)
-        && nostalgy_search_focused) {
-        var o = NostalgyQuickSearch();
-        o.hidePopup();
-    }
-}
-
 window.addEventListener("load", onNostalgyLoad, false);
 window.addEventListener("resize", onNostalgyResize, false);
 window.addEventListener("unload", onNostalgyUnload, false);
 window.addEventListener("keypress", onNostalgyKeyPress, false);
 window.addEventListener("keypress", onNostalgyKeyPressCapture, true);
-window.addEventListener("keydown", onNostalgyKeyDown, true);
-window.addEventListener("keyup", onNostalgyKeyUp, true);

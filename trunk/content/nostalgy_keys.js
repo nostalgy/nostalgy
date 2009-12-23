@@ -21,12 +21,6 @@ var nostalgy_keys = [
    "JS:NostalgyCollapseFolderPane();"],
   ["search_sender","Show messages with same sender/same subject","`",
    "JS:NostalgySearchSender();"],
-  ["select_all","Search, select all messages and focus the thread pane",
-   "control RETURN",
-   "JS:NostalgySearchSelectAll(true);"],
-  ["select_search","Search, select last result and focus the thread pane",
-   "RETURN",
-   "JS:NostalgySearchSelectAll(false);"]
 ];
 
 

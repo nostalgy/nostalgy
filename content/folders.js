@@ -6,10 +6,7 @@ var nostalgy_completion_options = {
   match_case_sensitive : false,
   tab_shell_completion : false,
   always_include_tags  : false,
-  use_statistical_prediction: false,
-
-  /* not related to completion: should move to somewhere else */
-  always_show_search_mode : false
+  use_statistical_prediction: false
 };
 
 

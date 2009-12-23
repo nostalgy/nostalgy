@@ -318,23 +318,12 @@ function onNostalgyLoad() {
    onSearchInputFocus = function(ev) {
      old_f1(ev);
      NostalgyEnterSearch();
-     if (nostalgy_completion_options.always_show_search_mode) NostalgyShowSearchMode();
    };
    var old_f2 = onSearchInputBlur;
    onSearchInputBlur = function(ev) {
      old_f2(ev);
      NostalgyLeaveSearch();
    };
-
-   var search = NostalgyQuickSearch();
-   if (search)
-       search.addEventListener
-	 ("popuphiding",
-	  function() {
-	   if (nostalgy_completion_options.always_show_search_mode &&
-	       nostalgy_search_focused) setTimeout(NostalgyShowSearchMode,0);
-	 },
-	  false);
  }
 }
 
@@ -1086,8 +1075,7 @@ function onNostalgyKeyDown(ev) {
 function onNostalgyKeyUp(ev) {
     if ((ev.keyCode == KeyEvent.DOM_VK_ALT ||
          ev.keyCode == KeyEvent.DOM_VK_CONTROL)
-        && nostalgy_search_focused
-        && !nostalgy_completion_options.always_show_search_mode) {
+        && nostalgy_search_focused) {
         var o = NostalgyQuickSearch();
         o.hidePopup();
     }

@@ -1,6 +1,7 @@
 Since 0.2.23
   - Remove special support for the QuickSearch box
   - general code cleanup
+  - bug fix: tags where not always found when used for custom keys
 
 0.2.23
   - Add explicit size for the preference dialog.

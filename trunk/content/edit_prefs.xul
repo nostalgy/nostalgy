@@ -22,7 +22,6 @@
  <tabs>
  <tab label="Rules"/>
  <tab label="Completion"/>
- <tab label="UI"/>
  <tab label="Keys"/>
  </tabs>
  <tabpanels>
@@ -87,14 +86,6 @@ shortcuts to move/copy the message to this folder.</label>
              id="use_statistical_prediction"/>
  </groupbox>
  </tabpanel>
-
- <tabpanel>
- <groupbox flex="1">
-   <checkbox label="Always show the criterion selection menu when Quick Search is focused"
-             id="always_show_search_mode"/>
- </groupbox>
- </tabpanel>
-
 
  <tabpanel>
  <groupbox flex="1">

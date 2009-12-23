@@ -374,6 +374,7 @@ function FirstCompletion(uri) {
 }
 
 function FindFolderExact(uri) {
+    nostalgy_search_folder_options.do_tags = true;
  var ret = null;
  var u = mayLowerCase(uri);
  var save_req = nostalgy_search_folder_options.require_file;

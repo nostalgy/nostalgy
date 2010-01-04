@@ -4,6 +4,7 @@ var nostalgy_folderBox = null;
 var nostalgy_statusBar = null;
 var nostalgy_label = null;
 var nostalgy_th_statusBar = null;
+var nostalgy_th_statusBar_orig_hidden = true;
 var nostalgy_cmdLabel = null;
 var nostalgy_extracted_rules = "";
 var nostalgy_active_keys = { };
@@ -302,7 +303,7 @@ function NostalgyHideIfBlurred() {
 
 function NostalgyHide(restore) {
  nostalgy_statusBar.hidden = true;
- nostalgy_th_statusBar.hidden = false;
+ nostalgy_th_statusBar.hidden = nostalgy_th_statusBar_orig_hidden;
 
  if (focus_saved) {
   if (restore) focus_saved.focus ();
@@ -342,6 +343,7 @@ function NostalgyCmd(lab,cmd,require_file) {
  nostalgy_search_folder_options.require_file = require_file;
  nostalgy_cmdLabel.value = lab;
  nostalgy_command = cmd;
+ nostalgy_th_statusBar_orig_hidden = nostalgy_th_statusBar.hidden;
  nostalgy_th_statusBar.hidden = true;
  nostalgy_folderBox.shell_completion = false;
  nostalgy_statusBar.hidden = false;

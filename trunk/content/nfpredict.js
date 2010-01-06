@@ -177,7 +177,11 @@ var NostalgyPredict =
 
         var folder = nsiFolder.URI;
 
-        var hdr = gDBView.hdrForFirstSelectedMessage;
+        var hdr;
+        try {
+            hdr = gDBView.hdrForFirstSelectedMessage;
+        } catch (ex) { NostalgyDebug("Cannot get header for first message:" + ex); return; }
+
         var addresses = (hdr.author + " " + hdr.recipients + " " + hdr.ccList).toLowerCase();
 
         var folder_id=this.find_folder_id(folder);

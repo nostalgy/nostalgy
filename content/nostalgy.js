@@ -699,7 +699,11 @@ function NostalgySearchSender() {
   if (!input) { alert("Nostalgy error:\nCannot perform this action when Quick Search is not enabled"); return false; }
   try {
   var recips = gDBView.msgFolder.displayRecipients;
-  var key = gDBView.hdrForFirstSelectedMessage.messageKey;
+  var key = "";
+  try {
+      key = gDBView.hdrForFirstSelectedMessage.messageKey;
+  } catch (ex) { return; }
+
   input.focus();
   input.showingSearchCriteria = false;
   input.clearButtonHidden = false;
@@ -738,7 +742,7 @@ function NostalgySearchSender() {
   last_cycle_restrict_value = to_search;
   NostalgyDoSearch(to_search);
   SetFocusThreadPane();
-  gDBView.selectMsgByKey(key);
+  if (key != "") gDBView.selectMsgByKey(key);
   } catch (ex) {
       alert(ex);
    input.focus();

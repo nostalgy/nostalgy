@@ -13,6 +13,7 @@ content/messageOverlay.xul
 content/misc.js
 content/nfpredict.js
 content/nostalgy.js
+content/nostalgy.js.orig
 content/nostalgy_keys.js
 content/sqlite.js
 content/thunderbirdOverlay.xul

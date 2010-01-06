@@ -4,6 +4,7 @@ Since 0.2.23
   - bug fix: tags where not always found when used for custom keys
   - Do not show TB's status bar again after Nostalgy action,
     when the user does not want it
+  - Fix bug when a category is selected (Group by sort mode)	
 
 0.2.23
   - Add explicit size for the preference dialog.

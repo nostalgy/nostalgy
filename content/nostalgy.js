@@ -702,17 +702,21 @@ function NostalgySearchSender() {
   var key = "";
   try {
       key = gDBView.hdrForFirstSelectedMessage.messageKey;
-  } catch (ex) { return; }
+  } catch (ex) { }
 
   input.focus();
   input.showingSearchCriteria = false;
   input.clearButtonHidden = false;
-  var name = (recips ? MailRecipName() : MailAuthorName());
-  var subj = MailSubject();
+  var name = "";
+  var subj = "";
+  try {
+      name = (recips ? MailRecipName() : MailAuthorName());
+      subj = MailSubject();
+  } catch (ex) { }
   if (input.value != last_cycle_restrict_value) last_cycle_restrict = 0;
   last_cycle_restrict++;
   var to_search = "";
-  if (last_cycle_restrict == 1) {
+  if (name != "" && last_cycle_restrict == 1) {
       last_cycle_saved_searchMode = input.searchMode;
       to_search = name;
       if (recips && window.kQuickSearchRecipient)
@@ -726,7 +730,7 @@ function NostalgySearchSender() {
       else
           alert("Nostalgy error: don't know which QuickSearch criterion to use");
   }
-  else if (last_cycle_restrict == 2) {
+  else if (subj != "" && last_cycle_restrict == 2) {
       to_search = subj;
       if (NostalgyIsDefined("kQuickSearchSubject"))
           input.searchMode = kQuickSearchSubject;

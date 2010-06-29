@@ -102,7 +102,10 @@ var NostalgyRules =
        }
      }
      this.rules = r;
-    } catch (ex) { }
+    } catch (ex) {
+        NostalgyDebug("Cannot get rules: " + ex);
+        this.rules = [];
+    }
   },
 
   observe: function(aSubject, aTopic, aData)

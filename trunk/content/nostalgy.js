@@ -131,12 +131,12 @@ var NostalgyRules =
     }
   },
 
-  apply: function(sender,subject,recipients)
+  apply: function(sender,subject,recipients,cfolder)
   {
     var folder = null;
     var rules = this.rules;
     var i = 0;
-    var current_folder = full_folder_name(gDBView.msgFolder);
+    var current_folder = full_folder_name(cfolder);
     for (i = 0; (i < rules.length) && (!folder); i++) {
       var r = rules[i];
       if (((r.subject && match_contains(subject,r.contains))
@@ -470,15 +470,15 @@ function MailSubject() {
 function register_folder(folder) {
 // last_folder_author[MailAuthor()] = folder;
 // last_folder_subject[MailSubject()] = folder;
-  last_folder_server[gDBView.msgFolder.server.key] = folder;
-  last_folder = folder
+  last_folder_server[gDBView.hdrForFirstSelectedMessage.folder] = folder;
+  last_folder = folder;
 }
 
 function NostalgySuggest() {
  var r = null;
  if (!gDBView) return;
  try {
-     r = NostalgyRules.apply(MailAuthor(), MailSubject(), MailRecipients());
+     r = NostalgyRules.apply(MailAuthor(), MailSubject(), MailRecipients(), gDBView.hdrForFirstSelectedMessage.folder);
      if (r) { return(r); }
  } catch (ex) { NostalgyDebug("ex1:" + ex);  }
 
@@ -496,7 +496,7 @@ function NostalgySuggest() {
 // if (r) { return(r); }
 
  if (nostalgy_completion_options.restrict_to_current_server) {
-     return(last_folder_server[gDBView.msgFolder.server.key]);
+     return(last_folder_server[gDBView.hdrForFirstSelectedMessage.folder.server.key]);
  } else {
      return(last_folder);
  }

@@ -22,11 +22,9 @@ var myProbabilityInsert = 'INSERT INTO probabilities(address_id , folder_id , pr
 var myUpdateProbabilityCount = 'UPDATE probabilities SET count=?2, probability=?3 WHERE id=?1;';
 
 var myCountsQuery = 'SELECT distinct addresses.id as address_id, addresses.count as address_count, probabilities.id as probability_id, probabilities.count as probability_count '+
-    'FROM addresses, folders, probabilities WHERE addresses.id=probabilities.address_id AND probabilities.folder_id=?1 AND addresses.address=?2;';
+    'FROM addresses, probabilities WHERE addresses.id=probabilities.address_id AND probabilities.folder_id=?1 AND addresses.address=?2;';
 
-var myCountsQueryAll = 'SELECT distinct addresses.id as address_id, addresses.count as address_count, probabilities.id as probability_id, probabilities.count as probability_count FROM addresses, folders, probabilities WHERE addresses.id=probabilities.address_id;';
-
-var myGetMaintValues = 'select probabilities.*,addresses.count as addr_count from probabilities, addresses where probabilities.address_id=addresses.id;';
+var myCountsQueryAll = 'SELECT distinct addresses.id as address_id, addresses.count as address_count, probabilities.id as probability_id, probabilities.count as probability_count FROM addresses, probabilities WHERE addresses.id=probabilities.address_id;';
 
 // For anything other than SELECT statement, use $sqlite.cmd() :
 

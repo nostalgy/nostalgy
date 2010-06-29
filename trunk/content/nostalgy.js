@@ -467,18 +467,30 @@ function MailSubject() {
  } catch (ex) { return ""; }
 }
 
+function NostalgyCurrentFolder() {
+    try {
+        if (!gDBView) return null;
+        if (gDBView.msgFolder) return gDBView.msgFolder;
+        if (gDBView.hdrForFirstSelectedMessage) return gDBView.hdrForFirstSelectedMessage.folder;
+    } catch (ex) { }
+    NostalgyDebug("Cannot determine current folder");
+    return null;
+}
+
 function register_folder(folder) {
 // last_folder_author[MailAuthor()] = folder;
 // last_folder_subject[MailSubject()] = folder;
-  last_folder_server[gDBView.hdrForFirstSelectedMessage.folder] = folder;
-  last_folder = folder;
+    var f = NostalgyCurrentFolder();
+    if (f)  last_folder_server[f.server.key] = folder;
+    last_folder = folder;
 }
 
 function NostalgySuggest() {
  var r = null;
  if (!gDBView) return;
+ var folder = NostalgyCurrentFolder();
  try {
-     r = NostalgyRules.apply(MailAuthor(), MailSubject(), MailRecipients(), gDBView.hdrForFirstSelectedMessage.folder);
+     if (folder) r = NostalgyRules.apply(MailAuthor(), MailSubject(), MailRecipients(), folder);
      if (r) { return(r); }
  } catch (ex) { NostalgyDebug("ex1:" + ex);  }
 
@@ -496,7 +508,7 @@ function NostalgySuggest() {
 // if (r) { return(r); }
 
  if (nostalgy_completion_options.restrict_to_current_server) {
-     return(last_folder_server[gDBView.hdrForFirstSelectedMessage.folder.server.key]);
+     if (folder) return(last_folder_server[folder.server.key]);
  } else {
      return(last_folder);
  }
@@ -701,7 +713,7 @@ function NostalgySearchSender() {
   var input = gEBI("searchInput");
   if (!input) { alert("Nostalgy error:\nCannot perform this action when Quick Search is not enabled"); return false; }
   try {
-  var recips = gDBView.msgFolder.displayRecipients;
+  var recips = NostalgyCurrentFolder().displayRecipients;
   var key = "";
   try {
       key = gDBView.hdrForFirstSelectedMessage.messageKey;

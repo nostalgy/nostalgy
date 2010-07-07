@@ -591,6 +591,7 @@ function NostalgyShowFolder(folder) {
               }
           }
       } catch (ex) { NostalgyDebug("Ex: " + ex); }
+      window.gFolderTreeView.mode = saved_mode;
   } else {
       while (totry > 0) {
           try {

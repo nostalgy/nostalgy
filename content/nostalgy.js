@@ -710,7 +710,50 @@ var last_cycle_restrict_value = "";
 var last_cycle_restrict = 0;
 var last_cycle_saved_searchMode = 0;
 
+function NostalgySearchSenderQuickFilter() {
+    // TB 3.1
+    var input = gEBI("qfb-qs-textbox");
+    if (!input) return false;
+
+    var sender = MailAuthorName();
+    var recipient = MailRecipName();
+    var subject = MailSubject();
+
+    var values = { sender: sender, subject: subject, recipients: recipient };
+    if (NostalgyCurrentFolder().displayRecipients)
+        fields = [ "recipients", "subject" ];
+    else
+        fields = [ "sender", "subject" ];
+
+    var state = QuickFilterBarMuxer.activeFilterer.filterValues.text;
+    var make_state = function(field) {
+        var new_state = {text: null, states: { }};
+        for (var key in state.states) new_state.states[key] = false;
+        if (field != null) {
+            new_state.text = values[field];
+            new_state.states[field] = true;
+        }
+        return new_state;
+    }
+
+    var current = JSON.stringify(state);
+
+    var found = 0;
+    for (var i = 0; i < fields.length; i++)
+        if (JSON.stringify(make_state(fields[i])) == current) found = i + 1;
+    var new_state = null;
+    if (found < fields.length) new_state = make_state(fields[found]);
+    else new_state = make_state(null);
+    QuickFilterBarMuxer.activeFilterer.filterValues.text = new_state;
+    QuickFilterBarMuxer.onActiveAllMessagesLoaded(gFolderDisplay);
+    QuickFilterBarMuxer._showFilterBar(new_state.text != null);
+    QuickFilterBarMuxer.updateSearch();
+    return true;
+}
+
 function NostalgySearchSender() {
+    if (NostalgySearchSenderQuickFilter()) return;
+
   var input = gEBI("searchInput");
   if (!input) { alert("Nostalgy error:\nCannot perform this action when Quick Search is not enabled"); return false; }
   try {

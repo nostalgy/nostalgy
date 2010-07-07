@@ -6,6 +6,8 @@ Since 0.2.23
     when the user does not want it
   - Fix bug when a category is selected (Group by sort mode)
   - allow to install on TB 3.1
+  - restore folder view after folder change
+  - fix the 'search for same sender/subject' feature for TB 3.1
 
 0.2.23
   - Add explicit size for the preference dialog.

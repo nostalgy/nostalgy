@@ -1,4 +1,4 @@
-Since 0.2.23
+0.2.24
   - Remove special support for the QuickSearch box
   - general code cleanup
   - bug fix: tags where not always found when used for custom keys

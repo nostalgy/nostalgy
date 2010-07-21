@@ -6,7 +6,7 @@
         xmlns:html="http://www.w3.org/1999/xhtml"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	buttons="accept,extra2"
-	ondialogaccept="return onAcceptChanges();"
+	ondialogaccept="return onNostalgyAcceptChanges();"
 	ondialogextra2="openDialog('chrome://nostalgy/content/about.xul', 'about_nostalgy', 'resizable');"
 	buttonlabelextra2="Nostalgy usage directions..."
         width="900"
@@ -53,12 +53,12 @@ shortcuts to move/copy the message to this folder.</label>
 
  <vbox align="center">
   <hbox>
-  <button label="Edit" accesskey="E" oncommand="DoEdit();"/>
-  <button label="Delete" accesskey="D" oncommand="DoDelete();"/>
-  <button label="New" accesskey="N" oncommand="DoNewRule();"/>
+  <button label="Edit" accesskey="E" oncommand="NostalgyDoEdit();"/>
+  <button label="Delete" accesskey="D" oncommand="NostalgyDoDelete();"/>
+  <button label="New" accesskey="N" oncommand="NostalgyDoNewRule();"/>
   <separator orient="vertical"/>
-  <button label="Move up" oncommand="DoMoveUp();"/>
-  <button label="Move down" oncommand="DoMoveDown();"/>
+  <button label="Move up" oncommand="NostalgyDoMoveUp();"/>
+  <button label="Move down" oncommand="NostalgyDoMoveDown();"/>
   <separator orient="vertical"/>
   <button label="Send rules by email" oncommand="NostalgySendRules();"/>
   </hbox>
@@ -91,7 +91,7 @@ shortcuts to move/copy the message to this folder.</label>
  <groupbox flex="1">
    <grid style="overflow:auto; height:300px">
    <columns> <column/> <column width="150"/> <column/> </columns>
-   <rows id="key_rows"/>
+   <rows id="nostalgy_key_rows"/>
    </grid>
   <separator orient="horizontal"/>
   <hbox>
@@ -102,8 +102,8 @@ shortcuts to move/copy the message to this folder.</label>
   <radio value="SaveGo" label="Save+Go"/>
   </radiogroup>
   <textbox style="width:600px" type="autocomplete" id="folderselect"
-           nostalgyfolderbox="SelectFolder();"/>
-  <button label="Create"  oncommand="SelectFolder();"/>
+           nostalgyfolderbox="NostalgySelectFolder();"/>
+  <button label="Create"  oncommand="NostalgySelectFolder();"/>
   </hbox>
  </groupbox>
  </tabpanel>

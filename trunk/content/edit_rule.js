@@ -8,22 +8,22 @@ function onNostalgyLoad() {
 
  NostalgyFolderSelectionBoxes();
 
- gContainsSelect = gEBI("contains");
- gFolderSelect = gEBI("folderselect");
- gUnderSelect = gEBI("underselect");
+ gContainsSelect = NostalgyEBI("contains");
+ gFolderSelect = NostalgyEBI("folderselect");
+ gUnderSelect = NostalgyEBI("underselect");
 
  gContainsSelect.focus();
 
  gFolderSelect.value = rule.folder;
  gUnderSelect.value = rule.under;
  gContainsSelect.value = rule.contains;
- gEBI("sender").checked = rule.sender;
- gEBI("recipients").checked = rule.recipients;
- gEBI("subject").checked = rule.subject;
+ NostalgyEBI("sender").checked = rule.sender;
+ NostalgyEBI("recipients").checked = rule.recipients;
+ NostalgyEBI("subject").checked = rule.subject;
 }
 
-function onAcceptChanges() {
- var folder = FindFolderExact(gFolderSelect.value);
+function onNostalgyAcceptChanges() {
+ var folder = NostalgyFindFolderExact(gFolderSelect.value);
  if (!folder) {
    alert("Please choose an existing folder");
    gFolderSelect.focus();
@@ -34,11 +34,11 @@ function onAcceptChanges() {
    return false;
  }
  var rule = { 
-    sender: gEBI("sender").checked,
-    recipients: gEBI("recipients").checked,
-    subject: gEBI("subject").checked,
+    sender: NostalgyEBI("sender").checked,
+    recipients: NostalgyEBI("recipients").checked,
+    subject: NostalgyEBI("subject").checked,
     contains: gContainsSelect.value,
-    folder: folder_name(folder),
+    folder: NostalgyFolderName(folder),
     under: gUnderSelect.value
  };
     
@@ -46,22 +46,22 @@ function onAcceptChanges() {
  return true;
 }
 
-function ChooseFolder() {
+function NostalgyChooseFolder() {
   if (gFolderSelect.value != "") {
     var folder = NostalgyResolveFolder(gFolderSelect.value);
-    if (folder) { gFolderSelect.value = folder_name(folder); }
+    if (folder) { gFolderSelect.value = NostalgyFolderName(folder); }
   }
 }
 
-function ChooseUnder() {
+function NostalgyChooseUnder() {
   if (gUnderSelect.value != "") {
     var under = NostalgyResolveFolder(gUnderSelect.value);
-    if (under) { gUnderSelect.value = folder_name(under); }
+    if (under) { gUnderSelect.value = NostalgyFolderName(under); }
     setTimeout(function(){gFolderSelect.focus();},30);
   }
 }
 
-function OnKeyPressTxt(ev) {
+function onNostalgyKeyPressTxt(ev) {
   if (ev.keyCode==KeyEvent.DOM_VK_RETURN) {
    setTimeout(function(){gUnderSelect.focus();},30);
    NostalgyStopEvent(ev);

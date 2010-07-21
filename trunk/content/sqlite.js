@@ -1,4 +1,4 @@
-var $sqlite = {
+var nostalgy_sqlite = {
     storageService: [],
     mDBConn: [],
 

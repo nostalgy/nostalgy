@@ -1,4 +1,4 @@
-function gEBI(id) { return document.getElementById(id); }
+function NostalgyEBI(id) { return document.getElementById(id); }
 
 function NostalgyPrefService() {
   return Components.classes["@mozilla.org/preferences-service;1"]

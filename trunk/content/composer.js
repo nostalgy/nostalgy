@@ -1,11 +1,11 @@
-function gEBI(s) { return document.getElementById(s); }
+function NostalgyEBI(s) { return document.getElementById(s); }
 
 var nostalgy_old_awRecipientKeyPress = 0;
 
 function nostalgy_awRecipientKeyPress(event, element) {
   var id = element.id;
   if (id.match(/addressCol2#/)) {
-  var select = gEBI(id.replace(/addressCol2#/,"addressCol1#"));
+  var select = NostalgyEBI(id.replace(/addressCol2#/,"addressCol1#"));
   var v = element.value;
   var u = v.replace(/ >> .*/, "");
   var i = element.selectionStart;

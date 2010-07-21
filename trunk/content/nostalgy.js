@@ -1,4 +1,4 @@
-var in_message_window = !window.SetFocusThreadPane;
+var nostalgy_in_message_window = !window.SetFocusThreadPane;
 
 var nostalgy_folderBox = null;
 var nostalgy_statusBar = null;
@@ -8,7 +8,7 @@ var nostalgy_th_statusBar_orig_hidden = true;
 var nostalgy_cmdLabel = null;
 var nostalgy_extracted_rules = "";
 var nostalgy_active_keys = { };
-var timeout_regkey = 0;
+var nostalgy_timeout_regkey = 0;
 var nostalgy_on_move_completed = null;
 var nostalgy_selection_saved = null;
 
@@ -17,7 +17,7 @@ function NostalgyIsDefined(s) {
 }
 
 function NostalgyDoSearch(str) {
-    var search = gEBI("searchInput");
+    var search = NostalgyEBI("searchInput");
     if (search.value != str) {
         search.value = str;
         search.doSearch();
@@ -26,7 +26,7 @@ function NostalgyDoSearch(str) {
 
 /** Rules **/
 
-function match_contains(field,contain) {
+function NostalgyMatchContains(field,contain) {
   var re = /^\/(.*)\/$/;
   if (contain.match(re)) {
    var m = re.exec(contain);
@@ -115,19 +115,19 @@ var NostalgyRules =
 
     if (aData == "rules") {
       this.get_rules();
-      if (!in_message_window) NostalgyDefLabel();
+      if (!nostalgy_in_message_window) NostalgyDefLabel();
       return;
     }
     if (nostalgy_completion_options[aData] != undefined) {
      nostalgy_completion_options[aData] = this._branch.getBoolPref(aData);
-     if (!in_message_window) NostalgyDefLabel();
+     if (!nostalgy_in_message_window) NostalgyDefLabel();
      return;
     }
     if (aData.match("keys.")) {
-      if (timeout_regkey) return;
-      timeout_regkey = 1;
+      if (nostalgy_timeout_regkey) return;
+      nostalgy_timeout_regkey = 1;
       var r = this;
-      setTimeout(function() { timeout_regkey = 0; r.register_keys(); }, 150);
+      setTimeout(function() { nostalgy_timeout_regkey = 0; r.register_keys(); }, 150);
     }
   },
 
@@ -136,15 +136,15 @@ var NostalgyRules =
     var folder = null;
     var rules = this.rules;
     var i = 0;
-    var current_folder = full_folder_name(cfolder);
+    var current_folder = NostalgyFullFolderName(cfolder);
     for (i = 0; (i < rules.length) && (!folder); i++) {
       var r = rules[i];
-      if (((r.subject && match_contains(subject,r.contains))
-        ||(r.sender && match_contains(sender,r.contains))
-        ||(r.recipients && match_contains(recipients,r.contains)))
+      if (((r.subject && NostalgyMatchContains(subject,r.contains))
+        ||(r.sender && NostalgyMatchContains(sender,r.contains))
+        ||(r.recipients && NostalgyMatchContains(recipients,r.contains)))
          && (current_folder.indexOf(r.under) == 0))
       {
-        folder = FindFolderExact(r.folder);
+        folder = NostalgyFindFolderExact(r.folder);
       }
     }
     return folder;
@@ -168,14 +168,14 @@ function NostalgyExtractRules() {
 
 /** Driver **/
 
-var default_label = "";
-var focus_saved = null;
+var nostalgy_default_label = "";
+var nostalgy_focus_saved = null;
 var nostalgy_command = null;
-//var last_folder_author = new Array();
-//var last_folder_subject = new Array();
-var last_folder_server = new Array();
-var last_folder = null;
-var gsuggest_folder = null;
+//var nostalgy_last_folder_author = new Array();
+//var nostalgy_last_folder_subject = new Array();
+var nostalgy_last_folder_server = new Array();
+var nostalgy_last_folder = null;
+var nostalgy_gsuggest_folder = null;
 
 function onNostalgyResize() {
   if (nostalgy_label)
@@ -216,18 +216,18 @@ function NostalgyMailSession() {
 function onNostalgyLoad() {
  NostalgyRules.register_keys();
 
- nostalgy_folderBox = gEBI("nostalgy-folderbox");
- nostalgy_statusBar = gEBI("nostalgy-statusbar");
- nostalgy_label = gEBI("statusbar-nostalgy-label");
- nostalgy_th_statusBar = gEBI("status-bar");
- nostalgy_cmdLabel = gEBI("nostalgy-command-label");
+ nostalgy_folderBox = NostalgyEBI("nostalgy-folderbox");
+ nostalgy_statusBar = NostalgyEBI("nostalgy-statusbar");
+ nostalgy_label = NostalgyEBI("statusbar-nostalgy-label");
+ nostalgy_th_statusBar = NostalgyEBI("status-bar");
+ nostalgy_cmdLabel = NostalgyEBI("nostalgy-command-label");
 
  NostalgyFolderSelectionBox(nostalgy_folderBox);
- default_label = nostalgy_label.value;
+ nostalgy_default_label = nostalgy_label.value;
 
 
- if (!in_message_window) {
-   gEBI("threadTree").addEventListener("select", NostalgyDefLabel, false);
+ if (!nostalgy_in_message_window) {
+   NostalgyEBI("threadTree").addEventListener("select", NostalgyDefLabel, false);
  } else {
    // find a better way to be notified when the displayed message changes
    var old = UpdateStandAloneMessageCounts;
@@ -253,7 +253,7 @@ function onNostalgyLoad() {
 
 function NostalgyOnMsgParsed() {
   if (nostalgy_extracted_rules != "") {
-    var button = gEBI("nostalgy_extract_rules_buttons");
+    var button = NostalgyEBI("nostalgy_extract_rules_buttons");
     nostalgy_extracted_rules = "";
     button.hidden = true;
   }
@@ -269,7 +269,7 @@ function NostalgyOnMsgParsed() {
 
   nostalgy_extracted_rules = content.substr(i, j - i);
   if (nostalgy_extracted_rules != "") {
-    var button = gEBI("nostalgy_extract_rules_buttons");
+    var button = NostalgyEBI("nostalgy_extract_rules_buttons");
     button.hidden = false;
   }
 }
@@ -308,26 +308,26 @@ function NostalgyHide(restore) {
  nostalgy_statusBar.hidden = true;
  nostalgy_th_statusBar.hidden = nostalgy_th_statusBar_orig_hidden;
 
- if (focus_saved) {
-  if (restore) focus_saved.focus ();
-  focus_saved = null;
+ if (nostalgy_focus_saved) {
+  if (restore) nostalgy_focus_saved.focus ();
+  nostalgy_focus_saved = null;
  }
  NostalgyDefLabel();
 }
 
 function NostalgyDefLabel() {
- gsuggest_folder = NostalgySuggest();
- if (gsuggest_folder) {
+ nostalgy_gsuggest_folder = NostalgySuggest();
+ if (nostalgy_gsuggest_folder) {
    nostalgy_label.value =
-       default_label + " [+Shift: ==> " + folder_name(gsuggest_folder) + "]";
+       nostalgy_default_label + " [+Shift: ==> " + NostalgyFolderName(nostalgy_gsuggest_folder) + "]";
  } else {
-   nostalgy_label.value = default_label;
+   nostalgy_label.value = nostalgy_default_label;
  }
 }
 
 
 function NostalgyCollapseFolderPane() {
- var fp = gEBI("folderPaneBox");
+ var fp = NostalgyEBI("folderPaneBox");
  if (window.MsgToggleFolderPane)
    { MsgToggleFolderPane(true); return true; }
  else if (window.MsgToggleSplitter)
@@ -340,8 +340,8 @@ function NostalgyCollapseFolderPane() {
 
 
 function NostalgyCmd(lab,cmd,require_file) {
- focus_saved = document.commandDispatcher.focusedElement;
- if (!focus_saved) { focus_saved = gEBI("messagepane").contentWindow; }
+ nostalgy_focus_saved = document.commandDispatcher.focusedElement;
+ if (!nostalgy_focus_saved) { nostalgy_focus_saved = NostalgyEBI("messagepane").contentWindow; }
 
  nostalgy_search_folder_options.require_file = require_file;
  nostalgy_cmdLabel.value = lab;
@@ -411,7 +411,7 @@ function NostalgyRunCommand() {
             name = s.substr(i + 1, s.length - i - 1);
         }
         if (parent) {
-            if (confirm("Create new folder [" + name + "]\nunder " + full_folder_name(parent) + "?")) {
+            if (confirm("Create new folder [" + name + "]\nunder " + NostalgyFullFolderName(parent) + "?")) {
                 parent.createSubfolder(name, msgWindow);
                 ClearNostalgyCache();
                 parent.updateFolder(msgWindow);
@@ -433,28 +433,28 @@ function NostalgyRunCommand() {
   }
 }
 
-function MailRecipients() {
+function NostalgyMailRecipients() {
  try {
   var hdr = gDBView.hdrForFirstSelectedMessage;
   return((hdr.recipients + ", " + hdr.ccList).toLowerCase());
  } catch (ex) { return ""; }
 }
 
-function MailAuthor() {
+function NostalgyMailAuthor() {
   try {
    return(gDBView.hdrForFirstSelectedMessage.author.toLowerCase());
   } catch (ex) { return ""; }
 }
 
-function MailAuthorName() {
+function NostalgyMailAuthorName() {
     return NostalgyHeaderParser.get_address(gDBView.hdrForFirstSelectedMessage.author);
 }
 
-function MailRecipName() {
+function NostalgyMailRecipName() {
     return NostalgyHeaderParser.get_address(gDBView.hdrForFirstSelectedMessage.recipients);
 }
 
-function MailSubject() {
+function NostalgyMailSubject() {
  try {
  var s = gDBView.hdrForFirstSelectedMessage.mime2DecodedSubject.toLowerCase();
  var old;
@@ -477,12 +477,12 @@ function NostalgyCurrentFolder() {
     return null;
 }
 
-function register_folder(folder) {
-// last_folder_author[MailAuthor()] = folder;
-// last_folder_subject[MailSubject()] = folder;
+function NostalgyRegisterFolder(folder) {
+// nostalgy_last_folder_author[NostalgyMailAuthor()] = folder;
+// nostalgy_last_folder_subject[NostalgyMailSubject()] = folder;
     var f = NostalgyCurrentFolder();
-    if (f)  last_folder_server[f.server.key] = folder;
-    last_folder = folder;
+    if (f)  nostalgy_last_folder_server[f.server.key] = folder;
+    nostalgy_last_folder = folder;
 }
 
 function NostalgySuggest() {
@@ -490,7 +490,7 @@ function NostalgySuggest() {
  if (!gDBView) return;
  var folder = NostalgyCurrentFolder();
  try {
-     if (folder) r = NostalgyRules.apply(MailAuthor(), MailSubject(), MailRecipients(), folder);
+     if (folder) r = NostalgyRules.apply(NostalgyMailAuthor(), NostalgyMailSubject(), NostalgyMailRecipients(), folder);
      if (r) { return(r); }
  } catch (ex) { NostalgyDebug("ex1:" + ex);  }
 
@@ -501,16 +501,16 @@ function NostalgySuggest() {
              if (r) { return(r); }
          } catch (ex) { NostalgyDebug("ex2:" + ex);  }
      }
-// r = last_folder_author[MailAuthor()];
+// r = nostalgy_last_folder_author[NostalgyMailAuthor()];
 // if (r) { return(r); }
 
-// r = last_folder_subject[MailSubject()];
+// r = nostalgy_last_folder_subject[NostalgyMailSubject()];
 // if (r) { return(r); }
 
  if (nostalgy_completion_options.restrict_to_current_server) {
-     if (folder) return(last_folder_server[folder.server.key]);
+     if (folder) return(nostalgy_last_folder_server[folder.server.key]);
  } else {
-     return(last_folder);
+     return(nostalgy_last_folder);
  }
 }
 
@@ -621,7 +621,7 @@ function NostalgyToggleMessageTag(tag) {
 }
 
 function NostalgyMoveToFolder(folder) {
- register_folder(folder);
+ NostalgyRegisterFolder(folder);
  if (window.SetNextMessageAfterDelete) SetNextMessageAfterDelete();
  else gFolderDisplay.hintAboutToDeleteMessages();
  if (folder.tag) NostalgyToggleMessageTag(folder);
@@ -633,7 +633,7 @@ function NostalgyMoveToFolder(folder) {
 }
 
 function NostalgyMoveToFolderAndGo(folder) {
- register_folder(folder);
+ NostalgyRegisterFolder(folder);
  if (folder.tag) NostalgyToggleMessageTag(folder);
  else {
      NostalgyPredict.update_folder(folder);
@@ -644,7 +644,7 @@ function NostalgyMoveToFolderAndGo(folder) {
 }
 
 function NostalgyCopyToFolder(folder) {
- register_folder(folder);
+ NostalgyRegisterFolder(folder);
  if (folder.tag) NostalgyToggleMessageTag(folder);
  else {
      NostalgyPredict.update_folder(folder);
@@ -654,7 +654,7 @@ function NostalgyCopyToFolder(folder) {
 }
 
 function NostalgySuggested(cmd) {
-  if (gsuggest_folder) cmd(gsuggest_folder);
+  if (nostalgy_gsuggest_folder) cmd(nostalgy_gsuggest_folder);
   return true;
 }
 
@@ -662,13 +662,13 @@ function NostalgySuggested(cmd) {
 
 var NostalgyLastEscapeTimeStamp = 0;
 
-function isThreadPaneFocused() {
+function NostalgyIsThreadPaneFocused() {
   return (WhichPaneHasFocus() == GetThreadTree());
 }
 
 function NostalgyScrollMsg(d) {
- if (isThreadPaneFocused()) {
-  var b = gEBI("messagepane").contentDocument.getElementsByTagName("body")[0];
+ if (NostalgyIsThreadPaneFocused()) {
+  var b = NostalgyEBI("messagepane").contentDocument.getElementsByTagName("body")[0];
   if (b) { b.scrollTop += d; }
  }
 }
@@ -706,18 +706,18 @@ function NostalgyFocusMessagePane() {
   }
 }
 
-var last_cycle_restrict_value = "";
-var last_cycle_restrict = 0;
-var last_cycle_saved_searchMode = 0;
+var nostalgy_last_cycle_restrict_value = "";
+var nostalgy_last_cycle_restrict = 0;
+var nostalgy_last_cycle_saved_searchMode = 0;
 
 function NostalgySearchSenderQuickFilter() {
     // TB 3.1
-    var input = gEBI("qfb-qs-textbox");
+    var input = NostalgyEBI("qfb-qs-textbox");
     if (!input) return false;
 
-    var sender = MailAuthorName();
-    var recipient = MailRecipName();
-    var subject = MailSubject();
+    var sender = NostalgyMailAuthorName();
+    var recipient = NostalgyMailRecipName();
+    var subject = NostalgyMailSubject();
 
     var values = { sender: sender, subject: subject, recipients: recipient };
     if (NostalgyCurrentFolder().displayRecipients)
@@ -754,7 +754,7 @@ function NostalgySearchSenderQuickFilter() {
 function NostalgySearchSender() {
     if (NostalgySearchSenderQuickFilter()) return;
 
-  var input = gEBI("searchInput");
+  var input = NostalgyEBI("searchInput");
   if (!input) { alert("Nostalgy error:\nCannot perform this action when Quick Search is not enabled"); return false; }
   try {
   var recips = NostalgyCurrentFolder().displayRecipients;
@@ -769,14 +769,14 @@ function NostalgySearchSender() {
   var name = "";
   var subj = "";
   try {
-      name = (recips ? MailRecipName() : MailAuthorName());
-      subj = MailSubject();
+      name = (recips ? NostalgyMailRecipName() : NostalgyMailAuthorName());
+      subj = NostalgyMailSubject();
   } catch (ex) { }
-  if (input.value != last_cycle_restrict_value) last_cycle_restrict = 0;
-  last_cycle_restrict++;
+  if (input.value != nostalgy_last_cycle_restrict_value) nostalgy_last_cycle_restrict = 0;
+  nostalgy_last_cycle_restrict++;
   var to_search = "";
-  if (name != "" && last_cycle_restrict == 1) {
-      last_cycle_saved_searchMode = input.searchMode;
+  if (name != "" && nostalgy_last_cycle_restrict == 1) {
+      nostalgy_last_cycle_saved_searchMode = input.searchMode;
       to_search = name;
       if (recips && window.kQuickSearchRecipient)
           input.searchMode = kQuickSearchRecipient;
@@ -789,7 +789,7 @@ function NostalgySearchSender() {
       else
           alert("Nostalgy error: don't know which QuickSearch criterion to use");
   }
-  else if (subj != "" && last_cycle_restrict == 2) {
+  else if (subj != "" && nostalgy_last_cycle_restrict == 2) {
       to_search = subj;
       if (NostalgyIsDefined("kQuickSearchSubject"))
           input.searchMode = kQuickSearchSubject;
@@ -799,17 +799,17 @@ function NostalgySearchSender() {
           alert("Nostalgy error: don't know which QuickSearch criterion to use");
   }
   else
-  { last_cycle_restrict = 0; to_search = "";
-    input.searchMode = last_cycle_saved_searchMode;
+  { nostalgy_last_cycle_restrict = 0; to_search = "";
+    input.searchMode = nostalgy_last_cycle_saved_searchMode;
   }
-  last_cycle_restrict_value = to_search;
+  nostalgy_last_cycle_restrict_value = to_search;
   NostalgyDoSearch(to_search);
   SetFocusThreadPane();
   if (key != "") gDBView.selectMsgByKey(key);
   } catch (ex) {
       alert(ex);
    input.focus();
-   last_cycle_restrict = 0; NostalgyDoSearch("");
+   nostalgy_last_cycle_restrict = 0; NostalgyDoSearch("");
    SetFocusThreadPane();
   }
   return true;
@@ -839,31 +839,31 @@ function onNostalgyKeyPress(ev) {
   if (!nostalgy_statusBar.hidden) return;
 
   if (NostalgyEscapePressed >= 1) {
-    if (!in_message_window && ev.charCode == 109) { // M
+    if (!nostalgy_in_message_window && ev.charCode == 109) { // M
       NostalgyFocusMessagePane();
       NostalgyStopEvent(ev);
     } else
-    if (!in_message_window && ev.charCode == 102) { // F
+    if (!nostalgy_in_message_window && ev.charCode == 102) { // F
       document.getElementById("folderTree").focus();
       NostalgyStopEvent(ev);
     }
     return;
   }
 
-  var kn = RecognizeKey(ev);
+  var kn = NostalgyRecognizeKey(ev);
   if (ev.charCode && ev.originalTarget.localName.toLowerCase() == "input"
       && !ev.ctrlKey && !ev.altKey)
     return;
   var k = nostalgy_active_keys[kn];
-  if (k && ParseCommand(k)) NostalgyStopEvent(ev);
+  if (k && NostalgyParseCommand(k)) NostalgyStopEvent(ev);
 }
 
-function ParseCommand(k) {
+function NostalgyParseCommand(k) {
   if (k.indexOf("JS:") == 0)
     return eval(k.substr(3,k.length - 3));
 
   var spl = k.match(/(.*) -> (.*)/);
-  var folder = FindFolderExact(spl[2]);
+  var folder = NostalgyFindFolderExact(spl[2]);
   if (!folder) { alert("Cannot find folder " + spl[2]); return; }
   switch (spl[1]) {
   case "Go": return NostalgyShowFolder(folder);
@@ -875,26 +875,26 @@ function ParseCommand(k) {
 }
 
 function NostalgyGoCommand() {
-  if (!in_message_window)  {
+  if (!nostalgy_in_message_window)  {
     NostalgyCmd('Go to folder:', NostalgyShowFolder, false);
     return true;
   } else return false;
 }
 function NostalgyGoSuggestedCommand() {
-  if (!in_message_window)  {
+  if (!nostalgy_in_message_window)  {
     NostalgySuggested(NostalgyShowFolder);
     return true;
   } else return false;
 }
 
 function NostalgySaveAndGo() {
-  if (in_message_window) return false;
+  if (nostalgy_in_message_window) return false;
   NostalgyCmd('Move messages and go to:', NostalgyMoveToFolderAndGo, true);
   return true;
 }
 
 function NostalgySaveAndGoSuggested() {
-  if (in_message_window) return false;
+  if (nostalgy_in_message_window) return false;
   NostalgySuggested(NostalgyMoveToFolderAndGo);
   return true;
 }

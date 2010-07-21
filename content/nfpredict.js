@@ -1,32 +1,32 @@
 //some variables :
 //assuming db file is in user's profile directory:
-var myDBFile = 'nfpredict.sqlite';
+var nostalgy_DBFile = 'nfpredict.sqlite';
 
-var myCreateTablesQuery1 = 'CREATE TABLE IF NOT EXISTS addresses (id INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT, count INTEGER)';
-var myCreateTablesQuery2 = 'CREATE TABLE IF NOT EXISTS folders (id INTEGER PRIMARY KEY AUTOINCREMENT, folder TEXT)';
-var myCreateTablesQuery3 = 'CREATE TABLE IF NOT EXISTS probabilities (id INTEGER PRIMARY KEY AUTOINCREMENT, address_id INTEGER, folder_id INTEGER, probability REAL, count INTEGER)';
+var nostalgy_CreateTablesQuery1 = 'CREATE TABLE IF NOT EXISTS addresses (id INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT, count INTEGER)';
+var nostalgy_CreateTablesQuery2 = 'CREATE TABLE IF NOT EXISTS folders (id INTEGER PRIMARY KEY AUTOINCREMENT, folder TEXT)';
+var nostalgy_CreateTablesQuery3 = 'CREATE TABLE IF NOT EXISTS probabilities (id INTEGER PRIMARY KEY AUTOINCREMENT, address_id INTEGER, folder_id INTEGER, probability REAL, count INTEGER)';
 
-var myPredictQueryA = 'SELECT avg(probabilities.count*100/addresses.count) as prob,folder FROM addresses,folders,probabilities '+
+var nostalgy_PredictQueryA = 'SELECT avg(probabilities.count*100/addresses.count) as prob,folder FROM addresses,folders,probabilities '+
     'WHERE probabilities.address_id=addresses.id AND  probabilities.folder_id=folders.id AND addresses.address in (';
-var myPredictQueryB = ') group by folder order by prob desc limit ';
+var nostalgy_PredictQueryB = ') group by folder order by prob desc limit ';
 
-var myFolderQuery = 'SELECT * FROM folders where folder = ?1';
-var myFolderInsert = 'INSERT INTO folders(folder) VALUES(?1);';
+var nostalgy_FolderQuery = 'SELECT * FROM folders where folder = ?1';
+var nostalgy_FolderInsert = 'INSERT INTO folders(folder) VALUES(?1);';
 
-var myAddressQuery = 'SELECT * FROM addresses where address = ?1';
-var myAddressInsert = 'INSERT INTO addresses(address,count) VALUES(?1,0);';
-var myGetAddressCount = 'SELECT count FROM addresses where id = ?1';
-var myUpdateAddressCount = 'UPDATE addresses SET count=?2 WHERE id=?1;';
+var nostalgy_AddressQuery = 'SELECT * FROM addresses where address = ?1';
+var nostalgy_AddressInsert = 'INSERT INTO addresses(address,count) VALUES(?1,0);';
+var nostalgy_GetAddressCount = 'SELECT count FROM addresses where id = ?1';
+var nostalgy_UpdateAddressCount = 'UPDATE addresses SET count=?2 WHERE id=?1;';
 
-var myProbabilityInsert = 'INSERT INTO probabilities(address_id , folder_id , probability , count) VALUES(?1,?2,?3,?4);';
-var myUpdateProbabilityCount = 'UPDATE probabilities SET count=?2, probability=?3 WHERE id=?1;';
+var nostalgy_ProbabilityInsert = 'INSERT INTO probabilities(address_id , folder_id , probability , count) VALUES(?1,?2,?3,?4);';
+var nostalgy_UpdateProbabilityCount = 'UPDATE probabilities SET count=?2, probability=?3 WHERE id=?1;';
 
-var myCountsQuery = 'SELECT distinct addresses.id as address_id, addresses.count as address_count, probabilities.id as probability_id, probabilities.count as probability_count '+
+var nostalgy_CountsQuery = 'SELECT distinct addresses.id as address_id, addresses.count as address_count, probabilities.id as probability_id, probabilities.count as probability_count '+
     'FROM addresses, probabilities WHERE addresses.id=probabilities.address_id AND probabilities.folder_id=?1 AND addresses.address=?2;';
 
-var myCountsQueryAll = 'SELECT distinct addresses.id as address_id, addresses.count as address_count, probabilities.id as probability_id, probabilities.count as probability_count FROM addresses, probabilities WHERE addresses.id=probabilities.address_id;';
+var nostalgy_CountsQueryAll = 'SELECT distinct addresses.id as address_id, addresses.count as address_count, probabilities.id as probability_id, probabilities.count as probability_count FROM addresses, probabilities WHERE addresses.id=probabilities.address_id;';
 
-// For anything other than SELECT statement, use $sqlite.cmd() :
+// For anything other than SELECT statement, use nostalgy_sqlite.cmd() :
 
 var NostalgyPredict =
 {
@@ -52,14 +52,14 @@ var NostalgyPredict =
     },
 
     getDBFile: function() {
-        return myDBFile;
+        return nostalgy_DBFile;
     },
 
     createDB: function() {
     // creating a DB:
-        $sqlite.cmd(this.getDBFile(),myCreateTablesQuery1);
-        $sqlite.cmd(this.getDBFile(),myCreateTablesQuery2);
-        $sqlite.cmd(this.getDBFile(),myCreateTablesQuery3);
+        nostalgy_sqlite.cmd(this.getDBFile(),nostalgy_CreateTablesQuery1);
+        nostalgy_sqlite.cmd(this.getDBFile(),nostalgy_CreateTablesQuery2);
+        nostalgy_sqlite.cmd(this.getDBFile(),nostalgy_CreateTablesQuery3);
     },
 
     dbExists: function() {
@@ -67,7 +67,7 @@ var NostalgyPredict =
         var file = (Components.classes["@mozilla.org/file/directory_service;1"].
                     getService(Components.interfaces.nsIProperties).
                     get("ProfD", Components.interfaces.nsIFile));
-        file.append(myDBFile);
+        file.append(nostalgy_DBFile);
 
         return file.exists();
     },
@@ -98,33 +98,33 @@ var NostalgyPredict =
                 }
                 //                NostalgyDebug("addrs = " + addrs);
                 try {
-                    var myArray1 = $sqlite.select(this.getDBFile(),myPredictQueryA+addrs+myPredictQueryB+numPredictions+';');
-                    //                    NostalgyDebug(myPredictQueryA+addrs+myPredictQueryB);
-                    //                    NostalgyDebug("myArray1.length: "+myArray1.length);
-                    if ( myArray1.length > 0 ) {
-                        for( i = 0; i < myArray1.length; i++ ) {
-                            // NostalgyDebug(myArray1[i]['folder'] +": "+myArray1[i]['prob']);
-                            if ( parseFloat(myArray1[i]['prob']) > 0.5 ) {
-                                var uri = myArray1[i]['folder'];
+                    var nostalgy_Array1 = nostalgy_sqlite.select(this.getDBFile(),nostalgy_PredictQueryA+addrs+nostalgy_PredictQueryB+numPredictions+';');
+                    //                    NostalgyDebug(nostalgy_PredictQueryA+addrs+nostalgy_PredictQueryB);
+                    //                    NostalgyDebug("nostalgy_Array1.length: "+nostalgy_Array1.length);
+                    if ( nostalgy_Array1.length > 0 ) {
+                        for( i = 0; i < nostalgy_Array1.length; i++ ) {
+                            // NostalgyDebug(nostalgy_Array1[i]['folder'] +": "+nostalgy_Array1[i]['prob']);
+                            if ( parseFloat(nostalgy_Array1[i]['prob']) > 0.5 ) {
+                                var uri = nostalgy_Array1[i]['folder'];
 
                                 var ret = null;
                                 var save_req = nostalgy_search_folder_options.require_file;
                                 nostalgy_search_folder_options.require_file = false;
                                 try {
-                                    IterateFoldersAllServers(function (folder) {
+                                    NostalgyIterateFoldersAllServers(function (folder) {
                                             //NostalgyDebug(folder.URI);
                                             if (folder.URI == uri) { ret = folder; throw(0); }
                                         });
                                 } catch (ex) { }
                                 nostalgy_search_folder_options.require_file = save_req;
-                                myArray1[i] = ret;
+                                nostalgy_Array1[i] = ret;
                             }
                             else
-                                myArray1[i] = null;
+                                nostalgy_Array1[i] = null;
                         }
 
-                        if( numPredictions == 1 ) return myArray1[0];
-                        else return myArray1;
+                        if( numPredictions == 1 ) return nostalgy_Array1[0];
+                        else return nostalgy_Array1;
                     }
                 }
                 catch(ex) {
@@ -141,31 +141,31 @@ var NostalgyPredict =
     },
 
     find_generic_id: function (value,insertQ,selectQ) {
-        var myArray1 = $sqlite.select(this.getDBFile(),selectQ,value);
-        if ( myArray1.length >= 1 ) return myArray1[0]['id'];
-        $sqlite.cmd(this.getDBFile(),insertQ,value);
-        myArray1 = $sqlite.select(this.getDBFile(),selectQ,value);
-        if ( myArray1.length >= 1 ) return myArray1[0]['id'];
+        var nostalgy_Array1 = nostalgy_sqlite.select(this.getDBFile(),selectQ,value);
+        if ( nostalgy_Array1.length >= 1 ) return nostalgy_Array1[0]['id'];
+        nostalgy_sqlite.cmd(this.getDBFile(),insertQ,value);
+        nostalgy_Array1 = nostalgy_sqlite.select(this.getDBFile(),selectQ,value);
+        if ( nostalgy_Array1.length >= 1 ) return nostalgy_Array1[0]['id'];
         throw "find_generic_id: failure";
     },
 
     find_folder_id: function find_folder_id(folder) {
-        return this.find_generic_id(folder,myFolderInsert,myFolderQuery);
+        return this.find_generic_id(folder,nostalgy_FolderInsert,nostalgy_FolderQuery);
     },
 
     find_address_id: function (address) {
-        return this.find_generic_id(address,myAddressInsert,myAddressQuery);
+        return this.find_generic_id(address,nostalgy_AddressInsert,nostalgy_AddressQuery);
     },
 
     update_probabilites : function() {
-        var myArray1 = $sqlite.select(this.getDBFile(),myCountsQueryAll);
-        for(var j=0;j<myArray1.length;j++) {
-            var addr_count = parseInt(myArray1[j]["address_count"]);
-            var prob_count = parseInt(myArray1[j]["probability_count"]);
+        var nostalgy_Array1 = nostalgy_sqlite.select(this.getDBFile(),nostalgy_CountsQueryAll);
+        for(var j=0;j<nostalgy_Array1.length;j++) {
+            var addr_count = parseInt(nostalgy_Array1[j]["address_count"]);
+            var prob_count = parseInt(nostalgy_Array1[j]["probability_count"]);
             var prob = parseFloat(prob_count)/parseFloat(addr_count);
 
-            //NostalgyDebug(myUpdateProbabilityCount+" "+myArray1[j]["probability_id"]+" "+prob_count+" "+prob);
-            $sqlite.cmd(this.getDBFile(),myUpdateProbabilityCount,myArray1[j]["probability_id"],prob_count,prob);
+            //NostalgyDebug(nostalgy_UpdateProbabilityCount+" "+nostalgy_Array1[j]["probability_id"]+" "+prob_count+" "+prob);
+            nostalgy_sqlite.cmd(this.getDBFile(),nostalgy_UpdateProbabilityCount,nostalgy_Array1[j]["probability_id"],prob_count,prob);
         }
     },
 
@@ -189,36 +189,36 @@ var NostalgyPredict =
         for (var i=0; i < aAdresses.length; i++) {
             //NostalgyDebug(aAdresses[i]);
             if (aAdresses[i].match(email_re) && this.keep_email(aAdresses[i]) ) {
-                //NostalgyDebug(myCountsQuery+" "+folder_id+" "+aAdresses[i]);
-                var myArray1 = $sqlite.select(this.getDBFile(),myCountsQuery,folder_id,aAdresses[i]);
-                if (myArray1.length==0) {
+                //NostalgyDebug(nostalgy_CountsQuery+" "+folder_id+" "+aAdresses[i]);
+                var nostalgy_Array1 = nostalgy_sqlite.select(this.getDBFile(),nostalgy_CountsQuery,folder_id,aAdresses[i]);
+                if (nostalgy_Array1.length==0) {
                     // Add address if necessary
                     address_id=this.find_address_id(aAdresses[i]);
 
-                    var myArray2 = $sqlite.select(this.getDBFile(),myGetAddressCount,address_id);
-                    if (myArray2.length!=0) { // This should never fail
-                        var addr_count = 1+parseInt(myArray2[0]["count"]);
+                    var nostalgy_Array2 = nostalgy_sqlite.select(this.getDBFile(),nostalgy_GetAddressCount,address_id);
+                    if (nostalgy_Array2.length!=0) { // This should never fail
+                        var addr_count = 1+parseInt(nostalgy_Array2[0]["count"]);
                         var prob_count = 1;
                         var prob = parseFloat(prob_count)/parseFloat(addr_count);
 
-                        //NostalgyDebug(myUpdateAddressCount+" "+address_id+" "+addr_count);
-                        $sqlite.cmd(this.getDBFile(),myUpdateAddressCount,address_id,addr_count);
+                        //NostalgyDebug(nostalgy_UpdateAddressCount+" "+address_id+" "+addr_count);
+                        nostalgy_sqlite.cmd(this.getDBFile(),nostalgy_UpdateAddressCount,address_id,addr_count);
 
-                        $sqlite.cmd(this.getDBFile(),myProbabilityInsert,address_id,folder_id,prob,prob_count);
+                        nostalgy_sqlite.cmd(this.getDBFile(),nostalgy_ProbabilityInsert,address_id,folder_id,prob,prob_count);
                     }
                 }
                 else {
-                    //NostalgyDebug(myArray1.length);
-                    for(var j=0;j<myArray1.length;j++) {
-                        var addr_count = 1+parseInt(myArray1[j]["address_count"]);
-                        var prob_count = 1+parseInt(myArray1[j]["probability_count"]);
+                    //NostalgyDebug(nostalgy_Array1.length);
+                    for(var j=0;j<nostalgy_Array1.length;j++) {
+                        var addr_count = 1+parseInt(nostalgy_Array1[j]["address_count"]);
+                        var prob_count = 1+parseInt(nostalgy_Array1[j]["probability_count"]);
                         var prob = parseFloat(prob_count)/parseFloat(addr_count);
 
-                        //NostalgyDebug(myUpdateAddressCount+" "+myArray1[j]["address_id"]+" "+addr_count);
-                        $sqlite.cmd(this.getDBFile(),myUpdateAddressCount,myArray1[j]["address_id"],addr_count);
+                        //NostalgyDebug(nostalgy_UpdateAddressCount+" "+nostalgy_Array1[j]["address_id"]+" "+addr_count);
+                        nostalgy_sqlite.cmd(this.getDBFile(),nostalgy_UpdateAddressCount,nostalgy_Array1[j]["address_id"],addr_count);
 
-                        //NostalgyDebug(myUpdateProbabilityCount,myArray1[j]["probability_id"]+" "+prob_count+" "+prob);
-                        $sqlite.cmd(this.getDBFile(),myUpdateProbabilityCount,myArray1[j]["probability_id"],prob_count,prob);
+                        //NostalgyDebug(nostalgy_UpdateProbabilityCount,nostalgy_Array1[j]["probability_id"]+" "+prob_count+" "+prob);
+                        nostalgy_sqlite.cmd(this.getDBFile(),nostalgy_UpdateProbabilityCount,nostalgy_Array1[j]["probability_id"],prob_count,prob);
                     }
                 }
             }

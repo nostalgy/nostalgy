@@ -20,7 +20,7 @@ var nostalgy_js_quote = {
 
 function NostalgyQuote(x) {
   if (/["\x00-\x20\\"]/.test(x)) {
-    x = this.replace(/(["\x00-\x20\\>"])/g, function(a, b) {
+    x = x.replace(/(["\x00-\x20\\>"])/g, function(a, b) {
       var c = nostalgy_js_quote[b];
       if (c) { return c; }
       c = b.charCodeAt();

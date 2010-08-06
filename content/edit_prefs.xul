@@ -84,6 +84,10 @@ shortcuts to move/copy the message to this folder.</label>
              id="always_include_tags"/>
    <checkbox label="Use Statistical Prediction"
              id="use_statistical_prediction"/>
+   <hbox align="center">
+     <label>Number of recent folders to remember:</label>
+     <textbox type="number" min="0" max="50" id="number_of_recent_folders"/>
+   </hbox>
  </groupbox>
  </tabpanel>
 

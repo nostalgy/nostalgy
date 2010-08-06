@@ -15,7 +15,6 @@ var nostalgy_completion_options = {
 
 var nostalgy_recent_folders = [ ];
 var nostalgy_recent_folders_max_size = 5;
-// TODO: make that customizable
 
 function NostalgySaveRecentFolder(recent) {
   NostalgyPrefBranch().

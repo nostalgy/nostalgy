@@ -24,7 +24,7 @@ function NostalgyStopEvent(ev) {
 
 function NostalgyJSONEval(s) {
   if (/^("(\\.|[^"\\\n\r"])*?"|[a-z]+:|[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t])+?$/.test(s)) {
-    try {  
+    try {
       return eval('(' + s + ')');
     } catch (e) {
       NostalgyDebug("parseJSON 1: " + s);

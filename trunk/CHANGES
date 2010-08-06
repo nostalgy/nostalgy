@@ -1,6 +1,7 @@
-Since 0.2.24
-  - use a prefix for all public identifiers in order to comply with amo
-    packaging policy
+0.2.25
+  - Use a prefix for all public identifiers in order to comply with amo
+    packaging policy.
+  - Make the number of "recent folders" customizable.
 
 0.2.24
   - Remove special support for the QuickSearch box

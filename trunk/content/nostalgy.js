@@ -52,6 +52,12 @@ var NostalgyRules =
         nostalgy_completion_options[n] = this._branch.getBoolPref(n);
       } catch (ex) { }
     }
+    try {
+        nostalgy_completion_options[n] = this._branch.getBoolPref(n);
+    } catch (ex) { }
+    try {
+        nostalgy_recent_folders_max_size = this._branch.getIntPref("number_of_recent_folders");
+    } catch (ex) { }
     NostalgyInstallRecentFolders();
   },
 
@@ -117,6 +123,10 @@ var NostalgyRules =
       this.get_rules();
       if (!nostalgy_in_message_window) NostalgyDefLabel();
       return;
+    }
+    if (aData = "number_of_recent_folders") {
+        nostalgy_recent_folders_max_size = this._branch.getIntPref("number_of_recent_folders");
+        return;
     }
     if (nostalgy_completion_options[aData] != undefined) {
      nostalgy_completion_options[aData] = this._branch.getBoolPref(aData);

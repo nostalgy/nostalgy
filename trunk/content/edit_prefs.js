@@ -203,6 +203,11 @@ function NostalgyDoMoveDown(idx1,idx2) {
 function onNostalgyAcceptChanges() {
   var prefs = NostalgyPrefBranch();
   prefs.setCharPref("extensions.nostalgy.rules", NostalgyMkPrefStr());
+  try {
+      prefs.setIntPref("extensions.nostalgy.number_of_recent_folders", 0 + NostalgyEBI("number_of_recent_folders").value);
+  } catch (exn) {
+      NostalgyDebug(exn);
+  }
 
   for (var n in nostalgy_completion_options)
     prefs.setBoolPref("extensions.nostalgy."+n,	NostalgyEBI(n).checked);
@@ -252,8 +257,18 @@ function NostalgyDoDelete() {
 function NostalgyGetBoolPref(prefs,s) {
  var b = false;
  try {
-  b=prefs.NostalgyGetBoolPref("extensions.nostalgy." + s); }
+  b=prefs.getBoolPref("extensions.nostalgy." + s); }
  catch (ex) { }
+ return b;
+}
+
+function NostalgyGetIntPref(prefs,s,def) {
+ var b = def;
+ try {
+     b=prefs.getIntPref("extensions.nostalgy." + s);
+ }
+ catch (ex) {
+ }
  return b;
 }
 
@@ -303,6 +318,8 @@ function onNostalgyLoad() {
 
  for (var n in nostalgy_completion_options)
    NostalgyEBI(n).checked = NostalgyGetBoolPref(prefs, n);
+
+ NostalgyEBI("number_of_recent_folders").value = NostalgyGetIntPref(prefs, "number_of_recent_folders", 5);
 
  nostalgy_key_rows = NostalgyEBI("nostalgy_key_rows");
  for (var i = 0; i < nostalgy_keys.length; i++) {

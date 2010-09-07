@@ -208,6 +208,11 @@ function onNostalgyAcceptChanges() {
   } catch (exn) {
       NostalgyDebug(exn);
   }
+  try {
+      prefs.setIntPref("extensions.nostalgy.predict_max_addresses_to_update", 0 + NostalgyEBI("predict_max_addresses_to_update").value);
+  } catch (exn) {
+      NostalgyDebug(exn);
+  }
 
   for (var n in nostalgy_completion_options)
     prefs.setBoolPref("extensions.nostalgy."+n,	NostalgyEBI(n).checked);
@@ -320,6 +325,7 @@ function onNostalgyLoad() {
    NostalgyEBI(n).checked = NostalgyGetBoolPref(prefs, n);
 
  NostalgyEBI("number_of_recent_folders").value = NostalgyGetIntPref(prefs, "number_of_recent_folders", 5);
+ NostalgyEBI("predict_max_addresses_to_update").value = NostalgyGetIntPref(prefs, "predict_max_addresses_to_update", 100);
 
  nostalgy_key_rows = NostalgyEBI("nostalgy_key_rows");
  for (var i = 0; i < nostalgy_keys.length; i++) {

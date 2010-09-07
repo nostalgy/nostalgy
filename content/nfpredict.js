@@ -5,6 +5,9 @@ var nostalgy_DBFile = 'nfpredict.sqlite';
 var nostalgy_CreateTablesQuery1 = 'CREATE TABLE IF NOT EXISTS addresses (id INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT, count INTEGER)';
 var nostalgy_CreateTablesQuery2 = 'CREATE TABLE IF NOT EXISTS folders (id INTEGER PRIMARY KEY AUTOINCREMENT, folder TEXT)';
 var nostalgy_CreateTablesQuery3 = 'CREATE TABLE IF NOT EXISTS probabilities (id INTEGER PRIMARY KEY AUTOINCREMENT, address_id INTEGER, folder_id INTEGER, probability REAL, count INTEGER)';
+var nostalgy_CreateIndexesQuery1 = 'CREATE INDEX IF NOT EXISTS address_index on addresses(address)';
+var nostalgy_CreateIndexesQuery2 = 'CREATE INDEX IF NOT EXISTS folder_index on folders(folder)';
+var nostalgy_CreateIndexesQuery3 = 'CREATE INDEX IF NOT EXISTS probabilities_index on probabilities(address_id,folder_id)';
 
 var nostalgy_PredictQueryA = 'SELECT avg(probabilities.count*100/addresses.count) as prob,folder FROM addresses,folders,probabilities '+
     'WHERE probabilities.address_id=addresses.id AND  probabilities.folder_id=folders.id AND addresses.address in (';
@@ -60,6 +63,9 @@ var NostalgyPredict =
         nostalgy_sqlite.cmd(this.getDBFile(),nostalgy_CreateTablesQuery1);
         nostalgy_sqlite.cmd(this.getDBFile(),nostalgy_CreateTablesQuery2);
         nostalgy_sqlite.cmd(this.getDBFile(),nostalgy_CreateTablesQuery3);
+        nostalgy_sqlite.cmd(this.getDBFile(),nostalgy_CreateIndexesQuery1);
+        nostalgy_sqlite.cmd(this.getDBFile(),nostalgy_CreateIndexesQuery2);
+        nostalgy_sqlite.cmd(this.getDBFile(),nostalgy_CreateIndexesQuery3);
     },
 
     dbExists: function() {
@@ -170,6 +176,9 @@ var NostalgyPredict =
     },
 
     update_folder: function (nsiFolder) {
+        if (nostalgy_completion_options.use_statistical_prediction==false)
+            return;
+
         if ( this.inited==false )
             this.init();
 
@@ -186,9 +195,15 @@ var NostalgyPredict =
 
         email_re = /(([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+)/;
         var aAdresses = addresses.split(email_re);
+        //  limit number of addresses to be updated (avoids excessive processing time for large address lists)
+        var maxAddresses = 100;
+        try {
+            maxAddresses = NostalgyGetIntPref("predict_max_addresses_to_update",maxAdresses);
+        } catch (ex) { }
         for (var i=0; i < aAdresses.length; i++) {
             //NostalgyDebug(aAdresses[i]);
-            if (aAdresses[i].match(email_re) && this.keep_email(aAdresses[i]) ) {
+            if (aAdresses[i].match(email_re) && this.keep_email(aAdresses[i]) && maxAddresses>0 ) {
+                maxAddresses--;
                 //NostalgyDebug(nostalgy_CountsQuery+" "+folder_id+" "+aAdresses[i]);
                 var nostalgy_Array1 = nostalgy_sqlite.select(this.getDBFile(),nostalgy_CountsQuery,folder_id,aAdresses[i]);
                 if (nostalgy_Array1.length==0) {

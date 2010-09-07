@@ -88,6 +88,10 @@ shortcuts to move/copy the message to this folder.</label>
      <label>Number of recent folders to remember:</label>
      <textbox type="number" min="0" max="50" id="number_of_recent_folders"/>
    </hbox>
+   <hbox align="center">
+     <label>Number of addresses to consider for statistical prediction:</label>
+     <textbox type="number" min="0" max="99999" id="predict_max_addresses_to_update"/>
+   </hbox>
  </groupbox>
  </tabpanel>
 

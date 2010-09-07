@@ -1,3 +1,6 @@
+Since 0.2.25
+  - Improve performance of statistical prediction. (Patch contributed by Wolfgang Mayer.)
+
 0.2.25
   - Use a prefix for all public identifiers in order to comply with amo
     packaging policy.

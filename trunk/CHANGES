@@ -1,3 +1,5 @@
+0.2.27
+  - Fix for TB 5.
 
 0.2.26
   - Fix performance bugs for statistical prediction. (Patch contributed by Wolfgang Mayer.)

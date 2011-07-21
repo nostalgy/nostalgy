@@ -755,7 +755,10 @@ function NostalgySearchSenderQuickFilter() {
     if (found < fields.length) new_state = make_state(fields[found]);
     else new_state = make_state(null);
     QuickFilterBarMuxer.activeFilterer.filterValues.text = new_state;
-    QuickFilterBarMuxer.onActiveAllMessagesLoaded(gFolderDisplay);
+    if (QuickFilterBarMuxer.onActiveAllMessagesLoaded)
+        QuickFilterBarMuxer.onActiveAllMessagesLoaded(gFolderDisplay); // TB 3
+    if (QuickFilterBarMuxer.onActiveMessagesLoaded)
+        QuickFilterBarMuxer.onActiveMessagesLoaded(gFolderDisplay); // TB 5
     QuickFilterBarMuxer._showFilterBar(new_state.text != null);
     QuickFilterBarMuxer.updateSearch();
     return true;

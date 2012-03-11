@@ -1,3 +1,8 @@
+0.2.29
+  - Fixes for TB 12.
+  - Remove the broken 'Send rules by email' features, replace it with 
+    Export/Import buttons.
+
 0.2.28
   - Allow TB 9.
 

@@ -237,14 +237,6 @@ function NostalgyStartLookup() {
     } catch (e) { NostalgyDebug("ERR" + e); }
 }
 
-function NostalgyProcessResults(aSessionName, aResults, aStatus) {
- this.clearResults(false); // clear results, but don't repaint yet
- this.mLastResults[aSessionName] = aResults;
- this.autoFillInput(aSessionName, aResults, false);
- this.addResultElements(aSessionName, aResults);
- this.openResultPopup();
-}
-
 function NostalgyProcessInput() {
  if (this.ignoreInputEvent)
    return;
@@ -254,7 +246,8 @@ function NostalgyProcessInput() {
  this.mTransientValue = false;
  this.mNeedToComplete = true;
  this.currentSearchString = this.value;
- this.resultsPopup.selectedIndex = null;
+// this.resultsPopup.selectedIndex = null;
+// this.popup.selectedIndex = null;
  this.removeAttribute("noMatchesFound");
 
  this.mAutoCompleteTimer =
@@ -283,14 +276,16 @@ function NostalgyProcessKeyPress(aEvent) {
    case KeyEvent.DOM_VK_RETURN:
      killEvent = this.mMenuOpen;
      this.finishAutoComplete(true, true, aEvent);
-     this.closeResultPopup();
+//     this.closePopup();
+//     this.closeResultPopup();
      break;
 
    case KeyEvent.DOM_VK_ESCAPE:
      this.clearTimer();
      killEvent = this.mMenuOpen;
      this.undoAutoComplete();
-     this.closeResultPopup();
+//     this.closePopup();
+//     this.closeResultPopup();
      break;
 
    case KeyEvent.DOM_VK_PAGE_UP:

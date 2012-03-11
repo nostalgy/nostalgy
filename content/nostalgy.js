@@ -6,7 +6,6 @@ var nostalgy_label = null;
 var nostalgy_th_statusBar = null;
 var nostalgy_th_statusBar_orig_hidden = true;
 var nostalgy_cmdLabel = null;
-var nostalgy_extracted_rules = "";
 var nostalgy_active_keys = { };
 var nostalgy_timeout_regkey = 0;
 var nostalgy_on_move_completed = null;
@@ -163,18 +162,6 @@ var NostalgyRules =
 
 NostalgyRules.register();
 
-function NostalgyExtractRules() {
-  var s = nostalgy_extracted_rules;
-  if (s == "") return;
-  // remove characters that should have been escaped
-  s = s.replace(/([\x00-\x20>])/g,function(a,b){ return "" });
-  if (confirm(
-"Do you want to install the rules contained in this message?\n"+
-"This will overwrite your current set of rules.\n"+
-"IMPORTANT: do this only if you trust the sender of this e-mail.\n"
-))
-    NostalgyRules._branch.setCharPref("rules", s)
-}
 
 /** Driver **/
 
@@ -255,53 +242,13 @@ function onNostalgyLoad() {
  if (mSession)
    mSession.AddFolderListener(NostalgyFolderListener,
       nsIFolderListener.added | nsIFolderListener.removed | nsIFolderListener.event);
-
- Components.classes["@mozilla.org/observer-service;1"].
-   getService(Components.interfaces.nsIObserverService).
-   addObserver(NostalgyObserver, "MsgMsgDisplayed", false);
 }
 
-function NostalgyOnMsgParsed() {
-  if (nostalgy_extracted_rules != "") {
-    var button = NostalgyEBI("nostalgy_extract_rules_buttons");
-    nostalgy_extracted_rules = "";
-    button.hidden = true;
-  }
-
-  var doc = document.getElementById('messagepane').contentDocument;
-  var content = doc.body.textContent;
-  var b = "BEGIN RULES\n";
-  var i = content.indexOf(b);
-  if (i < 0) return;
-  i += b.length;
-  var j = content.indexOf("END RULES\n", i);
-  if (j < 0) return;
-
-  nostalgy_extracted_rules = content.substr(i, j - i);
-  if (nostalgy_extracted_rules != "") {
-    var button = NostalgyEBI("nostalgy_extract_rules_buttons");
-    button.hidden = false;
-  }
-}
-
-var NostalgyObserver = {
-  observe: function (subject, topic, state) {
-    if (!state) return;
-    // NostalgyDebug("OnMsgParsed");
-    subject = subject.QueryInterface(Components.interfaces.nsIMsgHeaderSink);
-    if (subject != msgWindow.msgHeaderSink) return; // another window
-    NostalgyOnMsgParsed();
-  }
-};
 
 function onNostalgyUnload() {
  var mSession = NostalgyMailSession();
  if (mSession) mSession.RemoveFolderListener(NostalgyFolderListener);
  NostalgyRules.unregister();
-
- Components.classes["@mozilla.org/observer-service;1"].
-   getService(Components.interfaces.nsIObserverService).
-   removeObserver(NostalgyObserver, "MsgMsgDisplayed");
 }
 
 function NostalgyHideIfBlurred() {

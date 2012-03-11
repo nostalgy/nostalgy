@@ -60,7 +60,8 @@ shortcuts to move/copy the message to this folder.</label>
   <button label="Move up" oncommand="NostalgyDoMoveUp();"/>
   <button label="Move down" oncommand="NostalgyDoMoveDown();"/>
   <separator orient="vertical"/>
-  <button label="Send rules by email" oncommand="NostalgySendRules();"/>
+  <button label="Export rules" oncommand="NostalgyExportRules();"/>
+  <button label="Import rules" oncommand="NostalgyImportRules();"/>
   </hbox>
  </vbox>
  </groupbox>

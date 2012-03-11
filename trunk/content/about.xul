@@ -8,7 +8,7 @@
         title="About Nostalgy"
         style="width: 699px; height: 680px;"> 
 
-    <html:iframe style="border: 0px;" src="chrome://nostalgy/content/about.xhtml" flex="1"/>
+    <html:iframe style="border: 0px; height: 600px;" src="chrome://nostalgy/content/about.xhtml" flex="1"/>
 
     <separator class="groove" id="groove"/>
     

@@ -811,7 +811,8 @@ function onNostalgyKeyPress(ev) {
   }
 
   var kn = NostalgyRecognizeKey(ev);
-  if (ev.charCode && ev.originalTarget.localName.toLowerCase() == "input"
+    if (ev.charCode && (ev.originalTarget.localName.toLowerCase() == "input"
+                        || ev.originalTarget.localName.toLowerCase() == "textarea")
       && !ev.ctrlKey && !ev.altKey)
     return;
   var k = nostalgy_active_keys[kn];

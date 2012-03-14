@@ -620,7 +620,7 @@ function NostalgySuggested(cmd) {
 var NostalgyLastEscapeTimeStamp = 0;
 
 function NostalgyIsThreadPaneFocused() {
-  return (WhichPaneHasFocus() == GetThreadTree());
+  return (gFolderDisplay.focusedPane == GetThreadTree());
 }
 
 function NostalgyScrollMsg(d) {

@@ -1,3 +1,6 @@
+0.2.30
+  - Fix scrolling messages with Ctrl Up/Down.
+
 0.2.29
   - Fixes for TB 12.
   - Remove the broken 'Send rules by email' features, replace it with 

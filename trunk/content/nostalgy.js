@@ -678,7 +678,7 @@ function NostalgySearchSenderQuickFilter() {
 
     var values = { sender: sender, subject: subject, recipients: recipient };
     if (NostalgyCurrentFolder().displayRecipients)
-        fields = [ "recipients", "subject" ];
+        fields = [ "recipients", "sender", "subject" ];
     else
         fields = [ "sender", "subject" ];
 

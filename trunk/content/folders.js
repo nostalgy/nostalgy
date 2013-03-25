@@ -415,18 +415,28 @@ function NostalgyIterateFoldersAllServers(f) {
  var servers= amService.allServers;
  var seen = { };
  var i;
+ var nservers;
 
- for (i = 0; i < servers.Count(); i++) {
-  var server = servers.GetElementAt(i).
-               QueryInterface(Components.interfaces.nsIMsgIncomingServer);
-  var root = server.rootMsgFolder;
-  var n = root.prettyName;
-  if (seen[n]) {
-    // Prevent duplicate folders in case of locally stored POP3 accounts
-  } else {
-    seen[n] = true;
-    NostalgyIterateSubfolders(root,f);
-  }
+ if (servers.length) nservers = servers.length;  /* TB >= 20 */
+ else if (servers.Count) nservers = servers.Count();  /* TB < 20 */
+ else alert("NOSTALGY: cannot determine server count");
+
+ for (i = 0; i < nservers; i++) {
+     var server;
+     if (servers.GetElementAt) /* TB < 20 */
+         server = servers.GetElementAt(i).QueryInterface(Components.interfaces.nsIMsgIncomingServer);
+     else if (servers.queryElementAt) /* TB >= 20 */
+         server = servers.queryElementAt(i,Components.interfaces.nsIMsgIncomingServer);
+     else alert("NOSTALGY: cannot access server");
+
+     var root = server.rootMsgFolder;
+     var n = root.prettyName;
+     if (seen[n]) {
+         // Prevent duplicate folders in case of locally stored POP3 accounts
+     } else {
+         seen[n] = true;
+         NostalgyIterateSubfolders(root,f);
+     }
  }
 }
 

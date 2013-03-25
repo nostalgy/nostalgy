@@ -1,5 +1,6 @@
 0.2.31
   - Fix for TB >= 20 (thanks to Aaron Solochek)
+  - Add hot keys for "Move up/down" in the rule edition popup (thanks to Michael vann Rooyen)
 
 0.2.30
   - Fix scrolling messages with Ctrl Up/Down.

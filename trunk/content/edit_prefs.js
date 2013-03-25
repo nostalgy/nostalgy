@@ -321,6 +321,9 @@ function onNostalgyLoad() {
 }
 
 function onNostalgyKeyPress(ev) {
+  // We don't want to act on Meta.  Necessary from thunderbird 18 on.
+  if (ev.keyCode == KeyEvent.DOM_VK_META) return; 
+
   if (!nostalgy_wait_key && ((ev.keyCode == 46) || (ev.keyCode == 8))) NostalgyDoDelete();
   // should only to that in the relevant tab
 

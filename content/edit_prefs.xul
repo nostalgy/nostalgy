@@ -57,8 +57,8 @@ shortcuts to move/copy the message to this folder.</label>
   <button label="Delete" accesskey="D" oncommand="NostalgyDoDelete();"/>
   <button label="New" accesskey="N" oncommand="NostalgyDoNewRule();"/>
   <separator orient="vertical"/>
-  <button label="Move up" oncommand="NostalgyDoMoveUp();"/>
-  <button label="Move down" oncommand="NostalgyDoMoveDown();"/>
+  <button label="Move up" accesskey="U" oncommand="NostalgyDoMoveUp();"/>
+  <button label="Move down" accesskey="W" oncommand="NostalgyDoMoveDown();"/>
   <separator orient="vertical"/>
   <button label="Export rules" oncommand="NostalgyExportRules();"/>
   <button label="Import rules" oncommand="NostalgyImportRules();"/>

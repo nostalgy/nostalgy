@@ -691,7 +691,7 @@ function NostalgySearchSenderQuickFilter() {
             new_state.states[field] = true;
         }
         return new_state;
-    }
+    };
 
     var current = JSON.stringify(state);
 

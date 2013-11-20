@@ -123,7 +123,7 @@ var NostalgyRules =
       if (!nostalgy_in_message_window) NostalgyDefLabel();
       return;
     }
-    if (aData = "number_of_recent_folders") {
+    if (aData == "number_of_recent_folders") {
         nostalgy_recent_folders_max_size = this._branch.getIntPref("number_of_recent_folders");
         return;
     }

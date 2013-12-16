@@ -1,5 +1,5 @@
 0.2.32
-  - Modernize code and prepare for TB 26.0 (thanks to Jens Hatlak)
+  - Modernize code and adapt for TB 26.0 (thanks to Jens Hatlak)
 
 0.2.31
   - Fix for TB >= 20 (thanks to Aaron Solochek)

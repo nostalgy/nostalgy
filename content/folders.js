@@ -194,10 +194,16 @@ function NostalgyStartLookup() {
     this.mFailureItems = 0;
     this.mDefaultMatchFilled = false; // clear out our prefill state.
 
+    // Notify the input that the search is beginning.
+    this.onSearchBegin();
+
     // tell each session to start searching...
     for (var name in this.mSessions)
         try {
-            this.mSessions[name].onStartLookup(str, this.mLastResults[name], this.mListeners[name]);
+          if (this.mAutoCompleteObserver)
+            this.mSessions[name].startSearch(str, this.searchParam, this.mLastResults[name], this.mAutoCompleteObserver); // TB 26
+          else
+            this.mSessions[name].onStartLookup(str, this.mLastResults[name], this.mListeners[name]); // TB 24
         } catch (e) {
             --this.mSessionReturns;
             this.searchFailed();

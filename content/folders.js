@@ -157,7 +157,7 @@ function(text, results, listener) {
  };
 
  var f = function (folder) { add_folder(NostalgyFolderName(folder)); };
- 
+
  if (text == "") {
 	 var added_count=0;
 	if ( nostalgy_completion_options.use_statistical_prediction )
@@ -203,9 +203,9 @@ function(text, results, listener) {
 }
 
 NostalgyAutocomplete.prototype.onStopLookup =
-  function() {  }
+  function() {  };
 NostalgyAutocomplete.prototype.onAutoComplete =
-  function(text, results, listener){ }
+  function(text, results, listener){ };
 
 NostalgyAutocomplete.prototype.QueryInterface =
 function(iid) {

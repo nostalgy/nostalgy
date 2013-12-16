@@ -140,67 +140,65 @@ function NostalgyAutocomplete(box) {
 }
 
 NostalgyAutocomplete.prototype.onStartLookup =
-function(text, results, listener) {
- var items = this.xresults.items;
- var nb = 0;
- items.Clear();
+  function(text, results, listener) {
+    var items = this.xresults.items;
+    var nb = 0;
+    items.Clear();
 
- var add_folder = function (fname) {
-  var newitem =
-   Components.classes[
-    "@mozilla.org/autocomplete/item;1"
-   ].createInstance(Components.interfaces.nsIAutoCompleteItem);
-  newitem.value = NostalgyCrop(fname);
+    var add_folder = function (fname) {
+      var newitem =
+        Components.classes[
+          "@mozilla.org/autocomplete/item;1"
+        ].createInstance(Components.interfaces.nsIAutoCompleteItem);
+      newitem.value = NostalgyCrop(fname);
 
-  items.AppendElement(newitem);
-  nb++;
- };
+      items.AppendElement(newitem);
+      nb++;
+    };
 
- var f = function (folder) { add_folder(NostalgyFolderName(folder)); };
+    var f = function (folder) { add_folder(NostalgyFolderName(folder)); };
 
- if (text == "") {
-	 var added_count=0;
-	if ( nostalgy_completion_options.use_statistical_prediction )
-	{
-		var predictedFolders = null;
-		try { predictedFolders = NostalgyPredict.predict_folder(nostalgy_recent_folders_max_size); }
-		catch (ex) { }
-		if( predictedFolders != null && predictedFolders.length > 0 )
-			for( var j = 0; j < predictedFolders.length; j++ )
-				if ( added_count < nostalgy_recent_folders_max_size )
-				{
-					f(predictedFolders[j]);
-					added_count++;
-				}
+    if (text == "") {
+      var added_count=0;
+      var predictedFolders = null;
+      if ( nostalgy_completion_options.use_statistical_prediction )
+      {
+        try { predictedFolders = NostalgyPredict.predict_folder(nostalgy_recent_folders_max_size); }
+        catch (ex) { }
+        if( predictedFolders != null && predictedFolders.length > 0 )
+	  for (var j = 0; j < predictedFolders.length; j++)
+	    if (added_count < nostalgy_recent_folders_max_size) {
+	      f(predictedFolders[j]);
+	      added_count++;
+            }
+      }
+      for (var j = 0; j < nostalgy_recent_folders.length; j++) {
+	var found=0;
+	if (nostalgy_completion_options.use_statistical_prediction &&
+            predictedFolders != null && predictedFolders.length > 0)
+	  for (var i=0; i < predictedFolders.length; i++)
+	    if (NostalgyFolderName(predictedFolders[i]) == nostalgy_recent_folders[j] )
+	      found=1;
+	if ( found==0 && added_count < nostalgy_recent_folders_max_size ) {
+	  add_folder(nostalgy_recent_folders[j]);
+	  added_count++;
 	}
-	for ( j = 0; j < nostalgy_recent_folders.length; j++)
-	{
-		var found=0;
-		if ( nostalgy_completion_options.use_statistical_prediction && predictedFolders != null && predictedFolders.length > 0)
-			for( var i=0; i < predictedFolders.length; i++ )
-				if (NostalgyFolderName(predictedFolders[i]) == nostalgy_recent_folders[j] )
-					found=1;
-		if ( found==0 && added_count < nostalgy_recent_folders_max_size )
-		{
-			add_folder(nostalgy_recent_folders[j]);
-			added_count++;
-		}
-	}
- } else {
-   nostalgy_search_folder_options.do_tags =
-     nostalgy_completion_options.always_include_tags ||
-     (text.substr(0,1) == ":");
-   NostalgyIterateMatches(text, this.box.shell_completion, f);
-   if (nb == 0 && !nostalgy_search_folder_options.do_tags) {
-     nostalgy_search_folder_options.do_tags = true;
-     NostalgyIterateMatches(text, this.box.shell_completion, f);
-   }
- }
+      }
+    } else {
+      nostalgy_search_folder_options.do_tags =
+        nostalgy_completion_options.always_include_tags ||
+        (text.substr(0,1) == ":");
+      NostalgyIterateMatches(text, this.box.shell_completion, f);
+      if (nb == 0 && !nostalgy_search_folder_options.do_tags) {
+        nostalgy_search_folder_options.do_tags = true;
+        NostalgyIterateMatches(text, this.box.shell_completion, f);
+      }
+    }
 
- this.xresults.searchString = text;
- this.xresults.defaultItemIndex = 0;
- listener.onAutoComplete(this.xresults, 1);
-}
+    this.xresults.searchString = text;
+    this.xresults.defaultItemIndex = 0;
+    listener.onAutoComplete(this.xresults, 1);
+  };
 
 NostalgyAutocomplete.prototype.onStopLookup =
   function() {  };
@@ -221,10 +219,8 @@ function NostalgyStartLookup() {
     this.isSearching = true;
     this.mFirstReturn = true;
     this.mSessionReturns = this.sessionCount;
-    this.mFailureCount = 0; // For TB 2.0
     this.mFailureItems = 0;
     this.mDefaultMatchFilled = false; // clear out our prefill state.
-    this.removeAttribute("noMatchesFound"); // For TB 2.0
 
     // tell each session to start searching...
     for (var name in this.mSessions)

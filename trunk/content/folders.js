@@ -131,31 +131,15 @@ function NostalgyFolderMatch(f,reg) {
   }
 }
 
-function NostalgyAutocomplete(box) {
- this.box = box;
- this.xresults =
-  Components.classes[
-   "@mozilla.org/autocomplete/results;1"
-  ].getService(Components.interfaces.nsIAutoCompleteResults);
-}
-
-NostalgyAutocomplete.prototype.onStartLookup =
-  function(text, results, listener) {
-    var items = this.xresults.items;
+function NostalgyGetAutoCompleteValuesFunction(box) {
+  return function NostalgyGetAutoCompleteValues(text) {
+    var values = [];
     var nb = 0;
-    items.Clear();
 
     var add_folder = function (fname) {
-      var newitem =
-        Components.classes[
-          "@mozilla.org/autocomplete/item;1"
-        ].createInstance(Components.interfaces.nsIAutoCompleteItem);
-      newitem.value = NostalgyCrop(fname);
-
-      items.AppendElement(newitem);
+      values.push(NostalgyCrop(fname));
       nb++;
     };
-
     var f = function (folder) { add_folder(NostalgyFolderName(folder)); };
 
     if (text == "") {
@@ -188,27 +172,15 @@ NostalgyAutocomplete.prototype.onStartLookup =
       nostalgy_search_folder_options.do_tags =
         nostalgy_completion_options.always_include_tags ||
         (text.substr(0,1) == ":");
-      NostalgyIterateMatches(text, this.box.shell_completion, f);
+      NostalgyIterateMatches(text, box.shell_completion, f);
       if (nb == 0 && !nostalgy_search_folder_options.do_tags) {
         nostalgy_search_folder_options.do_tags = true;
-        NostalgyIterateMatches(text, this.box.shell_completion, f);
+        NostalgyIterateMatches(text, box.shell_completion, f);
       }
     }
 
-    this.xresults.searchString = text;
-    this.xresults.defaultItemIndex = 0;
-    listener.onAutoComplete(this.xresults, 1);
+    return values;
   };
-
-NostalgyAutocomplete.prototype.onStopLookup =
-  function() {  };
-NostalgyAutocomplete.prototype.onAutoComplete =
-  function(text, results, listener){ };
-
-NostalgyAutocomplete.prototype.QueryInterface =
-function(iid) {
- if (iid.equals(Components.interfaces.nsIAutoCompleteSession)) return this;
- throw Components.results.NS_NOINTERFACE;
 }
 
 function NostalgyStartLookup() {
@@ -310,7 +282,12 @@ function NostalgyFolderSelectionBox(box) {
  }
 
  box.shell_completion = false;
- box.addSession(new NostalgyAutocomplete(box));
+ var nac =
+   Components
+     .classes["@mozilla.org/autocomplete/search;1?name=nostalgy-autocomplete"]
+     .getService()
+     .wrappedJSObject;
+ nac.attachGetValuesFunction(NostalgyGetAutoCompleteValuesFunction(box));
  box.processInput = NostalgyProcessInput;
  box.processKeyPress = NostalgyProcessKeyPress;
  box.startLookup = NostalgyStartLookup;

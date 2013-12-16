@@ -288,6 +288,7 @@ function NostalgyFolderSelectionBox(box) {
      .getService()
      .wrappedJSObject;
  nac.attachGetValuesFunction(NostalgyGetAutoCompleteValuesFunction(box));
+ box.searchParam = nac.attachGetValuesFunction(NostalgyGetAutoCompleteValuesFunction(box));
  box.processInput = NostalgyProcessInput;
  box.processKeyPress = NostalgyProcessKeyPress;
  box.startLookup = NostalgyStartLookup;

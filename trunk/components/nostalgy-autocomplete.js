@@ -24,7 +24,7 @@ NostalgyAutoCompleteResult.prototype = {
   _results: [],
 
   get searchString() { return this._searchString; },
-  get searchResult() { return this._searchResult; }, 
+  get searchResult() { return this._searchResult; },
   get defaultIndex() { return 0; },
   get errorDescription() { return ""; },
   get matchCount() { return this._results.length; },
@@ -48,16 +48,17 @@ NostalgyAutoCompleteSearch.prototype = {
   classID: CLASS_ID,
   classDescription : CLASS_NAME,
   contractID : CONTRACT_ID,
-  _f: null,
+  _f: {},
+  _id: 0,
 
-  attachGetValuesFunction: function(f) { this._f = f; },
+  attachGetValuesFunction: function(f) { this._id++; this._f[this._id] = f; return this._id; },
 
   startSearch: function(searchString, searchParam, previousResult, listener) {
-    var searchResults = this._f(searchString);
+    var searchResults = this._f[searchParam](searchString);
     var result = new NostalgyAutoCompleteResult(searchString, searchResults);
     listener.onSearchResult(this, result);
   },
-  
+
   stopSearch: function() {},
 
   QueryInterface: XPCOMUtils.generateQI([ Ci.nsIAutoCompleteSearch ])

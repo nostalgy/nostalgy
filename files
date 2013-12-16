@@ -19,5 +19,6 @@ content/about.xhtml
 locale/en-US/nostalgy.properties
 locale/en-US/nostalgy.dtd
 defaults/preferences/nostalgy.js
+components/nostalgy-autocomplete.js
 install.rdf
 chrome.manifest

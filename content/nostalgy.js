@@ -347,7 +347,7 @@ function NostalgyRunCommand() {
   }
   else {
     if (s.substr(0,1) == ":") {
-        if ((s == ":") || (s == "::")) return
+      if ((s == ":") || (s == "::")) return;
       var name;
       if (s.substr(s.length-1,1) == ":")
          name = s.substr(1,s.length - 2);

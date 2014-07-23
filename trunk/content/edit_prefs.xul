@@ -112,6 +112,7 @@ shortcuts to move/copy the message to this folder.</label>
   </radiogroup>
   <textbox style="width:600px" type="autocomplete" id="folderselect"
            autocompletesearch="nostalgy-autocomplete"
+           completeselectedindex="true"
            nostalgyfolderbox="NostalgySelectFolder();"/>
   <button label="Create"  oncommand="NostalgySelectFolder();"/>
   </hbox>

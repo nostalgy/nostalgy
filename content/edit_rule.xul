@@ -42,6 +42,7 @@
       <label value="when message is under folder"/>
       <textbox type="autocomplete" id="underselect"
                normaltab="true"
+               completeselectedindex="true"
                autocompletesearch="nostalgy-autocomplete"
                nostalgyfolderbox="NostalgyChooseUnder();"/>
     </row>
@@ -50,6 +51,7 @@
       <label value="then save to"/>
       <textbox type="autocomplete" id="folderselect"
              normaltab="true"
+             completeselectedindex="true"
              autocompletesearch="nostalgy-autocomplete"
              nostalgyfolderbox="NostalgyChooseFolder();"/>
     </row>

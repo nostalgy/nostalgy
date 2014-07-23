@@ -183,6 +183,7 @@ function NostalgyGetAutoCompleteValuesFunction(box) {
   };
 }
 
+/*
 function NostalgyStartLookup() {
     // Copy from autocomplete.xml, but does not exit early if box is empty
     var str = this.currentSearchString;
@@ -275,6 +276,7 @@ function NostalgyProcessKeyPress(aEvent) {
   if (killEvent) NostalgyStopEvent(aEvent);
   return true;
 }
+*/
 
 function NostalgyFolderSelectionBox(box) {
  var cmd = box.getAttribute("nostalgyfolderbox");
@@ -295,9 +297,11 @@ function NostalgyFolderSelectionBox(box) {
      .wrappedJSObject;
  nac.attachGetValuesFunction(NostalgyGetAutoCompleteValuesFunction(box));
  box.searchParam = nac.attachGetValuesFunction(NostalgyGetAutoCompleteValuesFunction(box));
+  /*
  box.processInput = NostalgyProcessInput;
  box.processKeyPress = NostalgyProcessKeyPress;
  box.startLookup = NostalgyStartLookup;
+ */
 }
 
 function NostalgyFolderSelectionBoxes() {

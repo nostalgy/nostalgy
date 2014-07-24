@@ -11,6 +11,13 @@ const CONTRACT_ID = '@mozilla.org/autocomplete/search;1?name=nostalgy-autocomple
 
 // nsIAutoCompleteResult implementation
 
+function NostalgyDebug(aText)
+{
+  var csClass = Components.classes['@mozilla.org/consoleservice;1'];
+  var cs = csClass.getService(Components.interfaces.nsIConsoleService);
+  cs.logStringMessage(aText);
+}
+
 function NostalgyAutoCompleteResult(searchString, results) {
   const ACR = Ci.nsIAutoCompleteResult;
   this._searchResult = results.length > 0 ? ACR.RESULT_SUCCESS : ACR.NOMATCH;

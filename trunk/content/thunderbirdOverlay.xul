@@ -41,10 +41,9 @@
    <textbox id="nostalgy-folderbox" type="autocomplete" tabScrolling="true"
 	   autocompletesearch="nostalgy-autocomplete"
 	   ontextentered="NostalgyRunCommand();"
-	   ontextcommand="NostalgyRunCommand();"
 	   ontextreverted="NostalgyHide(true);"
-	   ontextrevert="NostalgyHide(true);"
            completeselectedindex="true"
+           highlightnonmatches="true"
 	   flex="1"
 	   maxrows="25" crop="center"
            />

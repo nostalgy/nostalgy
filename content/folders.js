@@ -179,6 +179,21 @@ function NostalgyGetAutoCompleteValuesFunction(box) {
       }
     }
 
+    /* For unknown reason, the popup is left closed (even though box.popupOpen = true)
+     * when the user does a new nostalgy completion after the previous one has been
+     * cancelled with Escape.  We this force the popup to be opened some time after
+     * the completeion is done.
+     */
+    if (box.popup.state == "closed")
+      setTimeout(function() {
+                   NostalgyDebug("popup open = " + box.popupOpen);
+                   NostalgyDebug("state " + box.popup.state);
+                   if (box.popup.state == "closed") {
+                     NostalgyDebug("Forcing popup to be opened");
+                     box.popup.sizeTo(box.boxObject.width,300);
+                     box.popup.openPopup(box, "before_start", 0, 0, false, false);
+                   } }, 300);
+
     return values;
   };
 }
@@ -211,6 +226,7 @@ function NostalgyStartLookup() {
         }
     } catch (e) { NostalgyDebug("ERR" + e); }
 }
+
 
 function NostalgyProcessInput() {
  if (this.ignoreInputEvent)
@@ -295,7 +311,6 @@ function NostalgyFolderSelectionBox(box) {
      .classes["@mozilla.org/autocomplete/search;1?name=nostalgy-autocomplete"]
      .getService()
      .wrappedJSObject;
- nac.attachGetValuesFunction(NostalgyGetAutoCompleteValuesFunction(box));
  box.searchParam = nac.attachGetValuesFunction(NostalgyGetAutoCompleteValuesFunction(box));
   /*
  box.processInput = NostalgyProcessInput;

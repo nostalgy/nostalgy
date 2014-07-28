@@ -186,8 +186,6 @@ function NostalgyGetAutoCompleteValuesFunction(box) {
      */
     if (box.popup.state == "closed")
       setTimeout(function() {
-                   NostalgyDebug("popup open = " + box.popupOpen);
-                   NostalgyDebug("state " + box.popup.state);
                    if (box.popup.state == "closed") {
                      NostalgyDebug("Forcing popup to be opened");
                      box.popup.sizeTo(box.boxObject.width,300);
@@ -198,125 +196,37 @@ function NostalgyGetAutoCompleteValuesFunction(box) {
   };
 }
 
-/*
-function NostalgyStartLookup() {
-    // Copy from autocomplete.xml, but does not exit early if box is empty
-    var str = this.currentSearchString;
-    try{
-
-    this.isSearching = true;
-    this.mFirstReturn = true;
-    this.mSessionReturns = this.sessionCount;
-    this.mFailureItems = 0;
-    this.mDefaultMatchFilled = false; // clear out our prefill state.
-
-    // Notify the input that the search is beginning.
-    this.onSearchBegin();
-
-    // tell each session to start searching...
-    for (var name in this.mSessions)
-        try {
-          if (this.mAutoCompleteObserver)
-            this.mSessions[name].startSearch(str, this.searchParam, this.mLastResults[name], this.mAutoCompleteObserver); // TB 26
-          else
-            this.mSessions[name].onStartLookup(str, this.mLastResults[name], this.mListeners[name]); // TB 24
-        } catch (e) {
-            --this.mSessionReturns;
-            this.searchFailed();
-        }
-    } catch (e) { NostalgyDebug("ERR" + e); }
-}
-
-
-function NostalgyProcessInput() {
- if (this.ignoreInputEvent)
-   return;
-
- this.userAction = "typing";
- this.mNeedToFinish = true;
- this.mTransientValue = false;
- this.mNeedToComplete = true;
- this.currentSearchString = this.value;
-// this.resultsPopup.selectedIndex = null;
-// this.popup.selectedIndex = null;
- this.removeAttribute("noMatchesFound");
-
- this.mAutoCompleteTimer =
-   setTimeout(this.callListener, this.timeout, this, "startLookup");
-}
-
-function NostalgyProcessKeyPress(aEvent) {
-  this.mLastKeyCode = aEvent.keyCode;
-  var killEvent = false;
-  switch (aEvent.keyCode) {
-   case KeyEvent.DOM_VK_TAB:
-     if (this.getAttribute("normaltab") != "true") {
-      if (nostalgy_completion_options.tab_shell_completion) {
-       this.shell_completion = true;
-       this.value = NostalgyCompleteUnique(this.value);
-       this.processInput();
-       killEvent = true;
-      }
-      else {
-       this.clearTimer();
-       killEvent = this.keyNavigation(aEvent);
-      }
-     }
-     break;
-
-   case KeyEvent.DOM_VK_RETURN:
-     killEvent = this.mMenuOpen;
-     this.finishAutoComplete(true, true, aEvent);
-//     this.closePopup();
-//     this.closeResultPopup();
-     break;
-
-   case KeyEvent.DOM_VK_ESCAPE:
-     this.clearTimer();
-     killEvent = this.mMenuOpen;
-     this.undoAutoComplete();
-//     this.closePopup();
-//     this.closeResultPopup();
-     break;
-
-   case KeyEvent.DOM_VK_PAGE_UP:
-   case KeyEvent.DOM_VK_DOWN:
-   case KeyEvent.DOM_VK_PAGE_DOWN:
-   case KeyEvent.DOM_VK_UP:
-     if (!aEvent.ctrlKey && !aEvent.metaKey) {
-       this.clearTimer();
-       killEvent = this.keyNavigation(aEvent);
-     }
-     break;
-  }
-  if (killEvent) NostalgyStopEvent(aEvent);
-  return true;
-}
-*/
 
 function NostalgyFolderSelectionBox(box) {
- var cmd = box.getAttribute("nostalgyfolderbox");
- if (cmd) {
-  box.setAttribute("ontextentered",cmd);
-  box.setAttribute("ontextcommand",cmd);
-  box.setAttribute("maxrows","15");
-  box.setAttribute("crop","end");
-  box.setAttribute("flex","3");
-  box.setAttribute("tabScrolling","false");
- }
+  var cmd = box.getAttribute("nostalgyfolderbox");
+  if (cmd) {
+    box.setAttribute("ontextentered",cmd);
+    box.setAttribute("ontextcommand",cmd);
+    box.setAttribute("maxrows","15");
+    box.setAttribute("crop","end");
+    box.setAttribute("flex","3");
+    box.setAttribute("tabScrolling","false");
+  }
 
- box.shell_completion = false;
- var nac =
-   Components
-     .classes["@mozilla.org/autocomplete/search;1?name=nostalgy-autocomplete"]
-     .getService()
-     .wrappedJSObject;
- box.searchParam = nac.attachGetValuesFunction(NostalgyGetAutoCompleteValuesFunction(box));
-  /*
- box.processInput = NostalgyProcessInput;
- box.processKeyPress = NostalgyProcessKeyPress;
- box.startLookup = NostalgyStartLookup;
- */
+  box.shell_completion = false;
+  var nac =
+    Components
+    .classes["@mozilla.org/autocomplete/search;1?name=nostalgy-autocomplete"]
+    .getService()
+    .wrappedJSObject;
+  box.searchParam = nac.attachGetValuesFunction(NostalgyGetAutoCompleteValuesFunction(box));
+
+
+  box.onkeypress=function(event){
+    if (event.keyCode == KeyEvent.DOM_VK_TAB && box.getAttribute("normaltab") != "true") {
+      event.preventDefault();
+      if (nostalgy_completion_options.tab_shell_completion) {
+        box.shell_completion = true;
+        box.value = NostalgyCompleteUnique(box.value);
+        box.controller.handleText();
+      }
+    }
+  };
 }
 
 function NostalgyFolderSelectionBoxes() {

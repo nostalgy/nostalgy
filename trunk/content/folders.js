@@ -192,7 +192,7 @@ function NostalgyGetAutoCompleteValuesFunction(box) {
                      NostalgyDebug("Forcing popup to be opened");
                      box.popup.sizeTo(box.boxObject.width,300);
                      box.popup.openPopup(box, "before_start", 0, 0, false, false);
-                   } }, 300);
+                   } }, 50);
 
     return values;
   };

@@ -311,7 +311,7 @@ function NostalgyCmd(lab,cmd,require_file) {
 
  setTimeout(function() {
    nostalgy_folderBox.focus();
-   nostalgy_folderBox.processInput();
+   //nostalgy_folderBox.processInput();
  }, 0);
  // For some unknown reason, doing nostalgyBox.focus immediatly
  // sometimes does not work...

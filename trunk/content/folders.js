@@ -205,7 +205,7 @@ function NostalgyFolderSelectionBox(box) {
     box.setAttribute("maxrows","15");
     box.setAttribute("crop","end");
     box.setAttribute("flex","3");
-    box.setAttribute("tabscrolling","false");
+    box.tabScrolling = false;
   }
 
   box.shell_completion = false;

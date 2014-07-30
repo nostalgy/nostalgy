@@ -308,6 +308,7 @@ function NostalgyCmd(lab,cmd,require_file) {
  nostalgy_folderBox.shell_completion = false;
  nostalgy_statusBar.hidden = false;
  nostalgy_folderBox.value = "";
+ nostalgy_folderBox.tabScrolling = !nostalgy_completion_options.tab_shell_completion;
 
  setTimeout(function() {
    nostalgy_folderBox.focus();

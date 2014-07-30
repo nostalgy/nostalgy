@@ -182,7 +182,7 @@ function NostalgyGetAutoCompleteValuesFunction(box) {
     /* For unknown reason, the popup is left closed (even though box.popupOpen = true)
      * when the user does a new nostalgy completion after the previous one has been
      * cancelled with Escape.  We thus force the popup to be opened some time after
-     * the completeion is done.
+     * the completion is done.
      */
     if (box.popup.state == "closed")
       setTimeout(function() {

@@ -181,7 +181,7 @@ function NostalgyGetAutoCompleteValuesFunction(box) {
 
     /* For unknown reason, the popup is left closed (even though box.popupOpen = true)
      * when the user does a new nostalgy completion after the previous one has been
-     * cancelled with Escape.  We this force the popup to be opened some time after
+     * cancelled with Escape.  We thus force the popup to be opened some time after
      * the completeion is done.
      */
     if (box.popup.state == "closed")
@@ -223,7 +223,11 @@ function NostalgyFolderSelectionBox(box) {
       if (nostalgy_completion_options.tab_shell_completion) {
         box.shell_completion = true;
         box.value = NostalgyCompleteUnique(box.value);
-        box.controller.handleText();
+        try {
+          box.controller.handleText();
+        } catch (ex) {
+          NostalgyDebug("err:" + ex);
+        }
       }
     }
   };

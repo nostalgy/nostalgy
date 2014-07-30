@@ -25,7 +25,7 @@
   <statusbar hidden="true" class="chromeclass-status" id="nostalgy-statusbar">
   <statusbarpanel flex="1">
    <label id="nostalgy-command-label"/>
-   <textbox id="nostalgy-folderbox" type="autocomplete" tabScrolling="true"
+   <textbox id="nostalgy-folderbox" type="autocomplete" tabscrolling="true"
 	   autocompletesearch="nostalgy-autocomplete"
 	   ontextentered="NostalgyRunCommand();"
 	   ontextcommand="NostalgyRunCommand();"

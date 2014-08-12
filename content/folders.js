@@ -188,7 +188,8 @@ function NostalgyGetAutoCompleteValuesFunction(box) {
       setTimeout(function() {
                    if (box.popup.state == "closed") {
                      NostalgyDebug("Forcing popup to be opened");
-                     box.popup.sizeTo(box.boxObject.width,300);
+                     var width = box.getBoundingClientRect().width;
+                     box.popup.setAttribute("width", width > 100 ? width : 100);
                      box.popup.openPopup(box, "before_start", 0, 0, false, false);
                    } }, 50);
 
@@ -196,6 +197,15 @@ function NostalgyGetAutoCompleteValuesFunction(box) {
   };
 }
 
+
+function NostalgyAutocompleteComponent() {
+  var nac =
+    Components
+    .classes["@mozilla.org/autocomplete/search;1?name=nostalgy-autocomplete"]
+    .getService()
+    .wrappedJSObject;
+  return nac;
+}
 
 function NostalgyFolderSelectionBox(box) {
   var cmd = box.getAttribute("nostalgyfolderbox");
@@ -209,12 +219,7 @@ function NostalgyFolderSelectionBox(box) {
   }
 
   box.shell_completion = false;
-  var nac =
-    Components
-    .classes["@mozilla.org/autocomplete/search;1?name=nostalgy-autocomplete"]
-    .getService()
-    .wrappedJSObject;
-  box.searchParam = nac.attachGetValuesFunction(NostalgyGetAutoCompleteValuesFunction(box));
+  box.searchParam = NostalgyAutocompleteComponent().attachGetValuesFunction(NostalgyGetAutoCompleteValuesFunction(box));
 
 
   box.onkeypress=function(event){
@@ -223,11 +228,8 @@ function NostalgyFolderSelectionBox(box) {
       if (nostalgy_completion_options.tab_shell_completion) {
         box.shell_completion = true;
         box.value = NostalgyCompleteUnique(box.value);
-        try {
+        if (box.controller) // Toolkit only
           box.controller.handleText();
-        } catch (ex) {
-          NostalgyDebug("err:" + ex);
-        }
       }
     }
   };

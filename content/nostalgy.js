@@ -311,14 +311,24 @@ function NostalgyCmd(lab,cmd,require_file) {
  nostalgy_folderBox.tabScrolling = !nostalgy_completion_options.tab_shell_completion;
 
  setTimeout(function() {
+   // For some unknown reason, doing nostalgyBox.focus immediatly
+   // sometimes does not work...
    nostalgy_folderBox.focus();
-   //nostalgy_folderBox.processInput();
+
+   // Force search on the empty string (-> recent folders)
+   NostalgyShowRecentFoldersList(nostalgy_folderBox);
  }, 0);
- // For some unknown reason, doing nostalgyBox.focus immediatly
- // sometimes does not work...
  return true;
 }
 
+function NostalgyShowRecentFoldersList(box) {
+  var listener;
+  if (box.controller) // Toolkit
+    listener = box.controller.QueryInterface(Components.interfaces.nsIAutoCompleteObserver);
+  else // XPFE
+    listener = box.mAutoCompleteObserver;
+  NostalgyAutocompleteComponent().startSearch("", box.searchParam, null, listener);
+}
 
 function NostalgyCreateTag(name) {
  var tagService =

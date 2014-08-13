@@ -316,17 +316,28 @@ function NostalgyCmd(lab,cmd,require_file) {
    nostalgy_folderBox.focus();
 
    // Force search on the empty string (-> recent folders)
-   NostalgyShowRecentFoldersList(nostalgy_folderBox);
+   NostalgyShowRecentFoldersList();
  }, 0);
  return true;
 }
 
-function NostalgyShowRecentFoldersList(box) {
-  var listener;
+function NostalgyShowRecentFoldersList() {
+  var listener = null;
+  var box = nostalgy_folderBox;
   if (box.controller) // Toolkit
     listener = box.controller.QueryInterface(Components.interfaces.nsIAutoCompleteObserver);
-  else // XPFE
-    listener = box.mAutoCompleteObserver;
+  else { // XPFE
+    // box.mAutoCompleteObserver uses a flawed equality check so we have to replace it.
+    // Since we only use one autocompleter, its name is equal to the autocompletesearch attribute.
+    listener = {
+      onSearchResult: function(aSearch, aResult) {
+        box.processResults(box.getAttribute("autocompletesearch"), aResult);
+      }
+    };
+    // Reset internal state
+    box.currentSearchString = "";
+  }
+
   NostalgyAutocompleteComponent().startSearch("", box.searchParam, null, listener);
 }
 

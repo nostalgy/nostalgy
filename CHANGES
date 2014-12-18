@@ -1,3 +1,6 @@
+0.2.33
+  - Fixes for TB 31
+
 0.2.32
   - Modernize code and adapt for TB 26.0 (thanks to Jens Hatlak)
 

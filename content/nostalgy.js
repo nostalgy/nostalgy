@@ -280,7 +280,7 @@ function NostalgyDefLabel() {
    nostalgy_label.setAttribute("tooltiptext"," [+Shift: ==> " + nostalgy_folder_name + "]");
    folder_parts=nostalgy_folder_name.split("/");
    if (folder_parts.length > 2) {
-     nostalgy_folder_name =  folder_parts[0] + ".." + folder_parts[folder_parts.length - 1];
+     nostalgy_folder_name =  folder_parts[0] + "/.../" + folder_parts[folder_parts.length - 1];
    }
 
    nostalgy_label.value =

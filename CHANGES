@@ -1,5 +1,5 @@
-Since 0.2.33
-  - Tentative fix for issue #10 ("Pop-up folder list does not appear in TB 31")
+0.2.34
+  - Fix for issue #10 ("Pop-up folder list does not appear in TB 31")
 
 0.2.33
   - Fixes for TB 31

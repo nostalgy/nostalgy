@@ -1,3 +1,6 @@
+Since 0.2.33
+  - Tentative fix for issue #10 ("Pop-up folder list does not appear in TB 31")
+
 0.2.33
   - Fixes for TB 31
 
@@ -14,7 +17,7 @@
 
 0.2.29
   - Fixes for TB 12.
-  - Remove the broken 'Send rules by email' features, replace it with 
+  - Remove the broken 'Send rules by email' features, replace it with
     Export/Import buttons.
 
 0.2.28
@@ -80,7 +83,7 @@
   - suggest to create a folder when it does not exist (for Go/Copy/Move operations)
 
 0.2.15
-  - bug fix: the G command did not work when QuickSearch is not shown in 
+  - bug fix: the G command did not work when QuickSearch is not shown in
     the toolbar
   - bug fix: in some situations, some keys were lost just after
     the Nostalgy box was opened
@@ -94,14 +97,14 @@
 
 0.2.13
   - a system to export and import Nostalgy's rules (through e-mails)
-  - change the behavior of the QuickSearch box: 
+  - change the behavior of the QuickSearch box:
     * the search criterion can be changed with UP/DOWN and the view
       is automatically updated
     * the menu that shows the current search criterion is shown
       when one of CONTROL or ALT is pressed (when the QuickSearch box
       if focused); an option in the preference dialog will force
       the menu to be always displayed when the QuickSearch box is focused
-    * RETURN (customizable): start the search, select the last result, 
+    * RETURN (customizable): start the search, select the last result,
       focus thread pane
     * CTRL-RETURN (customizable): same, but select all results
     * ESCAPE: cancel search, focus thread pane
@@ -146,7 +149,7 @@
   - bug fix: "G"oing to a Virtual Folder did not work
   - bug fix: Virtual Folders could not be selected for custom shortcuts
   - bug fix: customized keys for Save/Copy commands did not work
-    in stand-alone message windows 
+    in stand-alone message windows
 
 0.2.9
   - the user can define custom shortcuts (Go/Save/Copy to some specific folder)
@@ -179,8 +182,8 @@
   - bug fix: S and C commands did not work properly in stand-alone
     message windows with TB 2.0
   - re-creates Eudora's Alt-Click: the "`" key (back quote) search for
-    all messages from the same author as the current message (in the Sent 
-    folder, search mail sent To: the same address as the first To: of the 
+    all messages from the same author as the current message (in the Sent
+    folder, search mail sent To: the same address as the first To: of the
     current message)
   - when selecting a new folder with the G key, keep the current value
     of the quick search box (if any)
@@ -201,7 +204,7 @@
     ontextrevert -> ontextreverted)
 
 0.2.0
-  - make shell-completion optional (default behavior for Tab is to cycle 
+  - make shell-completion optional (default behavior for Tab is to cycle
     through sugestions)
   - allow to switch between "To:" and "Cc:" fields efficiently in the composer
   - triple Escape to clear the quick search box
@@ -210,7 +213,7 @@
   - allow to move rules up/down
   - rules can match on recipients (To/Cc)
 
-  - bug fix: rules with non-empty folder condition don't match when 
+  - bug fix: rules with non-empty folder condition don't match when
     restricting to current server
   - bug fix: make the rules work in standalone message windows
   - bug fix: if the user started to type very quickly after the
@@ -218,7 +221,7 @@
     (or sent to other widgets)
   - bug fix: invalidate the folder (sorted) list cache when a folder
     is created or deleted (or renamed)
-    
+
 
 0.1.9
   - allow installation on Thunderbird 2.0b1
@@ -266,4 +269,3 @@
 
 0.1.2
   - fix the double return bug
-

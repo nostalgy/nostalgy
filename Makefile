@@ -1,5 +1,7 @@
 pack:
 	./build.sh
+	sort files > files.sorted
+	mv files.sorted files
 
 clean:
 	rm -f nostalgy.jar nostalgy.xpi *~

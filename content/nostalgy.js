@@ -42,7 +42,7 @@ var NostalgyRules =
   {
     this._branch = NostalgyPrefService().getBranch("extensions.nostalgy.");
     this._branch2 =
-        this._branch.QueryInterface(Components.interfaces.nsIPrefBranch2);
+        this._branch.QueryInterface(Components.interfaces.nsIPrefBranch);
     this._branch2.addObserver("", this, false);
     this.get_rules();
 

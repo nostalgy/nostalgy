@@ -394,7 +394,7 @@ function NostalgyRunCommand() {
                 var prefs = NostalgyPrefService().getBranch("extensions.nostalgy.");
                 var timeout = 200;
                 try {
-                    timeout = prefs.getIntPref("timeout_after_creating_folder");
+                    timeout = prefs.getIntPref("delay_after_creating_folder");
                 } catch (ex) { }
                 parent.createSubfolder(name, msgWindow);
                 ClearNostalgyCache();

@@ -22,7 +22,11 @@ var nostalgy_sqlite = {
         var statement = (this.mDBConn[file]).createStatement(sql);
         if (param){
             for (var m=2, arg=null; arg=arguments[m]; m++) {
-                statement.bindUTF8StringParameter(m-2, arg);
+                if(typeof statement.bindByIndex === 'function') {
+                    statement.bindByIndex(m-2, arg);
+                } else {
+                    statement.bindUTF8StringParameter(m-2, arg);
+                }
             }
         }
         try{
@@ -58,7 +62,11 @@ var nostalgy_sqlite = {
         var statement = (this.mDBConn[file]).createStatement(sql);
         if (param){
             for (var m=2, arg=null; arg=arguments[m]; m++) {
-                statement.bindUTF8StringParameter(m-2, arg);
+                if(typeof statement.bindByIndex === 'function') {
+                    statement.bindByIndex(m-2, arg);
+                } else {
+                    statement.bindUTF8StringParameter(m-2, arg);
+                }
             }
         }
         try{

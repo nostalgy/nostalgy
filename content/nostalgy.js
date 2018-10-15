@@ -391,6 +391,11 @@ function NostalgyRunCommand() {
         }
         if (parent) {
             if (confirm("Create new folder [" + name + "]\nunder " + NostalgyFullFolderName(parent) + "?")) {
+                var prefs = NostalgyPrefService().getBranch("extensions.nostalgy.");
+                var timeout = 200;
+                try {
+                    timeout = prefs.getIntPref("delay_after_creating_folder");
+                } catch (ex) { }
                 parent.createSubfolder(name, msgWindow);
                 ClearNostalgyCache();
                 parent.updateFolder(msgWindow);
@@ -403,7 +408,7 @@ function NostalgyRunCommand() {
                         }
                         else
                             alert("No folder " + s);
-                    }, 200);
+                    }, timeout);
             } else
                 return;
         } else

@@ -1,3 +1,6 @@
+Next version
+  - GPR#24: config setting for custom timeout after creating folder before moving email to it (Adam Kerz)
+
 0.2.36
   - Fix for TB 60 (thanks to lepokle GitHub user)
 

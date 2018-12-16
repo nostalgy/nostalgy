@@ -184,7 +184,7 @@ function NostalgyGetAutoCompleteValuesFunction(box) {
      * cancelled with Escape.  We thus force the popup to be opened some time after
      * the completion is done.
      */
-    if (box.popup.state == "closed" && nb != 0)
+    if (false && box.popup.state == "closed" && nb != 0)
       setTimeout(function() {
                    if (box.popup.state == "closed") {
                      NostalgyDebug("Forcing popup to be opened");

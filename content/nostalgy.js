@@ -266,7 +266,14 @@ function NostalgyHide(restore) {
  nostalgy_th_statusBar.hidden = nostalgy_th_statusBar_orig_hidden;
 
  if (nostalgy_focus_saved) {
-  if (restore) nostalgy_focus_saved.focus ();
+  if (restore) {
+    if (nostalgy_folderBox != nostalgy_focus_saved) {
+      console.log("setting focus");
+      console.log(nostalgy_focus_saved);
+      var _nfs = nostalgy_focus_saved;
+      setTimeout(function() {_nfs.focus();}, 0);
+    }
+  }
   nostalgy_focus_saved = null;
  }
  NostalgyDefLabel();

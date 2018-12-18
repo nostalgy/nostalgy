@@ -268,8 +268,6 @@ function NostalgyHide(restore) {
  if (nostalgy_focus_saved) {
   if (restore) {
     if (nostalgy_folderBox != nostalgy_focus_saved) {
-      console.log("setting focus");
-      console.log(nostalgy_focus_saved);
       var _nfs = nostalgy_focus_saved;
       setTimeout(function() {_nfs.focus();}, 0);
     }

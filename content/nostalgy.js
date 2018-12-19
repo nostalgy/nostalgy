@@ -331,7 +331,7 @@ function NostalgyShowRecentFoldersList() {
   var box = nostalgy_folderBox;
   if (box.controller) { // Toolkit
     listener = box.controller.QueryInterface(Components.interfaces.nsIAutoCompleteObserver);
-    box.controller.handleKeyNavigation(KeyEvent.DOM_VK_DOWN);
+    box.controller.handleKeyNavigation(KeyEvent.DOM_VK_DOWN); // Workaround for https://github.com/alainfrisch/nostalgy/issues/60
   }
   else { // XPFE
     // box.mAutoCompleteObserver uses a flawed equality check so we have to replace it.

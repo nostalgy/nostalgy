@@ -179,20 +179,6 @@ function NostalgyGetAutoCompleteValuesFunction(box) {
       }
     }
 
-    /* For unknown reason, the popup is left closed (even though box.popupOpen = true)
-     * when the user does a new nostalgy completion after the previous one has been
-     * cancelled with Escape.  We thus force the popup to be opened some time after
-     * the completion is done.
-     */
-    if (false && box.popup.state == "closed" && nb != 0)
-      setTimeout(function() {
-                   if (box.popup.state == "closed") {
-                     NostalgyDebug("Forcing popup to be opened");
-                     var width = box.getBoundingClientRect().width;
-                     box.popup.setAttribute("width", width > 100 ? width : 100);
-                     box.popup.openPopup(box, "before_start", 0, 0, false, false);
-                   } }, 50);
-
     return values;
   };
 }

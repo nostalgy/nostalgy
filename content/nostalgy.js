@@ -279,9 +279,17 @@ function NostalgyHide(restore) {
 
 function NostalgyDefLabel() {
  nostalgy_gsuggest_folder = NostalgySuggest();
+
  if (nostalgy_gsuggest_folder) {
+   nostalgy_folder_name=NostalgyFolderName(nostalgy_gsuggest_folder);
+   nostalgy_label.setAttribute("tooltiptext"," [+Shift: ==> " + nostalgy_folder_name + "]");
+   folder_parts=nostalgy_folder_name.split("/");
+   if (folder_parts.length > 2) {
+     nostalgy_folder_name =  folder_parts[0] + "/.../" + folder_parts[folder_parts.length - 1];
+   }
+
    nostalgy_label.value =
-       nostalgy_default_label + " [+Shift: ==> " + NostalgyFolderName(nostalgy_gsuggest_folder) + "]";
+       nostalgy_default_label + " [+Shift:=>" + nostalgy_folder_name  + "]";
  } else {
    nostalgy_label.value = nostalgy_default_label;
  }

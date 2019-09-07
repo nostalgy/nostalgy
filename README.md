@@ -22,6 +22,19 @@ folder view.
 Installation
 ============
 
+This is an experimental version for TB 68.
+Cone folder to your harddisk.
+
+Install by: Tools->developer toolbox-> debug addon
+
+Press button: install addon temperarily (at top of page)-
+Goto folder, highlight manyfest.json, confirm with OK.
+
+Modified by opto (Klaus Buecher) in https://github.com/opto/nostalgy
+
+
+Tese are the old instructions for TB <  version 68:
+
 The easiest way to install Thunderbird is through
 https://addons.mozilla.org/en-US/thunderbird/addon/nostalgy/ .  It
 will automatically update itself when new versions are released.

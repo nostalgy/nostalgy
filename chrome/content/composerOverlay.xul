@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE overlay SYSTEM "chrome://nostalgy/locale/nostalgy.dtd">
+<overlay id="nostalgy-compose-overlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+ <script src="misc.js"/>
+ <script src="composer.js"/>
+</overlay>

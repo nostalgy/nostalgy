@@ -23,11 +23,12 @@ Installation
 ============
 
 This is an experimental version for TB 68.
-Cone folder to your harddisk.
+Clone folder to your harddisk.  Switch to branch TB68.
+
 
 Install by: Tools->developer toolbox-> debug addon
 
-Press button: install addon temperarily (at top of page)-
+Press button: install addon temporarily (at top of page)-
 Goto folder, highlight manyfest.json, confirm with OK.
 
 Modified by opto (Klaus Buecher) in https://github.com/opto/nostalgy

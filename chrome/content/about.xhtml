@@ -1,0 +1,319 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"
+>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+      <title>Nostalgy</title>
+      <style>
+        html {
+          background-color: white;
+        }
+        a {
+          color: blue;
+          text-decoration: underline;
+        }
+      </style>
+  </head>
+  <body>
+
+   <h2>Usage directions for Nostalgy</h2>
+
+   <p>
+      Please visit
+      <a href="http://alain.frisch.fr/soft_mozilla.html">Nostalgy's
+      homepage</a>. It contains a copy of this page that might be
+      better read in your browser! From there, you can also download
+      the latest development version.
+   </p>
+
+   <p>
+     Nostalgy adds several keyboard shortcuts to improve your
+     productivity with Thunderbird. A custom preference dialog for
+     Nostalgy is available through the Tools menu.
+   </p>
+   <p>
+     <b>Notes about shortcuts:</b>
+     <ul>
+     <li>We give here the default values for shortcuts.
+     Most of them can be changed  from the preference dialog.</li>
+     <li>Even if the key shortcuts above are written in
+     uppercase, you must not press Shift.</li>
+     <li>The ESC-X shortcuts means: press and release ESCAPE, and then
+     press X within 300ms (ESC-ESC is thus like a double click on
+     ESCAPE).</li>
+     </ul>
+   </p>
+
+   <h3>Folder commands</h3>
+
+   <p>
+     The following shortcuts are available from the main Thunderbird's
+     window. As a remainder and a sign of Nostalgy's presence, these shortcuts
+     are displayed in Thunderbird's status bar.
+   </p>
+
+   <table border="1">
+    <tr><th>Shortcut</th><th>Description</th></tr>
+    <tr><td>G</td><td>Open a specific folder</td></tr>
+    <tr><td>S</td><td>Move the current message to a specific folder</td></tr>
+    <tr><td>B</td><td>Move the current message to a specific folder
+    and go there</td></tr>
+    <tr><td>C</td><td>Copy the current message to a specific folder</td></tr>
+   </table>
+
+   <p>
+     These commands open an folder completion box (in place of the
+     status bar) where you can select a folder by typing part of its
+     name. A popup displays the possible completions.
+     Regular expressions are accepted as well (and .. is a
+     short-hand for .* meaning: any sequence of characters). You can
+     choose the first suggested completion with RETURN, or select
+     another one in the popup with the UP/DOWN keys and then RETURN.
+     You can cancel the command with ESCAPE.
+   </p>
+
+   <p>
+     Before you type anything in the folder completion box, the popup
+     displays the most recently selected folders. You can choose one
+     of them with the UP/DOWN keys.
+   </p>
+
+   <p>
+     In the folder completion box, the TAB key activates a shell-like
+     autocompletion mode (this feature must be enabled in Nostalgy's
+     preference dialog; otherwise, TAB cycles through the possible
+     completions). In this mode, the completed suggestions only
+     mentions possible completions one level down in the folder
+     hierarchy, and the TAB key itself automatically completes with
+     the longest unambiguous fragment.
+   </p>
+
+   <p>
+     It is possible to restrict (see the preference dialog) the
+     completion to the folders on the same server as the currently
+     displayed folder.
+   </p>
+
+   <p>
+     The S,B,C commands can be applied to one or many messages.
+   </p>
+
+   <p>
+     The S and C commands also work in a standalone message window.
+   </p>
+
+   <p>
+     The G command also focuses the thread pane. If you were doing a
+     QuickSearch (that is, if you had typed some text in the search
+     box), the same search carried over to the new folder.
+   </p>
+
+   <p>
+     The B command preserves the selection. The moved messages will
+     be selected again in the target folder.
+   </p>
+
+
+   <h3>Custom shortcuts</h3>
+
+   <p>
+     In the preference dialog, you can define any number of custom
+     keyboard shortcuts. A custom shortcut triggers a G, S, C or B
+     command to a specific folder.
+   </p>
+
+
+   <h3>3-pane navigation</h3>
+
+   <p>
+     Because of the G command, the folder pane becomes thus much less
+     useful, and it can be hidden with the L shortcut.
+     (Thunderbird already proposes a shortcut to show/hide
+     the message pane: F8).
+   </p>
+
+   <p>
+     Nostalgy also allows you to scroll the message while the thread
+     pane is focused with the Ctrl-Left/Right or Shift-Left/Right
+     keys.  Because of that, it is a good idea to leave the thread
+     pane always focused.  Nostalgy still provides shortcuts to easily
+     focus one of the three panes.
+   </p>
+
+   <table border="1">
+    <tr><th>Shortcut</th><th>Description</th></tr>
+    <tr><td>L</td><td>Hide/show the folder pane</td></tr>
+    <tr><td>ESC-F</td><td>Focus the folder pane</td></tr>
+    <tr><td>ESC-M</td><td>Focus the message pane</td></tr>
+    <tr><td>ESC-ESC</td><td>Focus the thread pane</td></tr>
+    <tr><td>ESC-ESC-ESC</td><td>Focus the thread pane, clear quick search box, select the "All" view</td></tr>
+    <tr><td>Ctrl-Left/Right</td><td>Scroll the message from the thread pane</td></tr>
+   </table>
+
+
+   <h3>Rules</h3>
+
+   <p>
+     Nostalgy introduces a notion of rule. A rule associates a folder
+     to a message by looking for a substring of the From, To/Cc, or
+     Subject headers (or a combination of them).  A rule can be
+     restricted to match messages only under a given
+     server/folder. When a rule selects a folder for a given message,
+     Nostalgy informs you in the status line.  You can then use the
+     Shift-S/Shift-C/Shift-G/Shift-B shortcuts to move/copy/go directly to
+     this folder. Nostalgy's rules can be edited from the preference
+     dialog.
+   </p>
+
+   <p>
+     It is possible to match fields with a regexp instead of simply
+     looking for a substring. This is done by enclosing the
+     corresponding field with
+     slashes. E.g. <tt>/^me@domain\.com$/</tt> will match the field
+     for an exact value (not a substring).
+   </p>
+
+   <p>
+     When no rule apply to a given message, Nostalgy proposes to
+     re-use (with Shift-S/Shift-C/Shift-G/Shift-B) the same folder as for the
+     last operation. If the folder lookup has been
+     restricted to the current server (in the Nostalgy preference
+     dialog), then the last operation folder is attached to the
+     current server. Otherwise, it is global.
+   </p>
+
+   <h3>Exporting and importing rules</h3>
+
+   <p>
+     Nostalgy comes with a backup system for rules. In the Preferences
+     dialog (tab "Rules"), there is a button "Send rules by email".
+     It allows you to send an e-mail to any address (your own address
+     by default). This special e-mail contains a copy of all your
+     rules.  When you read such an e-mail, Thunderbird will show you a
+     button "Import Nostalgy rules" which lets you import
+     all the rules found in the message.
+   </p>
+
+   <p>
+     This import/export feature can be used as a backup mechanism, or
+     to exchange rules between various computer or Thunderbird
+     profiles.
+   </p>
+
+   <p>
+     <b>IMPORTANT:</b> importing rules from an e-email will destroy
+     your current rules. Use this feature with caution.
+   </p>
+
+
+   <h3>Looking for messages with same sender / subject</h3>
+
+   <p>
+     The key "`" (backquote) launches a QuickSearch for messages
+     from the same sender as the currently selected message.
+     If you press the same key again, messages with the same
+     subject are searched. And if you press again,
+     the QuickSearch is cancelled.
+     In the Sent folder, the search is done on the first recipient (To:
+     header) instead of the sender.
+   </p>
+
+<h3>Tags</h3>
+
+
+<p> Starting from version 2.0, Thunderbird supports tags, along
+with traditional folders, as a way to organize your
+messages. Thunderbird's tagging feature replaces its former labeling
+feature, and allows users to define an unlimited number of tags, more
+than one of which can be attached to a single message. </p>
+
+<p>Nostalgy helps you use tags in much the same way it helps you use folders:
+The completion box for the Go/Save/Copy commands has always listed your
+email folders, but for Thunderbird 2.0, it also lists your existing tags,
+prefixed with a semi-colon.</p>
+
+<p>A "Go" command applied to a tag restricts the current folder view to show
+only the messages that have this tag (ESC-ESC-ESC restores the "All
+messages" view). A "Save" or a "Copy" command applied to a tag toggles the
+tag on or off for the selected messages (the first selected message is used
+to determine if the tag has to be added or removed). Note that Save and Copy
+have the same behavior when applied to tags.</p>
+
+<p>It is possible to create new tags directly from the completion box.
+If you enter a string of the form <tt>:foobar</tt> or <tt>:foobar:</tt>
+(that is, a leading colon and an optional trailing colon), it will
+open the tag creation dialog with the tag name set to <tt>foobar</tt>
+(in order to confirm the creation of the tag and choose its color).
+If you confirm, the command is applied to the new tag.
+</p>
+
+
+<p>You may also use tags rather than folders as targets for Nostalgy's
+rules.</p>
+
+   <h3>In the Composer</h3>
+
+   <p>Nostalgy adds some support for keyboard operations to the Composer window.</p>
+
+   <p>When typing in a header, it's possible to change easily the header
+to either "To:", "Cc:" or "Bcc:". To do so, you need to be at the beginning
+of the input box, and simply type "to ", "cc " or "bcc " (with the whitespace,
+without the quotes).</p>
+
+   <p>The ESC-ESC combination focuses the message body. The ESC-A combination
+opens the file attachment dialog.</p>
+
+   <h3>Preferences</h3>
+
+   <p>The preference dialog for Nostalgy has several tabs.
+   The first tab is the place where rules are
+   defined. The second tab has several switches to control
+   the way the completion
+   box (where folder names are proposed) is populated (see below).
+   The third pane allows you to configure Nostalgy's shortcuts
+   (click on the key to change it), to disable some of them,
+   or to manage custom shortcuts.
+   </p>
+
+   <p>Here is a description of the completion options:</p>
+
+   <ul>
+   <li><b>Restrict folder completion to the current server:</b>
+   limit lookup to folders on the same
+   server/account as the currently active folder. In this mode,
+   the server name is not displayed (and must not be typed) in
+   the input line and the completion box.</li>
+
+   <li><b>Match only on folder name, not on the full path:</b>
+      force Nostalgy to interpret differently what
+      is typed in the text. Normally, when the option is disabled,
+      it is interpreted as a regexp which can match an arbitrary substring
+      of the complete folder name (including the account name and
+      the name of parent folders). When the option is enabled,
+      the regexp must match either a substring of the local folder name
+      (not the full name) or a prefix of the full folder name.</li>
+
+   <li><b>Sort folders alphabetically</b>.</li>
+
+   <li><b>Match folder names in a case sensitive way</b>.</li>
+
+
+   <li><b>Tab triggers shell-like completion (otherwise, cycle through suggestions)</b>.</li>
+
+   <li><b>Always include tags</b>: if set, tags are always included
+in the completion box; otherwise, tags are included only if
+the input box starts with a colon character, or if no folder matches.
+</li>
+   </ul>
+
+   <hr/>
+
+   <p>The Nostalgy extension has been written by Alain Frisch (<a
+  href="mailto:alain@frisch.fr">alain@frisch.fr</a>). Comments and
+  suggestions are welcome!  You can join the <a href="http://frisch.fr/cgi-bin/mailman/listinfo/nostalgy">Nostalgy mailing list.</a>
+  Donations can be sent to the Paypal
+  account <tt>alain@frisch.fr</tt>.</p>
+  </body>
+</html>
+

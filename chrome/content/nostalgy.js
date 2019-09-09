@@ -620,7 +620,7 @@ function NostalgyMoveToFolderAndGo(folder) {
  if (folder.tag) NostalgyToggleMessageTag(folder);
  else {
      NostalgyPredict.update_folder(folder);
-     gDBView.doCommandWithFolder(nsMsgViewCommandType.moveMessages,folder);
+     gDBView.doCommandWithFolder(Components.interfaces.nsMsgViewCommandType.moveMessages,folder);
  }
  NostalgyShowFolder(folder);
  return true;
@@ -631,7 +631,7 @@ function NostalgyCopyToFolder(folder) {
  if (folder.tag) NostalgyToggleMessageTag(folder);
  else {
      NostalgyPredict.update_folder(folder);
-     gDBView.doCommandWithFolder(nsMsgViewCommandType.copyMessages,folder);
+     gDBView.doCommandWithFolder(Components.interfaces.nsMsgViewCommandType.copyMessages,folder);
  }
  return true;
 }

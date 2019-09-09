@@ -21,30 +21,32 @@
      command="cmd_nostalgyconfig" insertbefore="menu_preferences"/>
  </menupopup>
 
- <window id="messengerWindow">
-  <statusbar hidden="true" class="chromeclass-status" id="nostalgy-statusbar">
-  <statusbarpanel flex="1">
+
+  <window id="messengerWindow">
+  <hbox class="statusbar"  id="nostalgy-statusbar">
    <label id="nostalgy-command-label"/>
    <textbox id="nostalgy-folderbox" type="autocomplete" tabscrolling="true"
 	   autocompletesearch="nostalgy-autocomplete"
 	   ontextentered="NostalgyRunCommand();"
-	   ontextcommand="NostalgyRunCommand();"
 	   ontextreverted="NostalgyHide(true);"
-	   ontextrevert="NostalgyHide(true);"
            completeselectedindex="true"
+           highlightnonmatches="true"
 	   flex="1"
 	   maxrows="25" crop="center"
            />
-  </statusbarpanel>
-  </statusbar>
- </window>
+  </hbox>
 
- <statusbar id="status-bar">
+   </window>
+   
+  <hbox  class="statusbar"  id="status-bar">
   <hbox id="statusTextBox" insertbefore="statusText">
-   <statusbarpanel insertbefore="statusText">
+   <hbox class="statusbarpanel" insertbefore="statusText">
     <label id="statusbar-nostalgy-label" crop="center" flex="1"
            value="&nostalgy.memo;"/>
-   </statusbarpanel>
+   </hbox>
   </hbox>
- </statusbar>
+ </hbox>
+
+
+
 </overlay>

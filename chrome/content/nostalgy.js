@@ -1,3 +1,7 @@
+/* import-globals-from mailWindowOverlay.js */
+
+
+
 var nostalgy_in_message_window = !window.SetFocusThreadPane;
 
 var nostalgy_folderBox = null;
@@ -289,8 +293,22 @@ function NostalgyDefLabel() {
 
 function NostalgyCollapseFolderPane() {
  var fp = NostalgyEBI("folderPaneBox");
+// alert("there");
  if (window.MsgToggleFolderPane)
-   { MsgToggleFolderPane(true); return true; }
+   { 
+/*  var splitter = document.getElementById("folderpane_splitter");
+  var state = splitter.getAttribute("state");
+  if (state == "collapsed") {
+    splitter.setAttribute("state", "open");
+  } else {
+    splitter.setAttribute("state", "collapsed");
+    }
+*/
+    //   fp = NostalgyEBI("folderpane_splitter");
+  // fp.state="collapsed";
+   MsgToggleFolderPane();
+ //  goDoCommand('cmd_toggleFolderPane'); 
+   return true; }
  else if (window.MsgToggleSplitter)
    { MsgToggleSplitter("gray_vertical_splitter"); return true; }
  else if (fp)
@@ -846,6 +864,8 @@ function onNostalgyKeyPress(ev) {
 }
 
 function NostalgyParseCommand(k) {
+ // if (k=="JS:NostalgyCollapseFolderPane();")
+//    return NostalgyCollapseFolderPane();
   if (k.indexOf("JS:") == 0)
     return eval(k.substr(3,k.length - 3));
 

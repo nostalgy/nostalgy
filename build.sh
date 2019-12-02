@@ -22,4 +22,5 @@ rm -f ${ADDON}.xpi
 cd $DIST
 zip -r $cwd/${ADDON}.xpi *
 cd $cwd
+md5sum ${ADDON}.xpi > ${ADDON}.xpi.md5
 

@@ -180,7 +180,7 @@ var nostalgy_gsuggest_folder = null;
 
 function onNostalgyResize() {
   if (nostalgy_label)
-    nostalgy_label.parentNode.maxWidth = document.width * 6 / 10;
+    nostalgy_label.parentNode.maxWidth = document.documentElement.clientWidth * 6 / 10;
 }
 
 var NostalgyFolderListener = {

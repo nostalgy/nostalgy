@@ -3,6 +3,7 @@ var gContainsSelect = null;
 var gUnderSelect = null;
 
 function onNostalgyLoad() {
+ document.addEventListener("dialogaccept", (event) => { onNostalgyAcceptChanges(); });
  var rule = window.arguments[0];
  if (!rule) { alert("rule=null!"); }
 
@@ -20,6 +21,13 @@ function onNostalgyLoad() {
  NostalgyEBI("sender").checked = rule.sender;
  NostalgyEBI("recipients").checked = rule.recipients;
  NostalgyEBI("subject").checked = rule.subject;
+}
+
+
+function onNostalgyUnLoad() {
+                alert("unload");
+// document.removeEventListener("dialogaccept", (event) => { onNostalgyAcceptChanges(); });
+
 }
 
 function onNostalgyAcceptChanges() {
@@ -69,3 +77,5 @@ function onNostalgyKeyPressTxt(ev) {
 }
 
 window.addEventListener("load", onNostalgyLoad, false);
+
+window.addEventListener("unload", onNostalgyUnLoad, false);

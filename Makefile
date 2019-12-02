@@ -1,12 +1,10 @@
-pack:
+all: clean nostalgy.xpi
+
+nostalgy.xpi:
 	./build.sh
-	sort files > files.sorted
-	mv files.sorted files
 
 clean:
-	rm -f nostalgy.jar nostalgy.xpi *~
-	(cd content; rm -f *~)
-
+	$(RM) nostalgy.xpi
 
 install:
 	scp CHANGES frisch@frisch.fr:www/info/CHANGES_NOSTALGY

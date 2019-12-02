@@ -1,10 +1,14 @@
+/* import-globals-from mailWindowOverlay.js */
+
+
+
 var nostalgy_in_message_window = !window.SetFocusThreadPane;
 
 var nostalgy_folderBox = null;
 var nostalgy_statusBar = null;
 var nostalgy_label = null;
 var nostalgy_th_statusBar = null;
-var nostalgy_th_statusBar_orig_hidden = true;
+var nostalgy_th_statusBar_orig_hidden = false;
 var nostalgy_cmdLabel = null;
 var nostalgy_active_keys = { };
 var nostalgy_timeout_regkey = 0;
@@ -217,10 +221,11 @@ function onNostalgyLoad() {
  nostalgy_statusBar = NostalgyEBI("nostalgy-statusbar");
  nostalgy_label = NostalgyEBI("statusbar-nostalgy-label");
  nostalgy_th_statusBar = NostalgyEBI("status-bar");
+ nostalgy_th_statusBar_orig_hidden= nostalgy_th_statusBar.hidden;
  nostalgy_cmdLabel = NostalgyEBI("nostalgy-command-label");
 
  NostalgyFolderSelectionBox(nostalgy_folderBox);
- nostalgy_default_label = nostalgy_label.value;
+ nostalgy_default_label = nostalgy_label.label;
 
 
  if (!nostalgy_in_message_window) {
@@ -266,32 +271,43 @@ function NostalgyHide(restore) {
  nostalgy_th_statusBar.hidden = nostalgy_th_statusBar_orig_hidden;
 
  if (nostalgy_focus_saved) {
-  if (restore) {
-    if (nostalgy_folderBox != nostalgy_focus_saved) {
-      var _nfs = nostalgy_focus_saved;
-      setTimeout(function() {_nfs.focus();}, 0);
-    }
-  }
+  if (restore) nostalgy_focus_saved.focus ();
   nostalgy_focus_saved = null;
  }
  NostalgyDefLabel();
 }
 
 function NostalgyDefLabel() {
+ nostalgy_th_statusBar.hidden=false;
+
  nostalgy_gsuggest_folder = NostalgySuggest();
  if (nostalgy_gsuggest_folder) {
-   nostalgy_label.value =
+   nostalgy_label.label =
        nostalgy_default_label + " [+Shift: ==> " + NostalgyFolderName(nostalgy_gsuggest_folder) + "]";
  } else {
-   nostalgy_label.value = nostalgy_default_label;
+   nostalgy_label.label = nostalgy_default_label;
  }
 }
 
 
 function NostalgyCollapseFolderPane() {
  var fp = NostalgyEBI("folderPaneBox");
+// alert("there");
  if (window.MsgToggleFolderPane)
-   { MsgToggleFolderPane(true); return true; }
+   { 
+/*  var splitter = document.getElementById("folderpane_splitter");
+  var state = splitter.getAttribute("state");
+  if (state == "collapsed") {
+    splitter.setAttribute("state", "open");
+  } else {
+    splitter.setAttribute("state", "collapsed");
+    }
+*/
+    //   fp = NostalgyEBI("folderpane_splitter");
+  // fp.state="collapsed";
+   MsgToggleFolderPane();
+ //  goDoCommand('cmd_toggleFolderPane'); 
+   return true; }
  else if (window.MsgToggleSplitter)
    { MsgToggleSplitter("gray_vertical_splitter"); return true; }
  else if (fp)
@@ -308,7 +324,7 @@ function NostalgyCmd(lab,cmd,require_file) {
  nostalgy_search_folder_options.require_file = require_file;
  nostalgy_cmdLabel.value = lab;
  nostalgy_command = cmd;
- nostalgy_th_statusBar_orig_hidden = nostalgy_th_statusBar.hidden;
+// nostalgy_th_statusBar_orig_hidden = nostalgy_th_statusBar.hidden;
  nostalgy_th_statusBar.hidden = true;
  nostalgy_folderBox.shell_completion = false;
  nostalgy_statusBar.hidden = false;
@@ -329,9 +345,8 @@ function NostalgyCmd(lab,cmd,require_file) {
 function NostalgyShowRecentFoldersList() {
   var listener = null;
   var box = nostalgy_folderBox;
-  if (box.controller) { // Toolkit
+  if (box.controller) {// Toolkit
     listener = box.controller.QueryInterface(Components.interfaces.nsIAutoCompleteObserver);
-    box.controller.handleKeyNavigation(KeyEvent.DOM_VK_DOWN); // Workaround for https://github.com/alainfrisch/nostalgy/issues/60
   }
   else { // XPFE
     // box.mAutoCompleteObserver uses a flawed equality check so we have to replace it.
@@ -398,11 +413,7 @@ function NostalgyRunCommand() {
         }
         if (parent) {
             if (confirm("Create new folder [" + name + "]\nunder " + NostalgyFullFolderName(parent) + "?")) {
-                var prefs = NostalgyPrefService().getBranch("extensions.nostalgy.");
                 var timeout = 200;
-                try {
-                    timeout = prefs.getIntPref("delay_after_creating_folder");
-                } catch (ex) { }
                 parent.createSubfolder(name, msgWindow);
                 ClearNostalgyCache();
                 parent.updateFolder(msgWindow);
@@ -618,7 +629,7 @@ function NostalgyMoveToFolder(folder) {
  if (folder.tag) NostalgyToggleMessageTag(folder);
  else {
      NostalgyPredict.update_folder(folder);
-     gDBView.doCommandWithFolder(nsMsgViewCommandType.moveMessages,folder);
+     gDBView.doCommandWithFolder(Components.interfaces.nsMsgViewCommandType.moveMessages,folder);
  }
  return true;
 }
@@ -628,7 +639,7 @@ function NostalgyMoveToFolderAndGo(folder) {
  if (folder.tag) NostalgyToggleMessageTag(folder);
  else {
      NostalgyPredict.update_folder(folder);
-     gDBView.doCommandWithFolder(nsMsgViewCommandType.moveMessages,folder);
+     gDBView.doCommandWithFolder(Components.interfaces.nsMsgViewCommandType.moveMessages,folder);
  }
  NostalgyShowFolder(folder);
  return true;
@@ -639,7 +650,7 @@ function NostalgyCopyToFolder(folder) {
  if (folder.tag) NostalgyToggleMessageTag(folder);
  else {
      NostalgyPredict.update_folder(folder);
-     gDBView.doCommandWithFolder(nsMsgViewCommandType.copyMessages,folder);
+     gDBView.doCommandWithFolder(Components.interfaces.nsMsgViewCommandType.copyMessages,folder);
  }
  return true;
 }
@@ -810,6 +821,7 @@ function NostalgySearchSender() {
 }
 
 function onNostalgyKeyPressCapture(ev) {
+  nostalgy_th_statusBar.hidden=false;
     if (ev.keyCode == KeyEvent.DOM_VK_ESCAPE)
         NostalgyEscape();
 
@@ -830,6 +842,7 @@ function onNostalgyKeyPressCapture(ev) {
 
 
 function onNostalgyKeyPress(ev) {
+  nostalgy_th_statusBar.hidden=false;
   if (!nostalgy_statusBar.hidden) return;
 
   if (NostalgyEscapePressed >= 1) {
@@ -899,3 +912,5 @@ window.addEventListener("resize", onNostalgyResize, false);
 window.addEventListener("unload", onNostalgyUnload, false);
 window.addEventListener("keypress", onNostalgyKeyPress, false);
 window.addEventListener("keypress", onNostalgyKeyPressCapture, true);
+Components.classes["@mozilla.org/xre/app-info;1"].
+    getService(Components.interfaces.nsIXULRuntime).invalidateCachesOnRestart();

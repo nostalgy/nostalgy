@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet type="text/css" href="chrome://messenger/skin/messenger.css"?>
+
+
 <!DOCTYPE window>
 
 <dialog
@@ -23,6 +26,7 @@
  <tab label="Rules"/>
  <tab label="Completion"/>
  <tab label="Keys"/>
+ <tab label="Utilities"/>
  </tabs>
  <tabpanels>
 
@@ -34,22 +38,27 @@ restricted to match messages under a given server/folder. When a folder
 is selected for a given message, Nostalgy informs you in the status line.
 You can then use the Shift-S/Shift-C
 shortcuts to move/copy the message to this folder.</label>
- <hbox flex="0">
- <listbox id="rules" flex="0" style="width:400px">
-  <listhead>
-   <listheader label="Field"/>
-   <listheader label="Contains"/>
-   <listheader label="Under"/>
-   <listheader label="Target"/>
-  </listhead>
-  <listcols>
-   <listcol width="80" maxwidth="80"/>
-   <listcol width="150" maxwidth="150"/>
-   <listcol width="150" maxwidth="150"/>
-   <listcol width="450" maxwidth="450"/>
-  </listcols>
- </listbox>
- </hbox>
+ <vbox >
+ <hbox >
+
+
+<richlistbox class="theme-listbox"  id="nrules" >
+
+ <treecols>
+    <treecol label="Field" width="100"/>
+    <splitter class="tree-splitter"  style="background-color: #202020;"/>
+    <treecol label="Contains" width="100"/>
+    <treecol label="Under" width="100"/>
+    <treecol label="Target" width="100" />
+  </treecols>
+
+
+  </richlistbox>
+
+
+
+ </hbox >
+ </vbox>
 
  <vbox align="center">
   <hbox>
@@ -118,6 +127,28 @@ shortcuts to move/copy the message to this folder.</label>
   </hbox>
  </groupbox>
  </tabpanel>
+
+ <tabpanel>
+ <groupbox flex="1">
+ <label>This has some utility functions in addition to standard nostalgy functions</label>
+ <vbox >
+ <hbox >
+
+
+
+
+ </hbox >
+ </vbox>
+
+ <vbox align="center">
+  <hbox>
+  <button label="Restart Thunderbird" accesskey="R" oncommand="NostalgyDoRestart();"/>
+  </hbox>
+ </vbox>
+ </groupbox>
+ </tabpanel>
+
+
  </tabpanels>
  </tabbox>
 

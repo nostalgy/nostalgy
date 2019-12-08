@@ -50,19 +50,12 @@
 
  </window>
    
-  <hbox  class="statusbar"  id="status-bar">
-  <hbox id="statusTextBox" insertbefore="statusText">
-
-    <statusbarpanel  id="statusbar-nostalgy-label" 
-           label="&nostalgy.memo;"/>
-
-  </hbox>
+ <hbox  class="statusbar"  id="status-bar">
+   <hbox insertbefore="unreadMessageCount">
+     <statusbarpanel  id="statusbar-nostalgy-label" 
+                      label="&nostalgy.memo;"/>
+   </hbox>
  </hbox>
-
-
-
-
-
 </overlay>
 
 

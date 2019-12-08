@@ -283,7 +283,7 @@ function NostalgyDefLabel() {
  nostalgy_gsuggest_folder = NostalgySuggest();
  if (nostalgy_gsuggest_folder) {
    nostalgy_label.label =
-       nostalgy_default_label + " [+Shift: ==> " + NostalgyFolderName(nostalgy_gsuggest_folder) + "]";
+       nostalgy_default_label + " [+Shift ⇒ " + NostalgyFolderName(nostalgy_gsuggest_folder) + "]";
  } else {
    nostalgy_label.label = nostalgy_default_label;
  }

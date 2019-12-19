@@ -94,7 +94,6 @@ var NostalgyRules =
 
   get_rules: function()
   {
-   
     try {
      var r = NostalgyJSONEval(this._branch.getCharPref("rules"));
      var i;
@@ -116,9 +115,6 @@ var NostalgyRules =
         NostalgyDebug("Cannot get rules: " + ex);
         this.rules = [];
     }
-    
-    
-//        this.rules = [];
   },
 
   observe: function(aSubject, aTopic, aData)
@@ -227,7 +223,7 @@ function onNostalgyLoad() {
  nostalgy_th_statusBar = NostalgyEBI("status-bar");
  nostalgy_th_statusBar_orig_hidden= nostalgy_th_statusBar.hidden;
  nostalgy_cmdLabel = NostalgyEBI("nostalgy-command-label");
- 
+
  NostalgyFolderSelectionBox(nostalgy_folderBox);
  nostalgy_default_label = nostalgy_label.label;
 
@@ -282,12 +278,13 @@ function NostalgyHide(restore) {
 }
 
 function NostalgyDefLabel() {
-nostalgy_th_statusBar.hidden=false;
+ nostalgy_th_statusBar.hidden=false;
 
  nostalgy_gsuggest_folder = NostalgySuggest();
  if (nostalgy_gsuggest_folder) {
-   nostalgy_label.label =
-       nostalgy_default_label + " [+Shift: => " + NostalgyFolderName(nostalgy_gsuggest_folder) + "]";
+   nostalgy_folder_name = NostalgyFolderName(nostalgy_gsuggest_folder);
+   nostalgy_label.setAttribute("tooltiptext", nostalgy_folder_name);
+   nostalgy_label.label = nostalgy_default_label + " [+Shift ⇒ " + nostalgy_folder_name + "]";
  } else {
    nostalgy_label.label = nostalgy_default_label;
  }
@@ -349,8 +346,9 @@ function NostalgyCmd(lab,cmd,require_file) {
 function NostalgyShowRecentFoldersList() {
   var listener = null;
   var box = nostalgy_folderBox;
-  if (box.controller) // Toolkit
+  if (box.controller) {// Toolkit
     listener = box.controller.QueryInterface(Components.interfaces.nsIAutoCompleteObserver);
+  }
   else { // XPFE
     // box.mAutoCompleteObserver uses a flawed equality check so we have to replace it.
     // Since we only use one autocompleter, its name is equal to the autocompletesearch attribute.
@@ -416,6 +414,7 @@ function NostalgyRunCommand() {
         }
         if (parent) {
             if (confirm("Create new folder [" + name + "]\nunder " + NostalgyFullFolderName(parent) + "?")) {
+                var timeout = 200;
                 parent.createSubfolder(name, msgWindow);
                 ClearNostalgyCache();
                 parent.updateFolder(msgWindow);
@@ -428,7 +427,7 @@ function NostalgyRunCommand() {
                         }
                         else
                             alert("No folder " + s);
-                    }, 200);
+                    }, timeout);
             } else
                 return;
         } else
@@ -823,7 +822,7 @@ function NostalgySearchSender() {
 }
 
 function onNostalgyKeyPressCapture(ev) {
-nostalgy_th_statusBar.hidden=false;
+  nostalgy_th_statusBar.hidden=false;
     if (ev.keyCode == KeyEvent.DOM_VK_ESCAPE)
         NostalgyEscape();
 
@@ -844,7 +843,7 @@ nostalgy_th_statusBar.hidden=false;
 
 
 function onNostalgyKeyPress(ev) {
-nostalgy_th_statusBar.hidden=false;
+  nostalgy_th_statusBar.hidden=false;
   if (!nostalgy_statusBar.hidden) return;
 
   if (NostalgyEscapePressed >= 1) {
@@ -869,8 +868,6 @@ nostalgy_th_statusBar.hidden=false;
 }
 
 function NostalgyParseCommand(k) {
- // if (k=="JS:NostalgyCollapseFolderPane();")
-//    return NostalgyCollapseFolderPane();
   if (k.indexOf("JS:") == 0)
     return eval(k.substr(3,k.length - 3));
 

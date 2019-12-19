@@ -10,7 +10,6 @@ Next version (originally planned by Alain, maybe obsolete now)
   - #60, #62: fix for TB 60.3 (h271fa GitHub user)
   
   
-  
 0.2.36
   - Fix for TB 60 (thanks to lepokle GitHub user)
 

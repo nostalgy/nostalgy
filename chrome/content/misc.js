@@ -19,16 +19,13 @@ function NostalgyDebug(aText)
 
 function NostalgyStopEvent(ev) {
   ev.preventDefault();
-  //ev.stopPropagation();
+  // ev.stopPropagation();
   ev.stopImmediatePropagation();
-//   alert("stop ev");
 }
 
 function NostalgyStopEventImmediately(ev) {
   ev.preventDefault();
-  //ev.stopPropagation();
   ev.stopImmediatePropagation();
-//   alert("stop ev");
 }
 
 function NostalgyJSONEval(s) {

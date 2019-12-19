@@ -31,8 +31,6 @@ function onNostalgyUnLoad() {
 }
 
 function onNostalgyAcceptChanges() {
-
-
  var folder = NostalgyFindFolderExact(gFolderSelect.value);
  if (!folder) {
    alert("Please choose an existing folder");
@@ -53,7 +51,6 @@ function onNostalgyAcceptChanges() {
  };
     
  (window.arguments[1])(rule);
-
  return true;
 }
 

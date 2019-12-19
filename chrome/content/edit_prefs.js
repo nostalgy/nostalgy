@@ -87,8 +87,6 @@ function NostalgyRuleOfItem(item) {
 }
 
 function NostalgyCreateItem(rule) {
-/*
-*/
   var item = document.createXULElement("richlistitem");
 
   item.addEventListener("dblclick", function() { NostalgyDoEditItem(item); }, false);
@@ -107,7 +105,6 @@ function NostalgyCreateItem(rule) {
 
   NostalgySetItem(item,rule);
   nostalgy_gList.appendChild(item);
-
 }
 
 
@@ -283,7 +280,7 @@ function NostalgyRemoveRow(r) {
 }
 
 function onNostalgyLoad() {
- document.addEventListener("dialogaccept", (event) => { onNostalgyAcceptChanges(); });
+  document.addEventListener("dialogaccept", (event) => { onNostalgyAcceptChanges(); });
   NostalgyFolderSelectionBoxes();
  document.addEventListener("dialogextra2", (event) => { openDialog('chrome://nostalgy/content/about.xul', 'about_nostalgy', 'resizable'); });
 

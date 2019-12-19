@@ -1,7 +1,7 @@
 const Cc = Components.classes;
 const Ci = Components.interfaces;
 const Cu = Components.utils;
-	var ChromeUtils = require("ChromeUtils.jsm");
+var ChromeUtils = require("ChromeUtils.jsm");
 var {XPCOMUtils} = ChromeUtils.import('resource://gre/modules/XPCOMUtils.jsm');
 var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 

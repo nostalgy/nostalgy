@@ -22,29 +22,24 @@
  </menupopup>
 
  <window id="messengerWindow">
-  <statusbar hidden="true" class="chromeclass-status" id="nostalgy-statusbar">
-  <statusbarpanel flex="1">
+  <hbox class="statusbar"  id="nostalgy-statusbar" hidden = "true">
    <label id="nostalgy-command-label"/>
    <textbox id="nostalgy-folderbox" type="autocomplete" tabscrolling="true"
 	   autocompletesearch="nostalgy-autocomplete"
 	   ontextentered="NostalgyRunCommand();"
-	   ontextcommand="NostalgyRunCommand();"
 	   ontextreverted="NostalgyHide(true);"
-	   ontextrevert="NostalgyHide(true);"
            completeselectedindex="true"
+           highlightnonmatches="true"
 	   flex="1"
 	   maxrows="25" crop="center"
            />
-  </statusbarpanel>
-  </statusbar>
- </window>
-
- <statusbar id="status-bar">
-  <hbox id="statusTextBox" insertbefore="statusText">
-   <statusbarpanel insertbefore="statusText">
-    <label id="statusbar-nostalgy-label" crop="center" flex="1"
-           value="&nostalgy.memo;"/>
-   </statusbarpanel>
   </hbox>
- </statusbar>
+ </window>
+   
+ <hbox  class="statusbar"  id="status-bar">
+   <hbox insertbefore="unreadMessageCount">
+     <statusbarpanel  id="statusbar-nostalgy-label" 
+                      label="&nostalgy.memomessage;"/>
+  </hbox>
+ </hbox>
 </overlay>

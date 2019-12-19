@@ -282,6 +282,7 @@ function NostalgyRemoveRow(r) {
 function onNostalgyLoad() {
   document.addEventListener("dialogaccept", (event) => { onNostalgyAcceptChanges(); });
   NostalgyFolderSelectionBoxes();
+ document.addEventListener("dialogextra2", (event) => { openDialog('chrome://nostalgy/content/about.xul', 'about_nostalgy', 'resizable'); });
 
   nostalgy_gList = NostalgyEBI("nrules");
   nostalgy_folder_select = NostalgyEBI("folderselect");
@@ -392,13 +393,10 @@ function NostalgySelectFolder() {
 
 function NostalgyDoRestart() {
 
-alert("test");
-/*  var idx = nostalgy_gList.selectedIndex;
-  if (idx >= 0) {
-    nostalgy_gList.getItemAtIndex(idx).remove();
-    if (nostalgy_gList.getRowCount() <= idx) { idx = nostalgy_gList.getRowCount() - 1; }
-    nostalgy_gList.selectedIndex = idx;
-*/
+//borrowed from restart-application-1.2.1 
+var boot=Components.classes['@mozilla.org/toolkit/app-startup;1'].getService(Components.interfaces.nsIAppStartup); 
+boot.quit(Components.interfaces.nsIAppStartup.eForceQuit|Components.interfaces.nsIAppStartup.eRestart);  let {BrowserUtils} = ChromeUtils.import ("resource://gre/modules/BrowserUtils.jsm", {});
+
 }
 
 

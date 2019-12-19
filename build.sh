@@ -3,10 +3,11 @@ NOT='.sh$|^.git|.jsx$|^tests|^.eslint|^.travis|^package.json$|^package-lock.json
 cwd=$(pwd)
 DIST=$(mktemp -d)
 # FIXME: get name and version from manifest.json
-ADDON=nostalgy68-68_1
+VERSION=$(grep '"version"' manifest.json | sed 's/.\+: "\([^"]\+\)",/\1/')
+ADDON="nostalgy68-${VERSION}"
 
 echo $DIST
-cp LICENSE README.md chrome.manifest manifest.json CHANGES  $DIST/
+cp LICENSE README.md chrome.manifest manifest.json CHANGES.txt  $DIST/
 
 for a in $(git ls-files chrome | egrep -v $NOT); do
   mkdir -p $(dirname "${DIST}/${a}")

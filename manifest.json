@@ -8,7 +8,11 @@
 	"name": "Alain Frisch, opto (Klaus Buecher)"
     },
     "legacy": {
-        "type": "xul"
+        "type": "xul",
+        "options": {
+            "page": "chrome://nostalgy/content/edit_prefs.xul",
+            "open_in_tab": false
+        }
     },
     
     "applications": {

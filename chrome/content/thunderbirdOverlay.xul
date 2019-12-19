@@ -23,7 +23,7 @@
 
   
  <window id="messengerWindow">
-  <hbox class="statusbar"  id="nostalgy-statusbar">
+  <hbox class="statusbar"  id="nostalgy-statusbar" hidden="true">
    <label id="nostalgy-command-label"/>
    <textbox id="nostalgy-folderbox" type="autocomplete" tabscrolling="true"
 	   autocompletesearch="nostalgy-autocomplete"

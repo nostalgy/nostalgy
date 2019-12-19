@@ -17,13 +17,12 @@
   </head>
   <body>
 
-   <h2>Usage directions for Nostalgy</h2>
+   <h2>Usage directions for nostalgy</h2>
 
    <p>
       Please visit
       <a href="http://alain.frisch.fr/soft_mozilla.html">Nostalgy's
-      homepage</a>. It contains a copy of this page that might be
-      better read in your browser! From there, you can also download
+    original homepage (upto TB 60) </a> and for the adaptation to TB 68   <a href="https://github.com/opto/nostalgy-xpi/">" opto's github page </a>. From there, you can also download
       the latest development version.
    </p>
 
@@ -37,7 +36,7 @@
      <ul>
      <li>We give here the default values for shortcuts.
      Most of them can be changed  from the preference dialog.</li>
-     <li>Even if the key shortcuts above are written in
+     <li>Even if the key shortcuts are written in
      uppercase, you must not press Shift.</li>
      <li>The ESC-X shortcuts means: press and release ESCAPE, and then
      press X within 300ms (ESC-ESC is thus like a double click on
@@ -55,11 +54,11 @@
 
    <table border="1">
     <tr><th>Shortcut</th><th>Description</th></tr>
-    <tr><td>G</td><td>Open a specific folder</td></tr>
-    <tr><td>S</td><td>Move the current message to a specific folder</td></tr>
-    <tr><td>B</td><td>Move the current message to a specific folder
+    <tr><td>g</td><td>Open a specific folder</td></tr>
+    <tr><td>s</td><td>Move the current message to a specific folder</td></tr>
+    <tr><td>b</td><td>Move the current message to a specific folder
     and go there</td></tr>
-    <tr><td>C</td><td>Copy the current message to a specific folder</td></tr>
+    <tr><td>c</td><td>Copy the current message to a specific folder</td></tr>
    </table>
 
    <p>
@@ -76,17 +75,17 @@
    <p>
      Before you type anything in the folder completion box, the popup
      displays the most recently selected folders. You can choose one
-     of them with the UP/DOWN keys.
+     of them with the UP/DOWN keys.      (currently not working in TB68)
    </p>
 
-   <p>
+   <p>                                                            
      In the folder completion box, the TAB key activates a shell-like
      autocompletion mode (this feature must be enabled in Nostalgy's
      preference dialog; otherwise, TAB cycles through the possible
      completions). In this mode, the completed suggestions only
      mentions possible completions one level down in the folder
      hierarchy, and the TAB key itself automatically completes with
-     the longest unambiguous fragment.
+     the longest unambiguous fragment.       (currently not working in TB68)
    </p>
 
    <p>
@@ -96,21 +95,22 @@
    </p>
 
    <p>
-     The S,B,C commands can be applied to one or many messages.
+     The s,b,c commands can be applied to one or many messages.
    </p>
 
    <p>
-     The S and C commands also work in a standalone message window.
+     The s and c commands also work in a standalone message window.
+    
    </p>
 
    <p>
-     The G command also focuses the thread pane. If you were doing a
+     The g command also focuses the thread pane. If you were doing a
      QuickSearch (that is, if you had typed some text in the search
      box), the same search carried over to the new folder.
    </p>
 
    <p>
-     The B command preserves the selection. The moved messages will
+     The b command preserves the selection. The moved messages will
      be selected again in the target folder.
    </p>
 
@@ -119,7 +119,7 @@
 
    <p>
      In the preference dialog, you can define any number of custom
-     keyboard shortcuts. A custom shortcut triggers a G, S, C or B
+     keyboard shortcuts. A custom shortcut triggers a g, s, c or b
      command to a specific folder.
    </p>
 
@@ -127,8 +127,8 @@
    <h3>3-pane navigation</h3>
 
    <p>
-     Because of the G command, the folder pane becomes thus much less
-     useful, and it can be hidden with the L shortcut.
+     Because of the g command, the folder pane becomes thus much less
+     useful, and it can be hidden with the l shortcut.
      (Thunderbird already proposes a shortcut to show/hide
      the message pane: F8).
    </p>
@@ -143,13 +143,14 @@
 
    <table border="1">
     <tr><th>Shortcut</th><th>Description</th></tr>
-    <tr><td>L</td><td>Hide/show the folder pane</td></tr>
-    <tr><td>ESC-F</td><td>Focus the folder pane</td></tr>
-    <tr><td>ESC-M</td><td>Focus the message pane</td></tr>
+    <tr><td>l</td><td>Hide/show the folder pane</td></tr>
+    <tr><td>ESC-f</td><td>Focus the folder pane</td></tr>
+    <tr><td>ESC-m</td><td>Focus the message pane</td></tr>
     <tr><td>ESC-ESC</td><td>Focus the thread pane</td></tr>
     <tr><td>ESC-ESC-ESC</td><td>Focus the thread pane, clear quick search box, select the "All" view</td></tr>
     <tr><td>Ctrl-Left/Right</td><td>Scroll the message from the thread pane</td></tr>
    </table>
+
 
 
    <h3>Rules</h3>
@@ -188,11 +189,12 @@
    <p>
      Nostalgy comes with a backup system for rules. In the Preferences
      dialog (tab "Rules"), there is a button "Send rules by email".
+     (Previous versions only, not in TB 68)
      It allows you to send an e-mail to any address (your own address
      by default). This special e-mail contains a copy of all your
      rules.  When you read such an e-mail, Thunderbird will show you a
      button "Import Nostalgy rules" which lets you import
-     all the rules found in the message.
+     all the rules found in the message.   (Previous versions only, not in TB 68)
    </p>
 
    <p>
@@ -216,7 +218,7 @@
      subject are searched. And if you press again,
      the QuickSearch is cancelled.
      In the Sent folder, the search is done on the first recipient (To:
-     header) instead of the sender.
+     header) instead of the sender.        (Previous versions only, not in TB 68)
    </p>
 
 <h3>Tags</h3>
@@ -228,10 +230,13 @@ messages. Thunderbird's tagging feature replaces its former labeling
 feature, and allows users to define an unlimited number of tags, more
 than one of which can be attached to a single message. </p>
 
-<p>Nostalgy helps you use tags in much the same way it helps you use folders:
+<p> 
+Nostalgy helps you use tags in much the same way it helps you use folders:
 The completion box for the Go/Save/Copy commands has always listed your
 email folders, but for Thunderbird 2.0, it also lists your existing tags,
 prefixed with a semi-colon.</p>
+
+<p> This needs to be enabled in settings </p>
 
 <p>A "Go" command applied to a tag restricts the current folder view to show
 only the messages that have this tag (ESC-ESC-ESC restores the "All
@@ -307,13 +312,19 @@ the input box starts with a colon character, or if no folder matches.
 </li>
    </ul>
 
+
+      <h3>Utilities</h3>
+      <p> The restart button forces Thunderbird to restart. This may be useful for developers, when many windows need to be closed, or when addons have been deleted/reloaded etc. </p>
+
+
+
    <hr/>
 
-   <p>The Nostalgy extension has been written by Alain Frisch (<a
-  href="mailto:alain@frisch.fr">alain@frisch.fr</a>). Comments and
-  suggestions are welcome!  You can join the <a href="http://frisch.fr/cgi-bin/mailman/listinfo/nostalgy">Nostalgy mailing list.</a>
+   <p>The Nostalgy extension has been written by Alain Frisch and adapted to TB 68 by opto (Klaus Buecher) as Nostalgy++ (<a
+  href="mailto:buecher@optosolar.com">Klaus</a>). Comments and
+  suggestions are welcome!  You can add suggestions or bug to the issues in github in opto's account  https://github.com/opto/nostalgy-xpi
   Donations can be sent to the Paypal
-  account <tt>alain@frisch.fr</tt>.</p>
+  account <tt></tt>.</p>
   </body>
 </html>
 

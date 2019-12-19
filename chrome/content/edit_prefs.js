@@ -63,8 +63,9 @@ function NostalgySetItem(item, rule) {
 
   f.setAttribute("value", lab);
   f.setAttribute("label", lab);
-
+  f.setAttribute("align", "center");
   item.childNodes.item(1).setAttribute("label", rule.contains);
+  item.childNodes.item(1).setAttribute("value", rule.contains);
 
   var u = "";
   if (rule.under) { u = rule.under; }
@@ -86,13 +87,15 @@ function NostalgyRuleOfItem(item) {
 }
 
 function NostalgyCreateItem(rule) {
-  var item = document.createElement("listitem");
+/*
+*/
+  var item = document.createXULElement("richlistitem");
 
   item.addEventListener("dblclick", function() { NostalgyDoEditItem(item); }, false);
-  item.appendChild(document.createElement("listcell"));
-  item.appendChild(document.createElement("listcell"));
-  item.appendChild(document.createElement("listcell"));
-  item.appendChild(document.createElement("listcell"));
+  item.appendChild(document.createXULElement("label"));
+  item.appendChild(document.createXULElement("label"));
+  item.appendChild(document.createXULElement("label"));
+  item.appendChild(document.createXULElement("label"));
 
   // convert from previous version
   if (rule.field == "any") {
@@ -104,6 +107,7 @@ function NostalgyCreateItem(rule) {
 
   NostalgySetItem(item,rule);
   nostalgy_gList.appendChild(item);
+
 }
 
 
@@ -223,7 +227,7 @@ function NostalgyDoNewRule() {
 function NostalgyDoDelete() {
   var idx = nostalgy_gList.selectedIndex;
   if (idx >= 0) {
-    nostalgy_gList.removeItemAt(idx);
+    nostalgy_gList.getItemAtIndex(idx).remove();
     if (nostalgy_gList.getRowCount() <= idx) { idx = nostalgy_gList.getRowCount() - 1; }
     nostalgy_gList.selectedIndex = idx;
   }
@@ -279,9 +283,11 @@ function NostalgyRemoveRow(r) {
 }
 
 function onNostalgyLoad() {
+ document.addEventListener("dialogaccept", (event) => { onNostalgyAcceptChanges(); });
   NostalgyFolderSelectionBoxes();
+ document.addEventListener("dialogextra2", (event) => { openDialog('chrome://nostalgy/content/about.xul', 'about_nostalgy', 'resizable'); });
 
-  nostalgy_gList = NostalgyEBI("rules");
+  nostalgy_gList = NostalgyEBI("nrules");
   nostalgy_folder_select = NostalgyEBI("folderselect");
 
   var prefs = NostalgyPrefBranch();
@@ -384,6 +390,22 @@ function NostalgySelectFolder() {
     }
   }
 }
+
+
+
+
+function NostalgyDoRestart() {
+
+//borrowed from restart-application-1.2.1 
+var boot=Components.classes['@mozilla.org/toolkit/app-startup;1'].getService(Components.interfaces.nsIAppStartup); 
+boot.quit(Components.interfaces.nsIAppStartup.eForceQuit|Components.interfaces.nsIAppStartup.eRestart);  let {BrowserUtils} = ChromeUtils.import ("resource://gre/modules/BrowserUtils.jsm", {});
+
+}
+
+
+
+
+
 
 window.addEventListener("load", onNostalgyLoad, false);
 window.addEventListener("keypress", onNostalgyKeyPress, true);

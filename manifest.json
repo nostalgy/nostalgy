@@ -1,0 +1,21 @@
+{
+	"manifest_version": 2,
+	"name": "Nostalgy",
+  "description": "Adds shortcuts to change folder, move/copy messages, with folder completion, and other utilities to archive or organise emails",
+	"version": "1.0.16a",
+	"author": "Alain Frisch, opto (Klaus Buecher)",
+	"developer": {
+		"name": "Alain Frisch, opto (Klaus Buecher)"
+	},
+ "legacy": {
+    "type": "xul"
+    
+  },
+  
+	"applications": {
+		"gecko": {
+			"id": "nostalgy@opto.one",
+			"strict_min_version": "68.0"
+		}
+	}
+}

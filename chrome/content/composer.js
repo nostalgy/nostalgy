@@ -46,10 +46,10 @@ function NostalgyKeyPress(ev) {
 }
 
 
-function onNostalgyLoad(){
+function onNostalgyLoadComp(){
   nostalgy_old_awRecipientKeyPress = window.awRecipientKeyPress;
   window.awRecipientKeyPress = nostalgy_awRecipientKeyPress;
   window.addEventListener("keypress", NostalgyKeyPress, false);
 }
 
-window.addEventListener("load", onNostalgyLoad, false);
+window.addEventListener("load", onNostalgyLoadComp, false);

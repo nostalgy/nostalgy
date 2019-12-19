@@ -5,9 +5,9 @@
 <dialog
         xmlns:html="http://www.w3.org/1999/xhtml"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-        title="Edit Nostalgy Rule"
+        title="Edit nostalgy Rule"
 	buttons="accept,cancel"
-	ondialogaccept="return onNostalgyAcceptChanges();"
+
 >
 
  <script src="misc.js"/>

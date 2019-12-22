@@ -1,0 +1,25 @@
+{
+	"manifest_version": 2,
+	"name": "Nostalgy",
+  "description": "Adds shortcuts to change folder, move/copy messages, with folder completion, and other utilities to archive or organise emails. User instructions at tools->addon settings->nostalgy->  Nostalgy usage directions",
+	"version": "1.0.20",
+	"author": "Alain Frisch, opto (Klaus Buecher)",
+	"developer": {
+		"name": "Alain Frisch, opto (Klaus Buecher)"
+	},
+ "legacy": {
+    "type": "xul",
+    "options": {
+            "page": "chrome://nostalgy/content/edit_prefs.xul",
+            "open_in_tab": false
+        }    
+  },
+  
+	"applications": {
+		"gecko": {
+			"id": "nostalgy@opto.one",
+			"strict_min_version": "68.0"
+		}
+	}
+}
+                                                                                                                                                        

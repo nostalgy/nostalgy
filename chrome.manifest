@@ -1,5 +1,5 @@
-content	nostalgy	content/
-locale	nostalgy	en-US	locale/en-US/
+content	nostalgy	chrome/content/
+locale	nostalgy	en-US	chrome/locale/en-US/
 overlay	chrome://messenger/content/messenger.xul	chrome://nostalgy/content/thunderbirdOverlay.xul
 overlay	chrome://messenger/content/messageWindow.xul	chrome://nostalgy/content/messageOverlay.xul
 overlay	chrome://messenger/content/messengercompose/messengercompose.xul	chrome://nostalgy/content/composerOverlay.xul

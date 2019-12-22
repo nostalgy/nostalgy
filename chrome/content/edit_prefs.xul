@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet type="text/css" href="chrome://messenger/skin/messenger.css"?>
+
+
+<!DOCTYPE window>
+
+<dialog
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	buttons="accept,extra2"
+	ondialogaccept="return onNostalgyAcceptChanges();"
+	ondialogextra2="openDialog('chrome://nostalgy/content/about.xul', 'about_nostalgy', 'resizable');"
+	buttonlabelextra2="Nostalgy usage directions..."
+        width="900"
+        height="500"
+        title="nostalgy Preferences">
+
+ <script src="misc.js"/>
+ <script src="folders.js"/>
+ <script src="nostalgy_keys.js"/>
+ <script src="edit_prefs.js"/>
+
+ <tabbox flex="0" style="width:600px">
+ <tabs>
+ <tab label="Rules"/>
+ <tab label="Completion"/>
+ <tab label="Keys"/>
+ <tab label="Utilities"/>
+ </tabs>
+ <tabpanels>
+
+ <tabpanel>
+ <groupbox flex="1">   
+ <label>Rules associate folders to messages by looking for a
+substring of the Sender or Subject (or both) headers. A rule can be
+restricted to match messages under a given server/folder. When a folder
+is selected for a given message, Nostalgy informs you in the status line.
+You can then use the Shift-S/Shift-C
+shortcuts to move/copy the message to this folder.</label>   
+ <vbox >
+ <hbox >
+
+
+<richlistbox class="theme-listbox"  id="nrules" >
+
+ <treecols>
+    <treecol label="Field" width="100"/>
+    <splitter class="tree-splitter"  style="background-color: #202020;"/>
+    <treecol label="Contains" width="100"/>
+    <treecol label="Under" width="100"/>
+    <treecol label="Target" width="100" />
+  </treecols>
+
+
+  </richlistbox>
+
+
+
+ </hbox >
+ </vbox>
+
+ <vbox align="center">
+  <hbox>
+  <button label="Edit" accesskey="E" oncommand="NostalgyDoEdit();"/>
+  <button label="Delete" accesskey="D" oncommand="NostalgyDoDelete();"/>
+  <button label="New" accesskey="N" oncommand="NostalgyDoNewRule();"/>
+  <separator orient="vertical"/>
+  <button label="Move up" accesskey="U" oncommand="NostalgyDoMoveUp();"/>
+  <button label="Move down" accesskey="W" oncommand="NostalgyDoMoveDown();"/>
+  <separator orient="vertical"/>
+  <button label="Export rules" oncommand="NostalgyExportRules();"/>
+  <button label="Import rules" oncommand="NostalgyImportRules();"/>
+  </hbox>
+ </vbox>
+ </groupbox>
+ </tabpanel>
+
+ <tabpanel>
+ <groupbox flex="1">
+   <checkbox label="Restrict folder completion to the current server"
+             id="restrict_to_current_server" accesskey="R"/>
+   <checkbox label="Match only on folder name, not on the full path"
+             id="match_only_folder_name" accesskey="P"/>
+   <checkbox label="Match only the prefix of folder path or name, not any substring"
+             id="match_only_prefix" accesskey="B"/>
+   <checkbox label="Sort folders alphabetically"
+             id="sort_folders" accesskey="S"/>
+   <checkbox label="Match folder names in a case sensitive way"
+             id="match_case_sensitive" accesskey="C"/>
+   <checkbox label="Tab triggers shell-like completion (otherwise, cycle through suggestions)"
+             id="tab_shell_completion" accesskey="T"/>
+   <checkbox label="Always include tags"
+             id="always_include_tags"/>
+   <checkbox label="Use Statistical Prediction"
+             id="use_statistical_prediction"/>
+   <hbox align="center">
+     <label>Number of recent folders to remember:</label>
+     <textbox type="number" min="0" max="50" id="number_of_recent_folders"/>
+   </hbox>
+   <hbox align="center">
+     <label>Number of addresses to consider for statistical prediction:</label>
+     <textbox type="number" min="0" max="99999" id="predict_max_addresses_to_update"/>
+   </hbox>
+ </groupbox>
+ </tabpanel>
+
+ <tabpanel>
+ <groupbox flex="1">
+   <grid style="overflow:auto; height:300px">
+   <columns> <column/> <column width="150"/> <column/> </columns>
+   <rows id="nostalgy_key_rows"/>
+   </grid>
+  <separator orient="horizontal"/>
+  <hbox>
+  <radiogroup id="cmdkind" orient="horizontal">
+  <radio value="Go" label="Go" selected="true"/>
+  <radio value="Save" label="Save"/>
+  <radio value="Copy" label="Copy"/>
+  <radio value="SaveGo" label="Save+Go"/>
+  </radiogroup>
+  <textbox style="width:600px" type="autocomplete" id="folderselect"
+           autocompletesearch="nostalgy-autocomplete"
+           completeselectedindex="true"
+           nostalgyfolderbox="NostalgySelectFolder();"/>
+  <button label="Create"  oncommand="NostalgySelectFolder();"/>
+  </hbox>
+ </groupbox>
+ </tabpanel>
+
+ <tabpanel>
+ <groupbox flex="1">   
+ <label>This has some utility functions in addition to standard nostalgy functions</label>   
+ <vbox >
+ <hbox >
+
+
+
+
+ </hbox >
+ </vbox>
+
+ <vbox align="center">
+  <hbox>
+  <button label="Restart Thunderbird" accesskey="R" oncommand="NostalgyDoRestart();"/>
+  </hbox>
+ </vbox>
+ </groupbox>
+ </tabpanel>
+
+
+ </tabpanels>
+ </tabbox>
+
+</dialog>

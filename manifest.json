@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "Nostalgy",
   "description": "Adds shortcuts to change folder, move/copy messages, with folder completion, and other utilities to archive or organise emails. User instructions at tools->addon settings->nostalgy->  Nostalgy usage directions",
-	"version": "1.0.21",
+	"version": "1.0.22",
 	"author": "Alain Frisch, opto (Klaus Buecher)",
 	"developer": {
 		"name": "Alain Frisch, opto (Klaus Buecher)"

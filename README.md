@@ -7,7 +7,7 @@ use Thunderbird without sacrificing the productivity you had with good
 old mutt/pine, this extension is for you!
 
 Nostalgy adds keyboard shortcuts to change folder, move/copy messages,
-with folder name auto-completion (using only the keyboard).  Also
+with folder name auto-completion (using only the keyboard).  It also
 includes a system of rules to suggest a target folder for saving
 messages; re-creates Eudora's Alt-Click; facilitates navigation in the
 3-pane window; makes it easy to change between To/Bcc/Cc fields in the

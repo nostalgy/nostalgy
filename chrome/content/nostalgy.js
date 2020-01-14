@@ -1,7 +1,7 @@
 /* import-globals-from mailWindowOverlay.js */
 
 
-
+var DELAY_AFTER_CREATING_FOLDER = 200;
 var nostalgy_in_message_window = !window.SetFocusThreadPane;
 
 var nostalgy_folderBox = null;
@@ -295,20 +295,7 @@ function NostalgyCollapseFolderPane() {
  var fp = NostalgyEBI("folderPaneBox");
 // alert("there");
  if (window.MsgToggleFolderPane)
-   { 
-/*  var splitter = document.getElementById("folderpane_splitter");
-  var state = splitter.getAttribute("state");
-  if (state == "collapsed") {
-    splitter.setAttribute("state", "open");
-  } else {
-    splitter.setAttribute("state", "collapsed");
-    }
-*/
-    //   fp = NostalgyEBI("folderpane_splitter");
-  // fp.state="collapsed";
-   MsgToggleFolderPane();
- //  goDoCommand('cmd_toggleFolderPane'); 
-   return true; }
+   { MsgToggleFolderPane(); return true; }
  else if (window.MsgToggleSplitter)
    { MsgToggleSplitter("gray_vertical_splitter"); return true; }
  else if (fp)
@@ -346,7 +333,7 @@ function NostalgyCmd(lab,cmd,require_file) {
 function NostalgyShowRecentFoldersList() {
   var listener = null;
   var box = nostalgy_folderBox;
-  if (box.controller) {// Toolkit
+  if (box.controller) { // Toolkit
     listener = box.controller.QueryInterface(Components.interfaces.nsIAutoCompleteObserver);
   }
   else { // XPFE
@@ -414,7 +401,6 @@ function NostalgyRunCommand() {
         }
         if (parent) {
             if (confirm("Create new folder [" + name + "]\nunder " + NostalgyFullFolderName(parent) + "?")) {
-                var timeout = 200;
                 parent.createSubfolder(name, msgWindow);
                 ClearNostalgyCache();
                 parent.updateFolder(msgWindow);
@@ -427,7 +413,7 @@ function NostalgyRunCommand() {
                         }
                         else
                             alert("No folder " + s);
-                    }, timeout);
+                    }, DELAY_AFTER_CREATING_FOLDER);
             } else
                 return;
         } else

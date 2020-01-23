@@ -5,7 +5,7 @@
 <dialog xmlns:html="http://www.w3.org/1999/xhtml"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         buttons="accept"
-        title="About nostalgy"
+        title="About Nostalgy"
         style="width: 699px; height: 680px;"> 
 
     <html:iframe style="border: 0px; height: 600px;" src="chrome://nostalgy/content/about.xhtml" flex="1"/>

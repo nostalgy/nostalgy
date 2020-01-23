@@ -10,7 +10,7 @@ var nostalgy_active_keys = { };
 var nostalgy_timeout_regkey = 0;
 var nostalgy_on_move_completed = null;
 var nostalgy_selection_saved = null;
-
+var DELAY_AFTER_CREATING_FOLDER = 200;
 function NostalgyIsDefined(s) {
     return (typeof(window[s]) != "undefined");
 }
@@ -90,7 +90,6 @@ var NostalgyRules =
 
   get_rules: function()
   {
-   
     try {
      var r = NostalgyJSONEval(this._branch.getCharPref("rules"));
      var i;
@@ -114,7 +113,7 @@ var NostalgyRules =
     }
     
     
-//        this.rules = [];
+
   },
 
   observe: function(aSubject, aTopic, aData)
@@ -291,18 +290,7 @@ function NostalgyCollapseFolderPane() {
  var fp = NostalgyEBI("folderPaneBox");
  if (window.MsgToggleFolderPane)
    { 
-/*  var splitter = document.getElementById("folderpane_splitter");
-  var state = splitter.getAttribute("state");
-  if (state == "collapsed") {
-    splitter.setAttribute("state", "open");
-  } else {
-    splitter.setAttribute("state", "collapsed");
-    }
-*/
-    //   fp = NostalgyEBI("folderpane_splitter");
-  // fp.state="collapsed";
    MsgToggleFolderPane();
- //  goDoCommand('cmd_toggleFolderPane'); 
    return true; }
  else if (window.MsgToggleSplitter)
    { MsgToggleSplitter("gray_vertical_splitter"); return true; }
@@ -420,7 +408,7 @@ function NostalgyRunCommand() {
                         }
                         else
                             alert("No folder " + s);
-                    }, 200);
+                    }, DELAY_AFTER_CREATING_FOLDER);
             } else
                 return;
         } else
@@ -859,8 +847,6 @@ function onNostalgyKeyPress(ev) {
 }
 
 function NostalgyParseCommand(k) {
- // if (k=="JS:NostalgyCollapseFolderPane();")
-//    return NostalgyCollapseFolderPane();
   if (k.indexOf("JS:") == 0)
     return eval(k.substr(3,k.length - 3));
 

@@ -22,14 +22,14 @@ header in the composer (To/Cc/Bcc), adding an attachment, hide the
 folder view.
 
 
-Modified by opto (Klaus Buecher) for TB 68 in https://github.com/opto/nostalgy
+Modified by opto (Klaus Buecher) for TB 68 
 
 Installation
 ============
 
 
 
-The easiest way to install Thunderbird is through   Thunderbird`s addon page. It
+The easiest way to install Thunderbird is through  Thunderbird`s addon page. It
 will automatically update itself when new versions are released.
 
-You can also try the latest development version from  https://github.com/opto/nostalgy
+You can also try the latest development versions from  http://alain.frisch.fr/info/nostalgy-current.xpi or from https://github.com/opto/nostalgy/releases

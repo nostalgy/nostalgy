@@ -1,3 +1,6 @@
+1.0.23, 1.0.24
+
+ -  More  (cosmetic, documentation) changes according to discussion in #74
 
 1.0.22
 

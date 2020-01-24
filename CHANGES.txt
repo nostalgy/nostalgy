@@ -1,3 +1,7 @@
+1.0.26
+
+-   Remove chrome.manifest
+
 1.0.25
 
 -   Use Services for restart

@@ -1,3 +1,7 @@
+1.0.25
+
+-   Use Services for restart
+
 1.0.23, 1.0.24
 
  -  More  (cosmetic, documentation) changes according to discussion in #74

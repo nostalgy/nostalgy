@@ -14,7 +14,7 @@
 	buttonlabelextra2="Nostalgy usage directions..."
         width="900"
         height="500"
-        title="nostalgy Preferences">
+        title="Nostalgy Preferences">
 
  <script src="misc.js"/>
  <script src="folders.js"/>

@@ -7,4 +7,4 @@ var NostalgyHeaderParser = {
         else
             return null;
     }
-}
+};

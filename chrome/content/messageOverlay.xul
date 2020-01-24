@@ -12,7 +12,7 @@
  <script src="header_parser.js"/>
 
  <commandset id="tasksCommands">
-   <command id="cmd_nostalgyconfig" label="nostalgy..."
+   <command id="cmd_nostalgyconfig" label="Nostalgy..."
      oncommand="openDialog('chrome://nostalgy/content/edit_prefs.xul', 'nostalgy', 'resizable');"/>
   </commandset>
 

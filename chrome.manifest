@@ -1,0 +1,7 @@
+content	nostalgy	chrome/content/
+locale	nostalgy	en-US	chrome/locale/en-US/
+overlay	chrome://messenger/content/messenger.xul	chrome://nostalgy/content/thunderbirdOverlay.xul
+overlay	chrome://messenger/content/messageWindow.xul	chrome://nostalgy/content/messageOverlay.xul
+overlay	chrome://messenger/content/messengercompose/messengercompose.xul	chrome://nostalgy/content/composerOverlay.xul
+component {0368fb30-62f8-11e3-949a-0800200c9a66} components/nostalgy-autocomplete.js
+contract @mozilla.org/autocomplete/search;1?name=nostalgy-autocomplete {0368fb30-62f8-11e3-949a-0800200c9a66}

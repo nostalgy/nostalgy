@@ -62,12 +62,22 @@ var NostalgyRules =
 
   register_keys: function() {
     nostalgy_active_keys = { };
+    let sCopy="C";
+    let sSave="S";
+    let sGo="G";
     for (var i in nostalgy_keys) {
       var k = "";
+      let sKey= nostalgy_keys[i][0];
       try {
-	k = this._branch.getCharPref("keys." + nostalgy_keys[i][0]);
+	k = this._branch.getCharPref("keys." + sKey);
       } catch (ex) { k = nostalgy_keys[i][2]; }
+      if (sKey=="save") sSave=k;
+      if (sKey=="go") sGo=k;
+      if (sKey=="copy") sCopy=k;
       nostalgy_active_keys[k] = nostalgy_keys[i][3];
+      nostalgy_default_label = "save ("+sSave+") copy (" + sCopy + ") go ("+sGo+")";
+      if (nostalgy_label)
+        nostalgy_label.label = nostalgy_default_label;
     }
 
     var a = this._branch.getChildList("actions.", { });
@@ -223,8 +233,7 @@ function onNostalgyLoad() {
  nostalgy_cmdLabel = NostalgyEBI("nostalgy-command-label");
  
  NostalgyFolderSelectionBox(nostalgy_folderBox);
- nostalgy_default_label = nostalgy_label.label;
-
+ nostalgy_label.label = nostalgy_default_label;
 
  if (!nostalgy_in_message_window) {
    NostalgyEBI("threadTree").addEventListener("select", NostalgyDefLabel, false);
@@ -244,7 +253,7 @@ function onNostalgyLoad() {
  var nsIFolderListener = Components.interfaces.nsIFolderListener;
  if (mSession)
    mSession.AddFolderListener(NostalgyFolderListener,
-      nsIFolderListener.added | nsIFolderListener.removed | nsIFolderListener.event);
+                              nsIFolderListener.added | nsIFolderListener.removed | nsIFolderListener.event);
 }
 
 

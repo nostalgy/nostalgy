@@ -22,14 +22,27 @@ header in the composer (To/Cc/Bcc), adding an attachment, hide the
 folder view.
 
 
-Modified by opto (Klaus Buecher) for TB 68 
-
 Installation
 ============
-
-
 
 The easiest way to install Thunderbird is through  Thunderbird`s addon page. It
 will automatically update itself when new versions are released.
 
-You can also try the latest development versions from  http://alain.frisch.fr/info/nostalgy-current.xpi or from https://github.com/opto/nostalgy/releases
+You can also try the latest development versions from https://github.com/nostalgy/nostalgy
+
+
+Note: to produce an .xpi file from a git clone:
+
+    git archive --format=zip --output nostalgy.zip HEAD
+
+
+Authors
+=======
+
+Alain Frisch is the original author.
+
+Many users contributed patches, in particular to adapt Nostalgy to run
+with newer versions of Thunderbird.  They are credited in the [CHANGES.txt](CHANGES.txt) file.
+
+Special thanks to Klaus Buecher, who contributed a significant rewrite of the code base
+to make it run with TB 68, and to Claas Augner who helped in the reviewing effort.

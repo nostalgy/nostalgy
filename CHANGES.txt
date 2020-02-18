@@ -1,25 +1,7 @@
-1.0.25
-
--   Use Services for restart
-
-1.0.23, 1.0.24
-
- -  More  (cosmetic, documentation) changes according to discussion in #74
-
-1.0.22
-
- -  More update changes to TB 68
-1.0.15  
-  - Update code for TB 68
-  - Add restart button for TB to utilities tab
-
-Changes in Nostalgy (original version)  
-  
-Next version (originally planned by Alain, maybe obsolete now)
-  - #24: config setting for custom timeout after creating folder before moving email to it (Adam Kerz)
+0.3.0
+  - Update code for TB 68 (contributed by Klaus Buecher)
+  - (#24: config setting for custom timeout after creating folder before moving email to it (Adam Kerz))
   - #60, #62: fix for TB 60.3 (h271fa GitHub user)
-  
-  
   
 0.2.36
   - Fix for TB 60 (thanks to lepokle GitHub user)

@@ -180,9 +180,6 @@ function NostalgyDoMoveDown(idx1,idx2) {
 
 function onNostalgyAcceptChanges() {
   var prefs = NostalgyPrefBranch();
-  let sCopy="c";
-  let sSave="s";
-  let sGo="g";
   prefs.setCharPref("extensions.nostalgy.rules", NostalgyMkPrefStr());
   try {
       prefs.setIntPref("extensions.nostalgy.number_of_recent_folders", 0 + NostalgyEBI("number_of_recent_folders").value);
@@ -199,17 +196,12 @@ function onNostalgyAcceptChanges() {
     prefs.setBoolPref("extensions.nostalgy."+n,	NostalgyEBI(n).checked);
 
   if (nostalgy_wait_key) { nostalgy_wait_key.value = nostalgy_wait_key_old; nostalgy_wait_key = null; }
-  for (var i in nostalgy_keys)  {
+  for (var i in nostalgy_keys) {
     let sKey= nostalgy_keys[i][0];
-  	let sValue= NostalgyEBI("key_" + nostalgy_keys[i][0]).value;
-    if (sKey=="save") sSave=sValue;
-    if (sKey=="go") sGo=sValue;
-    if (sKey=="copy") sCopy=sValue;
+    let sValue= NostalgyEBI("key_" + nostalgy_keys[i][0]).value;
     prefs.setCharPref(nostalgy_kKeysPrefs+nostalgy_keys[i][0],
     NostalgyEBI("key_" + nostalgy_keys[i][0]).value);
-	}
-  let DefaultString = "save ("+sSave+") copy (" + sCopy + ") go ("+sGo+")"; 
-  nostalgy_default_label= DefaultString ;
+  }
 
   var a = prefs.getChildList(nostalgy_kKeysPrefs, { });
   for (var i in a) {

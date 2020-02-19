@@ -2,7 +2,9 @@ const Cc = Components.classes;
 const Ci = Components.interfaces;
 const Cu = Components.utils;
 
-Cu.import('resource://gre/modules/XPCOMUtils.jsm');
+var {XPCOMUtils} = ChromeUtils.import('resource://gre/modules/XPCOMUtils.jsm');
+
+
 
 const CLASS_ID = Components.ID('0368fb30-62f8-11e3-949a-0800200c9a66');
 const CLASS_NAME = "Nostalgy Folder Autocomplete";
@@ -41,7 +43,7 @@ NostalgyAutoCompleteResult.prototype = {
   getImageAt : function (index) { return ""; },
   removeValueAt: function(index, removeFromDb) { this._results.splice(index, 1); },
   getLabelAt: function(index) { return this._results[index]; },
-  QueryInterface: XPCOMUtils.generateQI([ Ci.nsIAutoCompleteResult ])
+  QueryInterface: ChromeUtils.generateQI([ Ci.nsIAutoCompleteResult ]),
 };
 
 
@@ -68,7 +70,7 @@ NostalgyAutoCompleteSearch.prototype = {
 
   stopSearch: function() {},
 
-  QueryInterface: XPCOMUtils.generateQI([ Ci.nsIAutoCompleteSearch ])
+  QueryInterface: ChromeUtils.generateQI([ Ci.nsIAutoCompleteSearch ]) ,
 };
 
 

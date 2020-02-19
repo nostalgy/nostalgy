@@ -3,6 +3,7 @@ var gContainsSelect = null;
 var gUnderSelect = null;
 
 function onNostalgyLoad() {
+ document.addEventListener("dialogaccept", (event) => { onNostalgyAcceptChanges(); });
  var rule = window.arguments[0];
  if (!rule) { alert("rule=null!"); }
 
@@ -22,7 +23,12 @@ function onNostalgyLoad() {
  NostalgyEBI("subject").checked = rule.subject;
 }
 
+
+
+
 function onNostalgyAcceptChanges() {
+
+
  var folder = NostalgyFindFolderExact(gFolderSelect.value);
  if (!folder) {
    alert("Please choose an existing folder");
@@ -43,6 +49,7 @@ function onNostalgyAcceptChanges() {
  };
     
  (window.arguments[1])(rule);
+
  return true;
 }
 
@@ -69,3 +76,5 @@ function onNostalgyKeyPressTxt(ev) {
 }
 
 window.addEventListener("load", onNostalgyLoad, false);
+
+

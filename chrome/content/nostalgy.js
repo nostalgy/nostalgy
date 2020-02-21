@@ -1,7 +1,3 @@
-/* import-globals-from mailWindowOverlay.js */
-
-
-var DELAY_AFTER_CREATING_FOLDER = 200;
 var nostalgy_in_message_window = !window.SetFocusThreadPane;
 
 var nostalgy_folderBox = null;
@@ -305,7 +301,6 @@ function NostalgyDefLabel() {
 
 function NostalgyCollapseFolderPane() {
  var fp = NostalgyEBI("folderPaneBox");
-// alert("there");
  if (window.MsgToggleFolderPane)
    { 
    MsgToggleFolderPane();

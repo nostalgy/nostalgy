@@ -14,7 +14,7 @@ var nostalgy_active_keys = { };
 var nostalgy_timeout_regkey = 0;
 var nostalgy_on_move_completed = null;
 var nostalgy_selection_saved = null;
-
+var DELAY_AFTER_CREATING_FOLDER = 200;
 function NostalgyIsDefined(s) {
     return (typeof(window[s]) != "undefined");
 }
@@ -66,12 +66,22 @@ var NostalgyRules =
 
   register_keys: function() {
     nostalgy_active_keys = { };
+    let sCopy="C";
+    let sSave="S";
+    let sGo="G";
     for (var i in nostalgy_keys) {
       var k = "";
+      let sKey= nostalgy_keys[i][0];
       try {
-	k = this._branch.getCharPref("keys." + nostalgy_keys[i][0]);
+	k = this._branch.getCharPref("keys." + sKey);
       } catch (ex) { k = nostalgy_keys[i][2]; }
+      if (sKey=="save") sSave=k;
+      if (sKey=="go") sGo=k;
+      if (sKey=="copy") sCopy=k;
       nostalgy_active_keys[k] = nostalgy_keys[i][3];
+      nostalgy_default_label = "save ("+sSave+") copy (" + sCopy + ") go ("+sGo+")";
+      if (nostalgy_label)
+        nostalgy_label.label = nostalgy_default_label;
     }
 
     var a = this._branch.getChildList("actions.", { });
@@ -115,6 +125,9 @@ var NostalgyRules =
         NostalgyDebug("Cannot get rules: " + ex);
         this.rules = [];
     }
+    
+    
+
   },
 
   observe: function(aSubject, aTopic, aData)
@@ -223,10 +236,9 @@ function onNostalgyLoad() {
  nostalgy_th_statusBar = NostalgyEBI("status-bar");
  nostalgy_th_statusBar_orig_hidden= nostalgy_th_statusBar.hidden;
  nostalgy_cmdLabel = NostalgyEBI("nostalgy-command-label");
-
+ 
  NostalgyFolderSelectionBox(nostalgy_folderBox);
- nostalgy_default_label = nostalgy_label.label;
-
+ nostalgy_label.label = nostalgy_default_label;
 
  if (!nostalgy_in_message_window) {
    NostalgyEBI("threadTree").addEventListener("select", NostalgyDefLabel, false);
@@ -246,7 +258,7 @@ function onNostalgyLoad() {
  var nsIFolderListener = Components.interfaces.nsIFolderListener;
  if (mSession)
    mSession.AddFolderListener(NostalgyFolderListener,
-      nsIFolderListener.added | nsIFolderListener.removed | nsIFolderListener.event);
+                              nsIFolderListener.added | nsIFolderListener.removed | nsIFolderListener.event);
 }
 
 
@@ -295,7 +307,9 @@ function NostalgyCollapseFolderPane() {
  var fp = NostalgyEBI("folderPaneBox");
 // alert("there");
  if (window.MsgToggleFolderPane)
-   { MsgToggleFolderPane(); return true; }
+   { 
+   MsgToggleFolderPane();
+   return true; }
  else if (window.MsgToggleSplitter)
    { MsgToggleSplitter("gray_vertical_splitter"); return true; }
  else if (fp)
@@ -333,7 +347,7 @@ function NostalgyCmd(lab,cmd,require_file) {
 function NostalgyShowRecentFoldersList() {
   var listener = null;
   var box = nostalgy_folderBox;
-  if (box.controller) { // Toolkit
+  if (box.controller) {// Toolkit
     listener = box.controller.QueryInterface(Components.interfaces.nsIAutoCompleteObserver);
   }
   else { // XPFE

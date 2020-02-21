@@ -24,13 +24,11 @@ function onNostalgyLoad() {
 }
 
 
-function onNostalgyUnLoad() {
-                alert("unload");
-// document.removeEventListener("dialogaccept", (event) => { onNostalgyAcceptChanges(); });
 
-}
 
 function onNostalgyAcceptChanges() {
+
+
  var folder = NostalgyFindFolderExact(gFolderSelect.value);
  if (!folder) {
    alert("Please choose an existing folder");
@@ -51,6 +49,7 @@ function onNostalgyAcceptChanges() {
  };
     
  (window.arguments[1])(rule);
+
  return true;
 }
 
@@ -78,4 +77,4 @@ function onNostalgyKeyPressTxt(ev) {
 
 window.addEventListener("load", onNostalgyLoad, false);
 
-window.addEventListener("unload", onNostalgyUnLoad, false);
+

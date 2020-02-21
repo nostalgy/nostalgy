@@ -20,14 +20,6 @@
    <h2>Usage directions for Nostalgy</h2>
 
    <p>
-      Please visit
-      <a href="http://alain.frisch.fr/soft_mozilla.html">Nostalgy's
-      homepage</a>. It contains a copy of this page that might be
-      better read in your browser! From there, you can also download
-      the latest development version.
-   </p>
-
-   <p>
      Nostalgy adds several keyboard shortcuts to improve your
      productivity with Thunderbird. A custom preference dialog for
      Nostalgy is available through the Tools menu.
@@ -38,7 +30,7 @@
      <li>We give here the default values for shortcuts.
      Most of them can be changed  from the preference dialog.</li>
      <li>Even if the key shortcuts are written in
-     uppercase, you must not press Shift.</li>
+     uppercase, you must not press Shift (= use lowercase letters on keyboard).</li>
      <li>The ESC-X shortcuts means: press and release ESCAPE, and then
      press X within 300ms (ESC-ESC is thus like a double click on
      ESCAPE).</li>
@@ -75,18 +67,20 @@
 
    <p>
      Before you type anything in the folder completion box, the popup
-     displays the most recently selected folders. You can choose one
-     of them with the UP/DOWN keys.      (currently not working in TB68)
+     can display the most recently selected folders. You can choose one
+     of them with the UP/DOWN keys. Due to recent chnanges in TB, 
+     you need to press back arrow followed by up arrow to populate this 
+     box with the history.
    </p>
 
-   <p>
+   <p>                                                            
      In the folder completion box, the TAB key activates a shell-like
      autocompletion mode (this feature must be enabled in Nostalgy's
      preference dialog; otherwise, TAB cycles through the possible
      completions). In this mode, the completed suggestions only
      mentions possible completions one level down in the folder
      hierarchy, and the TAB key itself automatically completes with
-     the longest unambiguous fragment.       (currently not working in TB68)
+     the longest unambiguous fragment. (currently not working in TB68 - may be updated)
    </p>
 
    <p>
@@ -153,6 +147,7 @@
    </table>
 
 
+
    <h3>Rules</h3>
 
    <p>
@@ -186,25 +181,16 @@
 
    <h3>Exporting and importing rules</h3>
 
-   <p>
-     Nostalgy comes with a backup system for rules. In the Preferences
-     dialog (tab "Rules"), there is a button "Send rules by email".
-     (Previous versions only, not in TB 68)
-     It allows you to send an e-mail to any address (your own address
-     by default). This special e-mail contains a copy of all your
-     rules.  When you read such an e-mail, Thunderbird will show you a
-     button "Import Nostalgy rules" which lets you import
-     all the rules found in the message.   (Previous versions only, not in TB 68)
-   </p>
+ 
 
    <p>
-     This import/export feature can be used as a backup mechanism, or
+     Nostalgy can import/export rules. This feature can be used as a backup mechanism, or
      to exchange rules between various computer or Thunderbird
      profiles.
    </p>
 
    <p>
-     <b>IMPORTANT:</b> importing rules from an e-email will destroy
+     <b>IMPORTANT:</b> importing rules will destroy
      your current rules. Use this feature with caution.
    </p>
 
@@ -218,7 +204,7 @@
      subject are searched. And if you press again,
      the QuickSearch is cancelled.
      In the Sent folder, the search is done on the first recipient (To:
-     header) instead of the sender.        (Previous versions only, not in TB 68)
+     header) instead of the sender.        (Previous versions only, might be repaired for  TB 72)
    </p>
 
 <h3>Tags</h3>
@@ -320,11 +306,5 @@ the input box starts with a colon character, or if no folder matches.
 
    <hr/>
 
-   <p>The Nostalgy extension has been written by Alain Frisch and adapted to TB 68 by opto (Klaus Buecher) as Nostalgy++ (<a
-  href="mailto:buecher@optosolar.com">Klaus</a>). Comments and
-  suggestions are welcome!  You can add suggestions or bug to the issues in github in opto's account  https://github.com/opto/nostalgy-xpi
-  Donations can be sent to the Paypal
-  account <tt></tt>.</p>
   </body>
 </html>
-

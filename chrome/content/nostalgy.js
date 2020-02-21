@@ -62,9 +62,9 @@ var NostalgyRules =
 
   register_keys: function() {
     nostalgy_active_keys = { };
-    let sCopy="C";
-    let sSave="S";
-    let sGo="G";
+    let sCopy="c";
+    let sSave="s";
+    let sGo="g";
     for (var i in nostalgy_keys) {
       var k = "";
       let sKey= nostalgy_keys[i][0];

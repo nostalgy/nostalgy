@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "prettier": "1.19.1"
+  },
+  "scripts": {
+    "format": "prettier --write '**/*.{js,json,md}'",
+    "style": "prettier --list-different '**/*.{js,json,md}'"
+  }
+}

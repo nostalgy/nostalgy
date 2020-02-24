@@ -9,29 +9,59 @@ var nostalgy_completion_options = {
   use_statistical_prediction: false
 };
 
-
-
-/** The set of "recent folder" for Nostalgy **/
-
+/**
+ * The set of "recent folder" for Nostalgy
+ *
+ * @type {string[]}
+ */
 var nostalgy_recent_folders = [ ];
+/**
+ * @type {number}
+ */
 var nostalgy_recent_folders_max_size = 5;
 
+/**
+ * @param recent
+ * @returns {void}
+ */
 function NostalgySaveRecentFolder(recent) {
   NostalgyPrefBranch().
     setCharPref("extensions.nostalgy.recent_folders",
 		recent.toSource());
 }
 
+/**
+ * @returns {void}
+ */
 function NostalgyInstallRecentFolders() {
   var s = "";
   try { s = NostalgyPrefBranch().
 	  getCharPref("extensions.nostalgy.recent_folders"); }
   catch (ex) { return; }
+  // TODO Use JSON.parse [caugner]
   var a = NostalgyJSONEval(s);
   if (a) nostalgy_recent_folders = a;
   else nostalgy_recent_folders = [ ];
 }
 
+/**
+ * @typedef {Object} TbFolder
+ * @property {string|null} tag
+ * @property {string} prettyName
+ * @property {TbFolder|null} parent
+ * @property {boolean} isServer
+ * @property {function} displayRecipients
+ */
+
+/**
+ * @typedef {Object} TbTag
+ * @property {string} key
+ */
+
+/**
+ * @param {TbFolder} folder
+ * @returns {void}
+ */
 function NostalgyRecordRecentFolder(folder) {
   var recent = nostalgy_recent_folders;
   var fname = NostalgyFolderName(folder);
@@ -48,7 +78,10 @@ function NostalgyRecordRecentFolder(folder) {
 
 /****/
 
-
+/**
+ * @param {string} s
+ * @returns {string}
+ */
 function NostalgyCrop(s) {
   var len = 120;
   var l = s.length;
@@ -57,10 +90,18 @@ function NostalgyCrop(s) {
   return (s.substr(0,l1) + ".." + s.substr(l - 2 * l1, l));
 }
 
+/**
+ * @param {string} s
+ * @returns {RegExp}
+ */
 function NostalgyMakeRegexp(s) {
   return (new RegExp(s.replace(/\.\./g, ".*"), ""));
 }
 
+/**
+ * @param {string} s
+ * @returns {string}
+ */
 function NostalgyMayLowerCase(s) {
   if (!nostalgy_completion_options.match_case_sensitive)
     return (s.toLowerCase());
@@ -68,6 +109,11 @@ function NostalgyMayLowerCase(s) {
     return s;
 }
 
+/**
+ * @param {string} s
+ * @param {RegExp} reg
+ * @returns {boolean}
+ */
 function NostalgyMayMatchOnlyPrefix(s, reg) {
      if (nostalgy_completion_options.match_only_prefix)
           return NostalgyMayLowerCase(s).search(reg) == 0;
@@ -75,6 +121,10 @@ function NostalgyMayMatchOnlyPrefix(s, reg) {
           return NostalgyMayLowerCase(s).match(reg);
 }
 
+/**
+ * @param {TbFolder} folder
+ * @returns {string}
+ */
 function NostalgyFullFolderName(folder) {
   if (folder.tag) return (":" + folder.tag);
   var uri = folder.prettyName;
@@ -85,6 +135,10 @@ function NostalgyFullFolderName(folder) {
   return uri;
 }
 
+/**
+ * @param {TbFolder} folder
+ * @returns {string}
+ */
 function NostalgyShortFolderName(folder) {
   if (folder.tag) return (":" + folder.tag);
   var uri = folder.prettyName;
@@ -96,12 +150,19 @@ function NostalgyShortFolderName(folder) {
   }
   return uri;
 }
-
+/**
+ * @param {TbFolder} folder
+ * @returns {void}
+ */
 function NostalgyPrettyName(folder) {
  if (folder.tag) return (":" + folder.tag);
  return folder.prettyName;
 }
 
+/**
+ * @param {TbFolder} folder
+ * @returns {string}
+ */
 function NostalgyFolderName(folder) {
   if (nostalgy_completion_options.restrict_to_current_server) {
     return(NostalgyShortFolderName(folder));
@@ -110,6 +171,11 @@ function NostalgyFolderName(folder) {
   }
 }
 
+/**
+ * @param {string} s1
+ * @param {string} s2
+ * @returns {string}
+ */
 function NostalgyLongestCommonPrefix(s1,s2) {
   var i = 0;
   var l = s1.length;
@@ -122,6 +188,11 @@ function NostalgyLongestCommonPrefix(s1,s2) {
 
 /** Autocompletion of folders **/
 
+/**
+ * @param {TbFolder} f
+ * @param {RegExp} reg
+ * @returns {boolean}
+ */
 function NostalgyFolderMatch(f,reg) {
   if (nostalgy_completion_options.match_only_folder_name) {
     return (NostalgyMayMatchOnlyPrefix(NostalgyPrettyName(f), reg) ||
@@ -131,6 +202,10 @@ function NostalgyFolderMatch(f,reg) {
   }
 }
 
+/**
+ * @param box
+ * @returns {function(*=): []}
+ */
 function NostalgyGetAutoCompleteValuesFunction(box) {
   return function NostalgyGetAutoCompleteValues(text) {
     var values = [];
@@ -197,7 +272,13 @@ function NostalgyGetAutoCompleteValuesFunction(box) {
   };
 }
 
+/**
+ * @typedef {nsIAutoCompleteController} NostalgyAutocomplete
+ */
 
+/**
+ * @returns {NostalgyAutocomplete}
+ */
 function NostalgyAutocompleteComponent() {
   var nac =
     Components
@@ -207,6 +288,27 @@ function NostalgyAutocompleteComponent() {
   return nac;
 }
 
+/**
+ * @typedef {Object} nsIAutoCompleteController
+ * @property {function} handleText
+ *
+ * @typedef {Element} AutocompleteTextbox
+ * @property {nsIAutoCompleteController} controller
+ * @property {Element} popup - Should be set to the popup element that should appear when the user clicks on the textbox.
+ * @property {string} searchParam - A string which is passed to the search component.
+ * @property {function} onkeypress
+ * @property {boolean} tabScrolling
+ *
+ * @typedef {AutocompleteTextbox} NostalgyFolderBox
+ * @property {boolean} shell_completion
+ * @property {string} currentSearchString
+ * @property {function} processResults
+ */
+
+/**
+ * @param {NostalgyFolderBox} box
+ * @returns {void}
+ */
 function NostalgyFolderSelectionBox(box) {
   var cmd = box.getAttribute("nostalgyfolderbox");
   if (cmd) {
@@ -221,7 +323,7 @@ function NostalgyFolderSelectionBox(box) {
   box.shell_completion = false;
   box.searchParam = NostalgyAutocompleteComponent().attachGetValuesFunction(NostalgyGetAutoCompleteValuesFunction(box));
 
-
+  // TODO Use box.addEventListener [caugner]
   box.onkeypress=function(event){
     if (event.keyCode == KeyEvent.DOM_VK_TAB && box.getAttribute("normaltab") != "true") {
       event.preventDefault();
@@ -235,6 +337,9 @@ function NostalgyFolderSelectionBox(box) {
   };
 }
 
+/**
+ * @returns {void}
+ */
 function NostalgyFolderSelectionBoxes() {
  var e = document.getElementsByTagName("textbox");
  for (var i = 0; i < e.length; i++)
@@ -244,6 +349,10 @@ function NostalgyFolderSelectionBoxes() {
 
 /** Looking up folders by name **/
 
+/**
+ * @param {string} s
+ * @returns {string}
+ */
 function NostalgyCompleteUnique(s) {
   var nb = 0;
   var ret = "";
@@ -266,22 +375,35 @@ function NostalgyCompleteUnique(s) {
   } else { return s;  }
 }
 
-// Resolve a string coming from a completion box
-// 1. check whether uri comes from the completion list (cropped exact uri)
-// 2. if not, assume the uri has been typed in by the user
-//    and take the first matching folder
 
+
+/**
+ * Resolves a string coming from a completion box
+ * 1. check whether uri comes from the completion list (cropped exact uri)
+ * 2. if not, assume the uri has been typed in by the user and take the first matching folder
+ *
+ * @param {string} uri
+ * @returns {*}
+ */
 function NostalgyResolveFolder(uri) {
   var ret = NostalgyFindFolderCropped(uri);
   if (ret) { return ret; } else { return (NostalgyFirstCompletion(uri)); }
 }
 
+/**
+ * @param {string} uri
+ * @returns {TbFolder|null}
+ */
 function NostalgyFirstCompletion(uri) {
   var ret = null;
   NostalgyIterateMatches(uri, false, function(f) { ret = f; throw(0); });
   return ret;
 }
 
+/**
+ * @param {string} uri
+ * @returns {TbFolder|null}
+ */
 function NostalgyFindFolderExact(uri) {
     nostalgy_search_folder_options.do_tags = true;
  var ret = null;
@@ -297,6 +419,10 @@ function NostalgyFindFolderExact(uri) {
  return ret;
 }
 
+/**
+ * @param {string} uri
+ * @returns {TbFolder|null}
+ */
 function NostalgyFindFolderCompleted(uri) {
  var ret = null;
  var u = NostalgyMayLowerCase(uri);
@@ -308,6 +434,10 @@ function NostalgyFindFolderCompleted(uri) {
  return ret;
 }
 
+/**
+ * @param {string} uri
+ * @returns {TbFolder|null}
+ */
 function NostalgyFindFolderCropped(uri) {
  var ret = null;
  try {
@@ -320,6 +450,10 @@ function NostalgyFindFolderCropped(uri) {
 
 /** Folder traversal **/
 
+/**
+ * @param {function} f
+ * @returns {void}
+ */
 function NostalgyIterateFoldersAllServers(f) {
  NostalgyIterateTags(f);
 
@@ -355,6 +489,11 @@ function NostalgyIterateFoldersAllServers(f) {
  }
 }
 
+/**
+ * @param {TbFolder} a
+ * @param {TbFolder} b
+ * @returns {number}
+ */
 function NostalgyCompareFolderNames(a,b) {
   var an = a.prettyName;
   var bn = b.prettyName;
@@ -370,10 +509,18 @@ var nostalgy_search_folder_options = {
    do_tags: false
 };
 
+/**
+ * @returns {void}
+ */
 function ClearNostalgyCache() {
   nostalgy_sorted_subfolders = new Array();
 }
 
+/**
+ * @param {TbFolder} folder
+ * @param {function} f
+ * @returns {void}
+ */
 function NostalgyIterateSubfolders(folder,f) {
  if ((!folder.isServer ||
       !nostalgy_completion_options.restrict_to_current_server)
@@ -425,12 +572,20 @@ function NostalgyIterateSubfolders(folder,f) {
  }
 }
 
+/**
+ * @param {TbFolder} f
+ * @returns {void}
+ */
 function NostalgyIterateFoldersCurrentServer(f) {
  NostalgyIterateTags(f);
  var server = gDBView.msgFolder.server;
  NostalgyIterateSubfolders(server.rootMsgFolder,f);
 }
 
+/**
+ * @param {TbFolder} f
+ * @returns {void}
+ */
 function NostalgyIterateTags(f) {
  if (!nostalgy_search_folder_options.do_tags) return;
  try {
@@ -442,12 +597,22 @@ function NostalgyIterateTags(f) {
  for (var i = 0; i < tagArray.length; i++) f(tagArray[i]);
 }
 
+/**
+ * @param {TbFolder} f
+ * @returns {void}
+ */
 function NostalgyIterateFolders(f) {
  if (nostalgy_completion_options.restrict_to_current_server)
    NostalgyIterateFoldersCurrentServer(f);
  else NostalgyIterateFoldersAllServers(f);
 }
 
+/**
+ * @param {string} uri
+ * @param {boolean} shell
+ * @param {function} f
+ * @returns {void}
+ */
 function NostalgyIterateMatches(uri,shell,f) {
   var rexp = NostalgyMakeRegexp(NostalgyMayLowerCase(uri));
 
@@ -468,6 +633,10 @@ function NostalgyIterateMatches(uri,shell,f) {
 
 var nostalgy_gVKNames = null;
 
+/**
+ * @param {KeyboardEvent} ev
+ * @returns {string}
+ */
 function NostalgyRecognizeKey(ev) {
  if (nostalgy_gVKNames == null) {
   nostalgy_gVKNames = [];

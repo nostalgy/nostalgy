@@ -2,6 +2,9 @@ var nostalgy_sqlite = {
     storageService: [],
     mDBConn: [],
 
+    /**
+     * @param {string} file
+     */
     _initService : function(file){
         var db = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
         db.append(file);
@@ -10,6 +13,12 @@ var nostalgy_sqlite = {
 
     },
 
+    /**
+     * @param {string} file
+     * @param {string} sql
+     * @param {string|undefined} param
+     * @returns {[]}
+     */
     select : function(file,sql,param){
         if (this.storageService[file]== undefined){
             this._initService(file);
@@ -49,7 +58,11 @@ var nostalgy_sqlite = {
         return dataset;
     },
 
-
+    /**
+     * @param {string} file
+     * @param {string} sql
+     * @param {string|undefined} param
+     */
     cmd : function(file,sql,param){
         if (this.storageService[file] == undefined){
             this._initService(file);

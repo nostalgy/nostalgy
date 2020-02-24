@@ -1,15 +1,29 @@
+/**
+ * @param {string} s
+ * @returns {Element}
+ */
 function NostalgyEBI(id) { return document.getElementById(id); }
 
+/**
+ * @returns {nsIPrefService}
+ */
 function NostalgyPrefService() {
   return Components.classes["@mozilla.org/preferences-service;1"]
     .getService(Components.interfaces.nsIPrefService);
 }
 
+/**
+ * @returns {nsIPrefBranch}
+ */
 function NostalgyPrefBranch() {
   return Components.classes["@mozilla.org/preferences-service;1"]
     .getService(Components.interfaces.nsIPrefBranch);
 }
 
+/**
+ * @param {string} aText
+ * @returns {void}
+ */
 function NostalgyDebug(aText)
 {
   var csClass = Components.classes['@mozilla.org/consoleservice;1'];
@@ -17,6 +31,10 @@ function NostalgyDebug(aText)
   cs.logStringMessage(aText);
 }
 
+/**
+ * @param {Event} ev
+ * @returns {void}
+ */
 function NostalgyStopEvent(ev) {
   ev.preventDefault();
   //ev.stopPropagation();
@@ -24,6 +42,10 @@ function NostalgyStopEvent(ev) {
 
 }
 
+/**
+ * @param {string} s
+ * @returns {any|null}
+ */
 function NostalgyJSONEval(s) {
   if (/^("(\\.|[^"\\\n\r"])*?"|[a-z]+:|[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t])+?$/.test(s)) {
     try {

@@ -287,8 +287,9 @@ function NostalgyHide(restore) {
 function NostalgyDefLabel() {
  nostalgy_gsuggest_folder = NostalgySuggest();
  if (nostalgy_gsuggest_folder) {
-   nostalgy_label.label =
-       nostalgy_default_label + " [+Shift: => " + NostalgyFolderName(nostalgy_gsuggest_folder) + "]";
+   var nostalgy_folder_name = NostalgyFolderName(nostalgy_gsuggest_folder);
+   nostalgy_label.setAttribute("tooltiptext", nostalgy_folder_name);
+   nostalgy_label.label = nostalgy_default_label + " [+Shift ⇒ " + nostalgy_folder_name + "]";
  } else {
    nostalgy_label.label = nostalgy_default_label;
  }

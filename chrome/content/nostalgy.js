@@ -77,7 +77,7 @@ var NostalgyRules =
       nostalgy_active_keys[k] = nostalgy_keys[i][3];
       nostalgy_default_label = "save ("+sSave+") copy (" + sCopy + ") go ("+sGo+")";
       if (nostalgy_label)
-        nostalgy_label.label = nostalgy_default_label;
+        nostalgy_label.value = nostalgy_default_label;
     }
 
     var a = this._branch.getChildList("actions.", { });
@@ -233,7 +233,7 @@ function onNostalgyLoad() {
  nostalgy_cmdLabel = NostalgyEBI("nostalgy-command-label");
  
  NostalgyFolderSelectionBox(nostalgy_folderBox);
- nostalgy_label.label = nostalgy_default_label;
+ nostalgy_label.value = nostalgy_default_label;
 
  if (!nostalgy_in_message_window) {
    NostalgyEBI("threadTree").addEventListener("select", NostalgyDefLabel, false);
@@ -289,9 +289,9 @@ function NostalgyDefLabel() {
  if (nostalgy_gsuggest_folder) {
    var nostalgy_folder_name = NostalgyFolderName(nostalgy_gsuggest_folder);
    nostalgy_label.setAttribute("tooltiptext", nostalgy_folder_name);
-   nostalgy_label.label = nostalgy_default_label + " [+Shift ⇒ " + nostalgy_folder_name + "]";
+   nostalgy_label.value = nostalgy_default_label + " [+Shift ⇒ " + nostalgy_folder_name + "]";
  } else {
-   nostalgy_label.label = nostalgy_default_label;
+   nostalgy_label.value = nostalgy_default_label;
  }
 }
 

@@ -28,8 +28,8 @@
    
  <hbox  class="statusbar"  id="status-bar">
    <hbox insertbefore="unreadMessageCount">
-     <statusbarpanel  id="statusbar-nostalgy-label" 
-                      label="&nostalgy.memomessage;"/>
+     <label  id="statusbar-nostalgy-label" class="statusbarpanel" flex="1"
+             value="&nostalgy.memo;"/>
   </hbox>
  </hbox>
 </overlay>

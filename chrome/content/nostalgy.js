@@ -4,7 +4,7 @@ var nostalgy_folderBox = null;
 var nostalgy_statusBar = null;
 var nostalgy_label = null;
 var nostalgy_th_statusBar = null;
-var nostalgy_th_statusBar_orig_hidden = false;
+var nostalgy_th_statusBar_orig_hidden = true;
 var nostalgy_cmdLabel = null;
 var nostalgy_active_keys = { };
 var nostalgy_timeout_regkey = 0;
@@ -62,9 +62,9 @@ var NostalgyRules =
 
   register_keys: function() {
     nostalgy_active_keys = { };
-    let sCopy="c";
-    let sSave="s";
-    let sGo="g";
+    let sCopy="C";
+    let sSave="S";
+    let sGo="G";
     for (var i in nostalgy_keys) {
       var k = "";
       let sKey= nostalgy_keys[i][0];
@@ -77,7 +77,7 @@ var NostalgyRules =
       nostalgy_active_keys[k] = nostalgy_keys[i][3];
       nostalgy_default_label = "save ("+sSave+") copy (" + sCopy + ") go ("+sGo+")";
       if (nostalgy_label)
-        nostalgy_label.label = nostalgy_default_label;
+        nostalgy_label.value = nostalgy_default_label;
     }
 
     var a = this._branch.getChildList("actions.", { });
@@ -209,7 +209,7 @@ var NostalgyFolderListener = {
  OnItemPropertyFlagChanged: function(item, property, oldFlag, newFlag) { },
  OnItemEvent: function(folder, event) {
    var evt = event.toString();
-   // NostalgyDebug(evt + " folder:" + folder.prettyName);
+   NostalgyDebug(evt + " folder:" + folder.prettyName);
    if (evt == "DeleteOrMoveMsgCompleted" && nostalgy_on_move_completed) {
      nostalgy_on_move_completed();
      nostalgy_on_move_completed = null;
@@ -230,11 +230,10 @@ function onNostalgyLoad() {
  nostalgy_statusBar = NostalgyEBI("nostalgy-statusbar");
  nostalgy_label = NostalgyEBI("statusbar-nostalgy-label");
  nostalgy_th_statusBar = NostalgyEBI("status-bar");
- nostalgy_th_statusBar_orig_hidden= nostalgy_th_statusBar.hidden;
  nostalgy_cmdLabel = NostalgyEBI("nostalgy-command-label");
  
  NostalgyFolderSelectionBox(nostalgy_folderBox);
- nostalgy_label.label = nostalgy_default_label;
+ nostalgy_label.value = nostalgy_default_label;
 
  if (!nostalgy_in_message_window) {
    NostalgyEBI("threadTree").addEventListener("select", NostalgyDefLabel, false);
@@ -286,15 +285,13 @@ function NostalgyHide(restore) {
 }
 
 function NostalgyDefLabel() {
- nostalgy_th_statusBar.hidden=false;
-
  nostalgy_gsuggest_folder = NostalgySuggest();
  if (nostalgy_gsuggest_folder) {
    var nostalgy_folder_name = NostalgyFolderName(nostalgy_gsuggest_folder);
    nostalgy_label.setAttribute("tooltiptext", nostalgy_folder_name);
-   nostalgy_label.label = nostalgy_default_label + " [+Shift ⇒ " + nostalgy_folder_name + "]";
+   nostalgy_label.value = nostalgy_default_label + " [+Shift ⇒ " + nostalgy_folder_name + "]";
  } else {
-   nostalgy_label.label = nostalgy_default_label;
+   nostalgy_label.value = nostalgy_default_label;
  }
 }
 
@@ -321,7 +318,7 @@ function NostalgyCmd(lab,cmd,require_file) {
  nostalgy_search_folder_options.require_file = require_file;
  nostalgy_cmdLabel.value = lab;
  nostalgy_command = cmd;
-// nostalgy_th_statusBar_orig_hidden = nostalgy_th_statusBar.hidden;
+ nostalgy_th_statusBar_orig_hidden = nostalgy_th_statusBar.hidden;
  nostalgy_th_statusBar.hidden = true;
  nostalgy_folderBox.shell_completion = false;
  nostalgy_statusBar.hidden = false;
@@ -344,7 +341,7 @@ function NostalgyShowRecentFoldersList() {
   var box = nostalgy_folderBox;
   if (box.controller) {// Toolkit
     listener = box.controller.QueryInterface(Components.interfaces.nsIAutoCompleteObserver);
-  }
+	}
   else { // XPFE
     // box.mAutoCompleteObserver uses a flawed equality check so we have to replace it.
     // Since we only use one autocompleter, its name is equal to the autocompletesearch attribute.
@@ -379,9 +376,10 @@ function NostalgyCreateTag(name) {
 }
 
 function NostalgyRunCommand() {
-  NostalgyHide(true);
   var s = nostalgy_folderBox.value;
+  NostalgyDebug("NostalgyRunCommand: folder:" + s);
   var f = NostalgyResolveFolder(s);
+  NostalgyHide(true);
   if (f) {
     NostalgyRecordRecentFolder(f);
     nostalgy_command(f);
@@ -817,7 +815,6 @@ function NostalgySearchSender() {
 }
 
 function onNostalgyKeyPressCapture(ev) {
-  nostalgy_th_statusBar.hidden=false;
     if (ev.keyCode == KeyEvent.DOM_VK_ESCAPE)
         NostalgyEscape();
 
@@ -838,7 +835,6 @@ function onNostalgyKeyPressCapture(ev) {
 
 
 function onNostalgyKeyPress(ev) {
-  nostalgy_th_statusBar.hidden=false;
   if (!nostalgy_statusBar.hidden) return;
 
   if (NostalgyEscapePressed >= 1) {

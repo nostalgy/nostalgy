@@ -178,9 +178,6 @@ function NostalgyDoMoveDown(idx1,idx2) {
 
 function onNostalgyAcceptChanges() {
   var prefs = NostalgyPrefBranch();
-  let sCopy="c";
-  let sSave="s";
-  let sGo="g";
   prefs.setCharPref("extensions.nostalgy.rules", NostalgyMkPrefStr());
   try {
       prefs.setIntPref("extensions.nostalgy.number_of_recent_folders", 0 + NostalgyEBI("number_of_recent_folders").value);

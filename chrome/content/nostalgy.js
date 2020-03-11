@@ -209,7 +209,7 @@ var NostalgyFolderListener = {
  OnItemPropertyFlagChanged: function(item, property, oldFlag, newFlag) { },
  OnItemEvent: function(folder, event) {
    var evt = event.toString();
-   // NostalgyDebug(evt + " folder:" + folder.prettyName);
+   NostalgyDebug(evt + " folder:" + folder.prettyName);
    if (evt == "DeleteOrMoveMsgCompleted" && nostalgy_on_move_completed) {
      nostalgy_on_move_completed();
      nostalgy_on_move_completed = null;
@@ -375,9 +375,12 @@ function NostalgyCreateTag(name) {
 }
 
 function NostalgyRunCommand() {
-  NostalgyHide(true);
   var s = nostalgy_folderBox.value;
+  // Sometimes s is empy ???
+  NostalgyDebug("NostalgyRunCommand: folder:" + s);
   var f = NostalgyResolveFolder(s);
+  // Doing this after the above two lines appears to fix s being empty?
+  NostalgyHide(true);
   if (f) {
     NostalgyRecordRecentFolder(f);
     nostalgy_command(f);

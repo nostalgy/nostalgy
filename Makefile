@@ -1,10 +1,11 @@
-all: clean nostalgy.xpi
+VERSION:=$(shell grep '"version"' manifest.json | sed 's/.\+: "\([^"]\+\)",/\1/')
+ADDON="nostalgy68-$(VERSION).xpi"
 
-nostalgy.xpi:
+all: clean 
 	./build.sh
 
 clean:
-	$(RM) nostalgy.xpi
+	$(RM) $(ADDON) $(ADDON).md5
 
 install:
 	scp CHANGES frisch@frisch.fr:www/info/CHANGES_NOSTALGY

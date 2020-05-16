@@ -41,7 +41,7 @@ Usage
 
 See
 - [markdown version](chrome/content/about.md) created via pandoc from the
-- [html version](chrome/content/about.xtml)
+- [html version](chrome/content/about.xhtml)
 
 
 Authors

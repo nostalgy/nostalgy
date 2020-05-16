@@ -20,24 +20,23 @@ The following shortcuts are available from the main Thunderbird\'s
 window. As a remainder and a sign of Nostalgy\'s presence, these
 shortcuts are displayed in Thunderbird\'s status bar.
 
-  Shortcut   Description
-  ---------- ------------------------------------------------------------
-  g          Open a specific folder
-  s          Move the current message to a specific folder
-  b          Move the current message to a specific folder and go there
-  c          Copy the current message to a specific folder
+- Shortcut   Description
+- `g` Open a specific folder
+- `s` Move the current message to a specific folder
+- `b` Move the current message to a specific folder and go there
+- `c` Copy the current message to a specific folder
 
 These commands open an folder completion box (in place of the status
 bar) where you can select a folder by typing part of its name. A popup
 displays the possible completions. Regular expressions are accepted as
-well (and .. is a short-hand for .\* meaning: any sequence of
+well (and `..` is a short-hand for `.*` meaning: any sequence of
 characters). You can choose the first suggested completion with RETURN,
 or select another one in the popup with the UP/DOWN keys and then
 RETURN. You can cancel the command with ESCAPE.
 
 Before you type anything in the folder completion box, the popup can
 display the most recently selected folders. You can choose one of them
-with the UP/DOWN keys. Due to recent chnanges in TB, you need to press
+with the UP/DOWN keys. Due to recent changes in TB, you need to press
 back arrow followed by up arrow to populate this box with the history.
 
 In the folder completion box, the TAB key activates a shell-like
@@ -51,28 +50,28 @@ fragment. (currently not working in TB68 - may be updated)
 It is possible to restrict (see the preference dialog) the completion to
 the folders on the same server as the currently displayed folder.
 
-The s,b,c commands can be applied to one or many messages.
+The `s`,`b`,`c` commands can be applied to one or many messages.
 
-The s and c commands also work in a standalone message window.
+The `s` and `c` commands also work in a standalone message window.
 
-The g command also focuses the thread pane. If you were doing a
+The `g` command also focuses the thread pane. If you were doing a
 QuickSearch (that is, if you had typed some text in the search box), the
 same search carried over to the new folder.
 
-The b command preserves the selection. The moved messages will be
+The `b` command preserves the selection. The moved messages will be
 selected again in the target folder.
 
 ### Custom shortcuts
 
 In the preference dialog, you can define any number of custom keyboard
-shortcuts. A custom shortcut triggers a g, s, c or b command to a
+shortcuts. A custom shortcut triggers a `g`, `s`, `c` or `b` command to a
 specific folder.
 
 ### 3-pane navigation
 
 Because of the g command, the folder pane becomes thus much less useful,
 and it can be hidden with the l shortcut. (Thunderbird already proposes
-a shortcut to show/hide the message pane: F8).
+a shortcut to show/hide the message pane: `F8`).
 
 Nostalgy also allows you to scroll the message while the thread pane is
 focused with the Ctrl-Left/Right or Shift-Left/Right keys. Because of
@@ -80,14 +79,13 @@ that, it is a good idea to leave the thread pane always focused.
 Nostalgy still provides shortcuts to easily focus one of the three
 panes.
 
-  Shortcut          Description
-  ----------------- ------------------------------------------------------------------------
-  l                 Hide/show the folder pane
-  ESC-f             Focus the folder pane
-  ESC-m             Focus the message pane
-  ESC-ESC           Focus the thread pane
-  ESC-ESC-ESC       Focus the thread pane, clear quick search box, select the \"All\" view
-  Ctrl-Left/Right   Scroll the message from the thread pane
+- Shortcut          Description
+- `l`                 Hide/show the folder pane
+- `ESC-f`             Focus the folder pane
+- `ESC-m`             Focus the message pane
+- `ESC-ESC`           Focus the thread pane
+- `ESC-ESC-ESC`       Focus the thread pane, clear quick search box, select the \"All\" view
+- `Ctrl-Left/Right`   Scroll the message from the thread pane
 
 ### Rules
 
@@ -96,8 +94,8 @@ message by looking for a substring of the From, To/Cc, or Subject
 headers (or a combination of them). A rule can be restricted to match
 messages only under a given server/folder. When a rule selects a folder
 for a given message, Nostalgy informs you in the status line. You can
-then use the Shift-S/Shift-C/Shift-G/Shift-B shortcuts to move/copy/go
-directly to this folder. Nostalgy\'s rules can be edited from the
+then use the `Shift-S/Shift-C/Shift-G/Shift-B` shortcuts to move/copy/go
+directly to this folder. Nostalgy's rules can be edited from the
 preference dialog.
 
 It is possible to match fields with a regexp instead of simply looking
@@ -132,7 +130,7 @@ done on the first recipient (To: header) instead of the sender.
 ### Tags
 
 Starting from version 2.0, Thunderbird supports tags, along with
-traditional folders, as a way to organize your messages. Thunderbird\'s
+traditional folders, as a way to organize your messages. Thunderbird's
 tagging feature replaces its former labeling feature, and allows users
 to define an unlimited number of tags, more than one of which can be
 attached to a single message.
@@ -144,9 +142,9 @@ existing tags, prefixed with a semi-colon.
 
 This needs to be enabled in settings
 
-A \"Go\" command applied to a tag restricts the current folder view to
-show only the messages that have this tag (ESC-ESC-ESC restores the
-\"All messages\" view). A \"Save\" or a \"Copy\" command applied to a
+A `Go` command applied to a tag restricts the current folder view to
+show only the messages that have this tag (`ESC-ESC-ESC` restores the
+"All messages" view). A "Save" or a "Copy" command applied to a
 tag toggles the tag on or off for the selected messages (the first
 selected message is used to determine if the tag has to be added or
 removed). Note that Save and Copy have the same behavior when applied to
@@ -159,15 +157,13 @@ creation dialog with the tag name set to `foobar` (in order to confirm
 the creation of the tag and choose its color). If you confirm, the
 command is applied to the new tag.
 
-You may also use tags rather than folders as targets for Nostalgy\'s
-rules.
+You may also use tags rather than folders as targets for Nostalgy's rules.
 
 ### In the Composer
 
-Nostalgy adds some support for keyboard operations to the Composer
-window.
+Nostalgy adds some support for keyboard operations to the Composer window.
 
-When typing in a header, it\'s possible to change easily the header to
+When typing in a header, it's possible to change easily the header to
 either \"To:\", \"Cc:\" or \"Bcc:\". To do so, you need to be at the
 beginning of the input box, and simply type \"to \", \"cc \" or \"bcc \"
 (with the whitespace, without the quotes).

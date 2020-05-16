@@ -36,6 +36,14 @@ Note: to produce an .xpi file from a git clone:
     git archive --format=zip --output nostalgy.zip HEAD
 
 
+Usage
+=======
+
+See
+- [markdown version](chrome/content/about.md) created via pandoc from the
+- [html version](chrome/content/about.xtml)
+
+
 Authors
 =======
 

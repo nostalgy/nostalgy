@@ -1,3 +1,15 @@
+**THIS THUNDERBIRD ADDON IS NO LONGER MAINTAINED**
+
+This addon is no longer maintained and does not work with recent
+versions of Thunderbird. The original author has no plan to continue
+developping the tool and advise users to look for alternatives such as:
+
+  - [Nostalgy++](https://addons.thunderbird.net/en-us/thunderbird/addon/nostalgy_ng/), an adaptation of Nostalgy for TB78, by Klaus Buecher.
+  - [Quick Folder Move](https://addons.thunderbird.net/en-us/thunderbird/addon/quick-folder-move/)
+
+
+
+
 Summary
 =======
 

@@ -37,7 +37,7 @@ folder view.
 Installation
 ============
 
-The easiest way to install Thunderbird is through  Thunderbird`s addon page. It
+The easiest way to install Thunderbird is through  Thunderbird's addon page. It
 will automatically update itself when new versions are released.
 
 You can also try the latest development versions from https://github.com/nostalgy/nostalgy
@@ -46,6 +46,15 @@ You can also try the latest development versions from https://github.com/nostalg
 Note: to produce an .xpi file from a git clone:
 
     git archive --format=zip --output nostalgy.zip HEAD
+
+
+Usage
+=======
+
+See
+- [markdown version of usage](chrome/content/about.md)
+ created via pandoc from the
+- [html version of usage](chrome/content/about.xhtml)
 
 
 Authors

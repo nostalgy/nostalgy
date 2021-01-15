@@ -29,6 +29,12 @@ var nostalgy_CountsQuery = 'SELECT distinct addresses.id as address_id, addresse
 
 var nostalgy_CountsQueryAll = 'SELECT distinct addresses.id as address_id, addresses.count as address_count, probabilities.id as probability_id, probabilities.count as probability_count FROM addresses, probabilities WHERE addresses.id=probabilities.address_id;';
 
+/**
+ * @typedef {Object} NostalgyPrediction
+ * @property {string} folder
+ * @property {number} prob
+ */
+
 // For anything other than SELECT statement, use nostalgy_sqlite.cmd() :
 
 var NostalgyPredict =
@@ -37,6 +43,9 @@ var NostalgyPredict =
 
     emails: {},
 
+    /**
+     * @returns {void}
+     */
     init: function() {
         this.inited = true;
 
@@ -54,10 +63,16 @@ var NostalgyPredict =
         //this.update_probabilites();
     },
 
+    /**
+     * @returns {string}
+     */
     getDBFile: function() {
         return nostalgy_DBFile;
     },
 
+    /**
+     * @returns {void}
+     */
     createDB: function() {
     // creating a DB:
         nostalgy_sqlite.cmd(this.getDBFile(),nostalgy_CreateTablesQuery1);
@@ -68,6 +83,9 @@ var NostalgyPredict =
         nostalgy_sqlite.cmd(this.getDBFile(),nostalgy_CreateIndexesQuery3);
     },
 
+    /**
+     * @returns {boolean}
+     */
     dbExists: function() {
         // get profile directory
         var file = (Components.classes["@mozilla.org/file/directory_service;1"].
@@ -78,10 +96,18 @@ var NostalgyPredict =
         return file.exists();
     },
 
+    /**
+     * @param {string} s
+     * @returns {boolean}
+     */
     keep_email: function(s) {
         if (this.emails[s]) return false; else return true;
     },
 
+    /**
+     * @param {number} numPredictions
+     * @returns {NostalgyPrediction|NostalgyPrediction[]|null}
+     */
     predict_folder: function (numPredictions) {
         try {
             if ( this.inited==false )
@@ -146,6 +172,12 @@ var NostalgyPredict =
         return null;
     },
 
+    /**
+     * @param {string} value
+     * @param {string} insertQ
+     * @param {string} selectQ
+     * @returns {number}
+     */
     find_generic_id: function (value,insertQ,selectQ) {
         var nostalgy_Array1 = nostalgy_sqlite.select(this.getDBFile(),selectQ,value);
         if ( nostalgy_Array1.length >= 1 ) return nostalgy_Array1[0]['id'];
@@ -155,14 +187,25 @@ var NostalgyPredict =
         throw "find_generic_id: failure";
     },
 
+    /**
+     * @param {string} folder
+     * @returns {number}
+     */
     find_folder_id: function find_folder_id(folder) {
         return this.find_generic_id(folder,nostalgy_FolderInsert,nostalgy_FolderQuery);
     },
 
+    /**
+     * @param {string} address
+     * @returns {number}
+     */
     find_address_id: function (address) {
         return this.find_generic_id(address,nostalgy_AddressInsert,nostalgy_AddressQuery);
     },
 
+    /**
+     * @returns {void}
+     */
     update_probabilites : function() {
         var nostalgy_Array1 = nostalgy_sqlite.select(this.getDBFile(),nostalgy_CountsQueryAll);
         for(var j=0;j<nostalgy_Array1.length;j++) {
@@ -175,6 +218,10 @@ var NostalgyPredict =
         }
     },
 
+    /**
+     * @param {TbFolder} nsiFolder
+     * @returns {void}
+     */
     update_folder: function (nsiFolder) {
         if (nostalgy_completion_options.use_statistical_prediction==false)
             return;

@@ -13,6 +13,10 @@ const CONTRACT_ID = '@mozilla.org/autocomplete/search;1?name=nostalgy-autocomple
 
 // nsIAutoCompleteResult implementation
 
+/**
+ * @param {string} aText
+ * @returns {void}
+ */
 function NostalgyDebug(aText)
 {
   var csClass = Components.classes['@mozilla.org/consoleservice;1'];
@@ -20,6 +24,11 @@ function NostalgyDebug(aText)
   cs.logStringMessage(aText);
 }
 
+/**
+ * @param {string} searchString
+ * @param {string[]} results
+ * @returns {void}
+ */
 function NostalgyAutoCompleteResult(searchString, results) {
   const ACR = Ci.nsIAutoCompleteResult;
   this._searchResult = results.length > 0 ? ACR.RESULT_SUCCESS : ACR.NOMATCH;
@@ -30,6 +39,9 @@ function NostalgyAutoCompleteResult(searchString, results) {
 NostalgyAutoCompleteResult.prototype = {
   _searchString: "",
   _searchResult: 0,
+  /**
+   * @type {string[]}
+   */
   _results: [],
 
   get searchString() { return this._searchString; },
@@ -49,6 +61,9 @@ NostalgyAutoCompleteResult.prototype = {
 
 // nsIAutoCompleteSearch implementation
 
+/**
+ * @returns {void}
+ */
 function NostalgyAutoCompleteSearch() {
   this.wrappedJSObject = this;
 }
@@ -60,14 +75,27 @@ NostalgyAutoCompleteSearch.prototype = {
   _f: {},
   _id: 0,
 
+  /**
+   * @param {Object} f
+   * @returns {number}
+   */
   attachGetValuesFunction: function(f) { this._id++; this._f[this._id] = f; return this._id; },
 
+  /**
+   * @param {string} searchString
+   * @param {string} searchParam
+   * @param {null} previousResult
+   * @param {AutoCompleteObserver} listener
+   */
   startSearch: function(searchString, searchParam, previousResult, listener) {
     var searchResults = this._f[searchParam](searchString);
     var result = new NostalgyAutoCompleteResult(searchString, searchResults);
     listener.onSearchResult(this, result);
   },
 
+  /**
+   * @returns {void}
+   */
   stopSearch: function() {},
 
   QueryInterface: ChromeUtils.generateQI([ Ci.nsIAutoCompleteSearch ]) ,

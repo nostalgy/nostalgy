@@ -1,7 +1,25 @@
+/**
+ * @param {string} s
+ * @returns {Element}
+ */
 function NostalgyEBI(s) { return document.getElementById(s); }
 
-var nostalgy_old_awRecipientKeyPress = 0;
+/**
+ * Holds the previous handler for keyboard input into the composer's recipient fields.
+ *
+ * @type {function|null}
+ */
+var nostalgy_old_awRecipientKeyPress = null;
 
+/**
+ * Reacts to keyboard input into the composer's recipient fields.
+ *
+ * Allows typing "to ", "cc " or "bcc " to change the current recipient's type.
+ *
+ * @param {KeyboardEvent} event
+ * @param {Element} element
+ * @returns {void}
+ */
 function nostalgy_awRecipientKeyPress(event, element) {
   var id = element.id;
   if (id.match(/addressCol2#/)) {
@@ -10,6 +28,7 @@ function nostalgy_awRecipientKeyPress(event, element) {
   var u = v.replace(/ >> .*/, "");
   var i = element.selectionStart;
   var f = v.substr(0,i);
+  // charCode 32 = Space
   if (event.charCode == 32 && (f == "to" || f == "cc" || f == "bcc")) {
     select.value = "addr_" + f;
     element.value = "";
@@ -24,8 +43,14 @@ function nostalgy_awRecipientKeyPress(event, element) {
   nostalgy_old_awRecipientKeyPress(event, element);
 }
 
+/**
+ * @type {number}
+ */
 var NostalgyEscapePressed = 0;
 
+/**
+ * @returns {void}
+ */
 function NostalgyEscape() {
   NostalgyEscapePressed++;
   var i = NostalgyEscapePressed;
@@ -35,6 +60,14 @@ function NostalgyEscape() {
   if (NostalgyEscapePressed == 2) setTimeout(SetMsgBodyFrameFocus,0);
 }
 
+/**
+ * Reacts to global keyboard events.
+ *
+ * Provides the shortcut <kbd>ESC</kbd> + <kbd>A</kbd> to add an attachment.
+ *
+ * @param {KeyboardEvent} ev
+ * @returns {void}
+ */
 function NostalgyKeyPress(ev) {
   if (ev.keyCode == KeyEvent.DOM_VK_ESCAPE) { NostalgyEscape(); }
   else if (NostalgyEscapePressed >= 1) {
@@ -46,6 +79,9 @@ function NostalgyKeyPress(ev) {
 }
 
 
+/**
+ * @returns {void}
+ */
 function onNostalgyLoadComp(){
   nostalgy_old_awRecipientKeyPress = window.awRecipientKeyPress;
   window.awRecipientKeyPress = nostalgy_awRecipientKeyPress;

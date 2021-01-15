@@ -1,3 +1,16 @@
+/**
+ * @typedef {Array} NostalgyKey
+ * @property {string} 0 - Identifier.
+ * @property {string} 1 - Description.
+ * @property {string} 2 - Shortcut.
+ * @property {string} 3 - Action.
+ */
+
+/**
+ * @type {NostalgyKey[]}
+ *
+ * TODO Convert action to function. [caugner]
+ */
 var nostalgy_keys = [
   ["save","Save message","S",
    "JS:NostalgyCmd('Move messages to:', NostalgyMoveToFolder, true);"],

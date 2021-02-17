@@ -77,7 +77,7 @@ var NostalgyRules =
       nostalgy_active_keys[k] = nostalgy_keys[i][3];
       nostalgy_default_label = "save ("+sSave+") copy (" + sCopy + ") go ("+sGo+")";
       if (nostalgy_label)
-        nostalgy_label.label = nostalgy_default_label;
+        nostalgy_label.value = nostalgy_default_label;
     }
 
     var a = this._branch.getChildList("actions.", { });
@@ -209,7 +209,7 @@ var NostalgyFolderListener = {
  OnItemPropertyFlagChanged: function(item, property, oldFlag, newFlag) { },
  OnItemEvent: function(folder, event) {
    var evt = event.toString();
-   // NostalgyDebug(evt + " folder:" + folder.prettyName);
+   NostalgyDebug(evt + " folder:" + folder.prettyName);
    if (evt == "DeleteOrMoveMsgCompleted" && nostalgy_on_move_completed) {
      nostalgy_on_move_completed();
      nostalgy_on_move_completed = null;
@@ -233,7 +233,7 @@ function onNostalgyLoad() {
  nostalgy_cmdLabel = NostalgyEBI("nostalgy-command-label");
  
  NostalgyFolderSelectionBox(nostalgy_folderBox);
- nostalgy_label.label = nostalgy_default_label;
+ nostalgy_label.value = nostalgy_default_label;
 
  if (!nostalgy_in_message_window) {
    NostalgyEBI("threadTree").addEventListener("select", NostalgyDefLabel, false);
@@ -287,10 +287,11 @@ function NostalgyHide(restore) {
 function NostalgyDefLabel() {
  nostalgy_gsuggest_folder = NostalgySuggest();
  if (nostalgy_gsuggest_folder) {
-   nostalgy_label.label =
-       nostalgy_default_label + " [+Shift: => " + NostalgyFolderName(nostalgy_gsuggest_folder) + "]";
+   var nostalgy_folder_name = NostalgyFolderName(nostalgy_gsuggest_folder);
+   nostalgy_label.setAttribute("tooltiptext", nostalgy_folder_name);
+   nostalgy_label.value = nostalgy_default_label + " [+Shift ⇒ " + nostalgy_folder_name + "]";
  } else {
-   nostalgy_label.label = nostalgy_default_label;
+   nostalgy_label.value = nostalgy_default_label;
  }
 }
 
@@ -375,9 +376,12 @@ function NostalgyCreateTag(name) {
 }
 
 function NostalgyRunCommand() {
-  NostalgyHide(true);
   var s = nostalgy_folderBox.value;
+  // Sometimes s is empy ???
+  NostalgyDebug("NostalgyRunCommand: folder:" + s);
   var f = NostalgyResolveFolder(s);
+  // Doing this after the above two lines appears to fix s being empty?
+  NostalgyHide(true);
   if (f) {
     NostalgyRecordRecentFolder(f);
     nostalgy_command(f);
